@@ -17,6 +17,7 @@ public class Classificator {
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
+
     public void add(String code, String name) {
         ClassificatorItem classificatorItem = new ClassificatorItem(code,name);
         elements.putIfAbsent(code,classificatorItem);
