@@ -1,20 +1,31 @@
 package ru.okpdmarket.model;
 
-import java.util.HashMap;
+import lombok.Data;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Interface for classificator and work with its items
  * Created by Vladislav on 29.08.2016.
  */
-
+@Data
 public class Classificator {
 
-    private String name = null;
+    private final String name;
+    private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
+    private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
+    public void add(String code, String name) {
+        ClassificatorItem classificatorItem = new ClassificatorItem(code,name);
+        elements.putIfAbsent(code,classificatorItem);
+        tree.addIfAbsent(classificatorItem);
+    }
 
     public ClassificatorItem getItemByCode(String code){
-        return null;
+
+        return elements.get(code);
     }
 
     public List<ClassificatorItem> getChildLevel(String code){
@@ -22,15 +33,14 @@ public class Classificator {
     }
 
     public List<ClassificatorItem> getFirstLevel() {
-        return null;
+
+        return tree;
     }
 
     public int size(){
-        return 0;
+
+        return elements.size();
     }
 
-    public String getName() {
-        return name;
-    }
 
 }
