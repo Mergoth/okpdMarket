@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/classificators")
-public class ClassificatorServiceController {
+public class ClassificatorController {
 
     @Autowired
     ClassificatorService classificatorService;

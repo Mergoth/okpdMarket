@@ -1,34 +1,37 @@
 buildscript {
     ext {
-		springBootVersion = '1.4.0.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        springBootVersion = '1.4.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'spring-boot'
-
-jar {
-	baseName = 'okpdmarket'
-	version = '0.0.1-SNAPSHOT'
+subprojects {
+	   apply plugin: 'java'
+       apply plugin: 'spring-boot'
+       apply plugin: 'idea'
+    
+    jar {
+       /* baseName = 'okpdmarket'*/
+        version = '0.0.1-SNAPSHOT'
+    }
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    
+    repositories {
+        mavenCentral()
+    }
+    
+    dependencies {
+        compile('org.projectlombok:lombok')
+        compile('org.springframework.boot:spring-boot-starter-web')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+        compile "org.springframework.restdocs:spring-restdocs-mockmvc"
+    }
 }
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	compile('org.projectlombok:lombok')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	compile "org.springframework.restdocs:spring-restdocs-mockmvc"
-}
-
 
