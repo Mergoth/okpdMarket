@@ -34,6 +34,14 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
+	compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
+	compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra', version: '3.6'
+	compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-ds-driver', version: '3.6'
+	compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-pelops', version: '3.6'
+	// https://mvnrepository.com/artifact/org.apache.cassandra/cassandra-all
+	compile group: 'org.apache.cassandra', name: 'cassandra-all', version: '3.9'
+
 }
 
 
