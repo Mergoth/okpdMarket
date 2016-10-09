@@ -7,6 +7,7 @@ import java.util.List;
 import com.impetus.client.cassandra.common.CassandraConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Repository;
 import ru.okpdmarket.dao.GenericDao;
 
 import javax.persistence.EntityManager;
@@ -14,7 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-
+@Repository
 public class GenericDaoImpl<T,K> implements GenericDao<T,K> {
 
     protected final Log log = LogFactory.getLog(getClass());
