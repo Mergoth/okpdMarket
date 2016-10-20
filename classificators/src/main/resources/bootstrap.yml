@@ -1,6 +1,6 @@
 spring:
   application:
-    name: classificators-service
+    name: classificators
   cloud:
     config:
       uri: http://config:8888

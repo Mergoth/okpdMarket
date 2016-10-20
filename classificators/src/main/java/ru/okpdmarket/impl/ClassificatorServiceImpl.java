@@ -1,6 +1,7 @@
 package ru.okpdmarket.impl;
 
 import org.springframework.stereotype.Component;
+import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.services.ClassificatorService;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Component
 public class ClassificatorServiceImpl implements ClassificatorService {
     @Override
-    public List<String> getClassificatorTypes() {
+    public List<ClassificatorTypeDto> getClassificatorTypes() {
         return null;
     }
 

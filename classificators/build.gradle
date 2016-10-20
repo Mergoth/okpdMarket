@@ -1,0 +1,21 @@
+
+jar {
+    baseName = 'okpd-classificators'
+    version = '0.0.1-SNAPSHOT'
+}
+
+
+dependencies {
+    compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
+    compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
+
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
+    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
+    //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra', version: '3.6'
+    //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-ds-driver', version: '3.6'
+    //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-pelops', version: '3.6'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+}
+
+

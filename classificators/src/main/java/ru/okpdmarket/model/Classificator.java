@@ -14,6 +14,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Classificator {
 
     private final String name;
+    private Integer id;
+    private String description;
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 

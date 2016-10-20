@@ -1,10 +1,5 @@
 package ru.okpdmarket.dao.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-
-import com.impetus.client.cassandra.common.CassandraConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Repository;
@@ -14,18 +9,30 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class GenericDaoImpl<T,K> implements GenericDao<T,K> {
 
     protected final Log log = LogFactory.getLog(getClass());
-    protected Class<T> persistentClass;
     public EntityManager entityManager=null;
+    protected Class<T> persistentClass;
     EntityManagerFactory entityManagerFactory=null;
 
-    public GenericKunderaDaoImpl(final Class<T> persistentClass, String persistanceUnit) {
+    public GenericDaoImpl(final Class<T> persistentClass, String persistanceUnit) {
         this.persistentClass = persistentClass;
         createEntityManager(persistanceUnit);
+    }
+
+    public static Integer generateHashKey(String[] keys) {
+        Integer hashKey = 1;
+        for (String key : keys) {
+            hashKey *= key.hashCode();
+        }
+        // TODO: Fix it back!
+        return hashKey;
     }
 
     @Override
@@ -38,7 +45,7 @@ public class GenericDaoImpl<T,K> implements GenericDao<T,K> {
 
     @Override
     public T getById( Object rowKey) {
-        return (T) entityManager.find(this.persistentClass, rowKey);
+        return entityManager.find(this.persistentClass, rowKey);
     }
 
     @Override
@@ -65,17 +72,9 @@ public class GenericDaoImpl<T,K> implements GenericDao<T,K> {
 
     private void createEntityManager(String persistanceUnit) {
         Map<String, String> propertyMap = new HashMap<String, String>();
-        propertyMap.put(CassandraConstants.CQL_VERSION, CassandraConstants.CQL_VERSION_3_0);
+        // propertyMap.put(CassandraConstants.CQL_VERSION, CassandraConstants.CQL_VERSION_3_0);
         entityManagerFactory = Persistence.createEntityManagerFactory(persistanceUnit, propertyMap);
         entityManager = entityManagerFactory.createEntityManager();
-    }
-
-    public static Integer generateHashKey(String[] keys) {
-        Integer hashKey=1;
-        for (String key : keys){
-            hashKey*=key.hashCode();
-        }
-        return hashKey*PRIME_NR/PRIME_DR;
     }
 
     @Override

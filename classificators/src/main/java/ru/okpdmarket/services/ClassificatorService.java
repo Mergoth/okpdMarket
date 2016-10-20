@@ -1,5 +1,6 @@
 package ru.okpdmarket.services;
 
+import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public interface ClassificatorService {
 
-    List<String> getClassificatorTypes();
+    List<ClassificatorTypeDto> getClassificatorTypes();
 
     Classificator getClassifiactor(String classificatorId);
 
