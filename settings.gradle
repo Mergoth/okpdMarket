@@ -1,1 +1,1 @@
-include 'classificators', 'registry', 'config'
+include 'classificators', 'registry', 'config', 'webclient'

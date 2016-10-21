@@ -1,0 +1,27 @@
+.demo-tab-group {
+  border: 1px solid #e0e0e0;
+}
+
+.md-tab-header {
+  background: #f9f9f9;
+}
+
+.md-tab-body {
+  padding: 12px;
+}
+
+.search-result {
+  width: 100%;
+}
+
+.search-result th {
+  text-align: left;
+}
+
+.search-result td.code {
+  width: 30%;
+}
+
+.search-result td.name {
+  width: 50%;
+}
