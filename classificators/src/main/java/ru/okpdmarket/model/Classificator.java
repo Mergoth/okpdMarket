@@ -6,15 +6,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
+
+
+import java.io.Serializable;
+import java.util.UUID;
+
 /**
  * Interface for classificator and work with its items
  * Created by Vladislav on 29.08.2016.
  */
 @Data
-public class Classificator {
+@Table("classificator")
+public class Classificator implements Serializable {
 
     private final String name;
-    private Integer id;
+
+    @PrimaryKey
+    private UUID id;
     private String description;
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
@@ -44,4 +54,23 @@ public class Classificator {
     }
 
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

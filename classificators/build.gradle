@@ -14,6 +14,7 @@ dependencies {
     //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra', version: '3.6'
     //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-ds-driver', version: '3.6'
     //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-pelops', version: '3.6'
+    compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
 
     testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
 }
