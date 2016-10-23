@@ -2,35 +2,41 @@ import {Tree} from "./tree";
 
 export class ClassificatorTreeModel {
 
-  detailed: string;
+  detailed:string;
 
-  tree: Tree;
+  tree:Tree;
 
-  cachedTree: Tree;
+  cachedTree:Tree;
 
-  constructor(private rootId: string) {
+  treePath:Tree[];
+
+  constructor(private rootId:string) {
     this.tree = new Tree();
     this.tree.id = rootId;
     this.cachedTree = this.tree;
     this.detailed = null;
+    this.treePath = null;
   }
 
-  detail(node: Tree) {
-    this.detailed = node.id;
-    this.tree = node;
+  detail(nodeId:string) {
+    this.detailed = nodeId;
+    this.tree = this.treeBy(nodeId);
+    this.constructPath();
   }
 
-  get treePath(): Tree[] {
+  constructPath():Tree[] {
     let node = this.tree;
-    const path: Tree[] = [];
+    if(this.tree == null) return [];
+    const path:Tree[] = [];
     while (node.parent != null) {
       path.push(node.parent);
       node = node.parent;
     }
-    return path.reverse();
+    this.treePath = path.reverse().splice(1);
+    console.log('constructPath:', this.treePath);
   }
 
-  treeBy(rootId: string): Tree {
+  treeBy(rootId:string):Tree {
     if (rootId == this.rootId) {
       return this.cachedTree;
     }
