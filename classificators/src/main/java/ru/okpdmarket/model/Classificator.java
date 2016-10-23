@@ -32,16 +32,14 @@ public class Classificator {
     }
 
     public List<ClassificatorItem> getChildLevel(String code){
-        return null;
+        return elements.get(code).getChildren();
     }
 
     public List<ClassificatorItem> getFirstLevel() {
-
         return tree;
     }
 
     public int size(){
-
         return elements.size();
     }
 
