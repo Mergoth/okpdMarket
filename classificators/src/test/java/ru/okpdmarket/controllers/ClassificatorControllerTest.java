@@ -1,0 +1,102 @@
+package ru.okpdmarket.controllers;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.JUnitRestDocumentation;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.repository.ClassificatorRepository;
+import ru.okpdmarket.services.ClassificatorService;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+/**
+ * Created by Vladislav on 25.10.2016.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
+@WebAppConfiguration
+public class ClassificatorControllerTest {
+    @Rule
+    public JUnitRestDocumentation restDocumentation =
+            new JUnitRestDocumentation("build/generated-snippets");
+
+    private MockMvc mockMvc;
+
+    @Autowired
+    private WebApplicationContext context;
+
+    @Autowired
+    ClassificatorRepository classificatorRepository;
+
+    @Before
+    public void setUp() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
+                .apply(documentationConfiguration(this.restDocumentation))
+                .build();
+        Classificator classificator = new Classificator("test");
+        classificator.add("1.","Test");
+        classificator.add("1.1","TestLevel2");
+        this.classificatorRepository.updateClassificators(Arrays.asList(classificator));
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+    }
+
+    @Test
+    public void getClassificatorTypes() throws Exception {
+
+    }
+
+    @Test
+    public void addClassificator() throws Exception {
+
+    }
+
+    @Test
+    public void getItems() throws Exception {
+        this.mockMvc.perform(get("/classificators/0").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("classificator-top-item"));
+    }
+
+    @Test
+    public void getItems1() throws Exception {
+
+    }
+
+    @Test
+    public void search() throws Exception {
+
+    }
+
+    @Test
+    public void exportClassificators() throws Exception {
+
+    }
+
+}

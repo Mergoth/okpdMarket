@@ -2,10 +2,10 @@ package ru.okpdmarket.repository.impl;
 
 
 import org.springframework.stereotype.Service;
-import ru.okpdmarket.dao.impl.GenericDaoImpl;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,13 +14,12 @@ import java.util.List;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-    GenericDaoImpl genericDao;
+
 
     List<Classificator> classificatorList;
 
     ClassificatorRepositoryImpl(){
-        genericDao = new GenericDaoImpl(Classificator.class, "classificator");
-        classificatorList = genericDao.getAll();
+            classificatorList = new ArrayList<>();
     }
 
     @Override
@@ -29,8 +28,8 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
     }
 
     @Override
-    public List<Classificator> updateClassificators() {
-        classificatorList = genericDao.getAll();
-        return classificatorList;
+    public void updateClassificators(List<Classificator> classificators) {
+        List<Classificator> newClassificators = new ArrayList<>(classificators);
+        this.classificatorList = newClassificators;
     }
 }

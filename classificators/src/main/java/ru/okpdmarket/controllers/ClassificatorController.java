@@ -39,14 +39,16 @@ public class ClassificatorController {
         return null;
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public List<ClassificatorItem> getItems(@PathVariable(value="id") int classificatorId) {
+             return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
+    }
+
 
     @RequestMapping(value = "/{id}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value="id") String classificatorId,
+    public List<ClassificatorItem> getItems(@PathVariable(value="id") int classificatorId,
                                             @PathVariable(value="parentId") String parentId) {
-        if (parentId!=null)
             return classificatorService.getClassifiactor(classificatorId).getChildLevel(parentId);
-        else
-            return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
     }
 
 

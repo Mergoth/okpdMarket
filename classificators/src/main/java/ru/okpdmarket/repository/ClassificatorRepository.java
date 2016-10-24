@@ -8,6 +8,6 @@ public interface ClassificatorRepository {
 
     List<Classificator> getClassificators();
 
-    List<Classificator> updateClassificators();
+    void updateClassificators(List<Classificator> classificators);
 
 }

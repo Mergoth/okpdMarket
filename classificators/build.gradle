@@ -1,22 +1,37 @@
-
-jar {
-    baseName = 'okpd-classificators'
-    version = '0.0.1-SNAPSHOT'
+plugins {
+    id "org.asciidoctor.convert" version "1.5.2"
 }
 
+jar {
+    dependsOn asciidoctor
+    baseName = 'okpd-classificators'
+    version = '0.0.1-SNAPSHOT'
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
+}
 
 dependencies {
     compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
-    compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
-
+    //compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
     compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
-    //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra', version: '3.6'
-    //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-ds-driver', version: '3.6'
-    //compile group: 'com.impetus.kundera.client', name: 'kundera-cassandra-pelops', version: '3.6'
-    compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
 
     testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
 }
 
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    attributes 'snippets': snippetsDir
+    inputs.dir snippetsDir
+    dependsOn test
+}
 
