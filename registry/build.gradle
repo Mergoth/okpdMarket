@@ -6,14 +6,14 @@ jar {
 
 
 dependencies {
-	compile('io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry')
+	compile('io.pivotal.spring.cloud:spring-cloud-service-starter-service-registry')
     compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
     compile('org.springframework.cloud:spring-cloud-starter-config')
 }
 
 dependencyManagement {
 	imports {
-		mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:1.1.2.RELEASE"
+		mavenBom "io.pivotal.spring.cloud:spring-cloud-service-dependencies:1.1.2.RELEASE"
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5"
 	}
 }

@@ -26,15 +26,26 @@ public class Classificator implements Serializable {
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
-
     public void add(String code, String name) {
+        this.add(code,name,null);
+    }
+
+
+    public void add(String code, String name, String parentCode) {
         ClassificatorItem classificatorItem = new ClassificatorItem(code,name);
+        classificatorItem.setClassificator(this);
         elements.putIfAbsent(code,classificatorItem);
-        tree.addIfAbsent(classificatorItem);
+
+        if (parentCode!=null) {
+            ClassificatorItem parentItem = getItemByCode(parentCode);
+            parentItem.getChildren().add(classificatorItem);
+            classificatorItem.setParent(parentItem);
+        } else {
+            tree.addIfAbsent(classificatorItem);
+        }
     }
 
     public ClassificatorItem getItemByCode(String code){
-
         return elements.get(code);
     }
 

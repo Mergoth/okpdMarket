@@ -1,7 +1,6 @@
-package ru.okpdmarket.services
+package ru.okpdmarket.service
 
 import ru.okpdmarket.model.Classificator
-import ru.okpdmarket.model.ClassificatorItem
 
 /**
  * Created by Vladislav on 31.08.2016.

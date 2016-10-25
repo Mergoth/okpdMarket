@@ -1,11 +1,11 @@
-package ru.okpdmarket.impl;
+package ru.okpdmarket.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
-import ru.okpdmarket.services.ClassificatorService;
+import ru.okpdmarket.service.ClassificatorService;
 
 import java.util.List;
 

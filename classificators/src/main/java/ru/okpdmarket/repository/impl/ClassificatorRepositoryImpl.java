@@ -1,10 +1,13 @@
 package ru.okpdmarket.repository.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.okpdmarket.dao.FakeDaoImpl;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +17,18 @@ import java.util.List;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
+    private final FakeDaoImpl fakeDao;
 
+    private List<Classificator> classificatorList;
 
-    List<Classificator> classificatorList;
+    @Autowired
+    public ClassificatorRepositoryImpl(FakeDaoImpl fakeDao) {
+        this.fakeDao = fakeDao;
+    }
 
-    ClassificatorRepositoryImpl(){
-            classificatorList = new ArrayList<>();
+    @PostConstruct
+    private void init() {
+        classificatorList = new ArrayList<>(fakeDao.getAll());
     }
 
     @Override
@@ -29,7 +38,6 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
     @Override
     public void updateClassificators(List<Classificator> classificators) {
-        List<Classificator> newClassificators = new ArrayList<>(classificators);
-        this.classificatorList = newClassificators;
+        this.classificatorList = new ArrayList<>(classificators);
     }
 }

@@ -1,4 +1,4 @@
-package ru.okpdmarket.controllers;
+package ru.okpdmarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
-import ru.okpdmarket.services.ClassificatorService;
+import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.SearchService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,16 @@ import java.util.List;
 @RequestMapping("/classificators")
 public class ClassificatorController {
 
-    @Autowired
+    private final
     ClassificatorService classificatorService;
+    private final
+    SearchService searchService;
+
+    @Autowired
+    public ClassificatorController(ClassificatorService classificatorService, SearchService searchService) {
+        this.classificatorService = classificatorService;
+        this.searchService = searchService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
@@ -54,9 +63,9 @@ public class ClassificatorController {
 
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value="id")String classificatorId, @RequestParam String query) {
-//TODO: Lucene in-memory search invoked from ClassificatorService
-        return null;
+    public List<ClassificatorItem> search(@PathVariable(value="id") int classificatorId, @RequestParam String query) {
+        //TODO: Lucene in-memory search invoked from ClassificatorService
+        return searchService.search(classificatorId,query);
     }
 
     @RequestMapping(value = "/export", method = RequestMethod.GET)
