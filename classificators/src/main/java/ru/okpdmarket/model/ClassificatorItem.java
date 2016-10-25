@@ -13,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClassificatorItem implements Serializable {
 
-    private final String code;
-    private final String name;
+    private String code;
+    private String name;
     private List<ClassificatorItem> children;
     private Classificator classificator;
     private ClassificatorItem parent;

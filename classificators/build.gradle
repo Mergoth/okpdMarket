@@ -13,7 +13,7 @@ jar {
 
 dependencies {
     compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
-    //compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
+    compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
     compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
 

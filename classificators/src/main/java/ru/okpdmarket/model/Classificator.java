@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-
-
+import org.springframework.data.cassandra.mapping.Column;
+import org.springframework.data.cassandra.mapping.PrimaryKey;
+import org.springframework.data.cassandra.mapping.Table;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -17,10 +17,12 @@ import java.util.UUID;
  * Created by Vladislav on 29.08.2016.
  */
 @Data
+@Table
 public class Classificator implements Serializable {
 
-    private final String name;
+    private String name;
 
+    @PrimaryKey
     private UUID id;
     private String description;
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();

@@ -1,6 +1,7 @@
 package ru.okpdmarket.repository.impl;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
@@ -14,7 +15,8 @@ import java.util.List;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-
+    @Autowired
+    java.ru.okpdmarket.dao.ClassificatorDao classificatorDao;
 
     List<Classificator> classificatorList;
 
@@ -24,6 +26,7 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
     @Override
     public List<Classificator> getClassificators() {
+        classificatorList = classificatorDao.getClassificators();
         return classificatorList;
     }
 
