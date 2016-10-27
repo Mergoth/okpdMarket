@@ -1,4 +1,12 @@
-Смена url для бэка app/back-api.service.ts : backendRestUrlRoot 
+## Environment settings:
+/src/environments/
+      environment.prod.ts - production environment
+      environment.ts      - test & dev environment
+      
+   {
+      serverUrl: "http://localhost:8080" 
+   }
+      
 
 # OkpdmarketWeb
 
@@ -6,6 +14,8 @@ This project was generated with [angular-cli](https://github.com/angular/angular
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve --prod` for prod .
+
 
 ## Code scaffolding
 
@@ -14,6 +24,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build --prod` for prod.
 
 ## Running unit tests
 

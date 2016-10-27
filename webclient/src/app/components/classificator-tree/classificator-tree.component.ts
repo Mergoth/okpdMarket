@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {ClassificatorTreeModel} from "./classificator-tree";
 
 @Component({
-  moduleId: module.id,
   selector: 'classificator-tree',
   templateUrl: 'classificator-tree.html',
   styles: [`.path .node { cursor: pointer; color: #039be5; text-decoration: underline;} .path {margin: 20px}`]
