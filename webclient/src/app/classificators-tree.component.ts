@@ -1,13 +1,12 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {OkpdService} from "app/okpd.service";
+import {OkpdService} from "./okpd.service";
 import {ClassificatorTreeModel} from "./components/classificator-tree/classificator-tree";
 import {Tree} from "./components/classificator-tree/tree";
-import {ClassificatorTree} from "app/classificator";
+import {ClassificatorTree} from "./classificator";
 
 
 @Component({
-  moduleId: module.id,
   selector: 'classificators-tree',
   templateUrl: 'classificators-tree.html'
 })

@@ -4,7 +4,6 @@ import {ClassificatorUnited} from "./classificator";
 import {OkpdService} from "./okpd.service";
 
 @Component({
-  moduleId: module.id,
   selector: 'okpd-search',
   styleUrls: ['okpd-search.css'],
   templateUrl: 'okpd-search.html',

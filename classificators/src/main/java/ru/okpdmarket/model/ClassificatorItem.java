@@ -1,9 +1,11 @@
 package ru.okpdmarket.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import lombok.RequiredArgsConstructor;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,10 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClassificatorItem implements Serializable {
 
-    private String code;
-    private String name;
-    private List<ClassificatorItem> children;
+    private final String code;
+    private final String name;
+    @JsonIgnore
+    private List<ClassificatorItem> children = new ArrayList<>();
+    @JsonIgnore
     private Classificator classificator;
+    @JsonIgnore
     private ClassificatorItem parent;
 
 }

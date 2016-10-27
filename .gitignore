@@ -82,3 +82,5 @@ npm-debug.log
 !wallaby.js
 dist/
 typings/
+
+*.iml

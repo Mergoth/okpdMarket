@@ -1,4 +1,4 @@
-package ru.okpdmarket.services;
+package ru.okpdmarket.service;
 
 import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;

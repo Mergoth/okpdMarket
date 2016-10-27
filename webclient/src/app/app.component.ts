@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 
 @Component({
-  moduleId: module.id,
   selector: 'app',
   template: `<h1>ОКПД Маркет</h1>
    <nav>

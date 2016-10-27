@@ -1,8 +1,9 @@
 import {Injectable} from "@angular/core";
+import { environment } from '../environments/environment';
 import {Http, Headers, Response, Jsonp, URLSearchParams, RequestOptions} from "@angular/http";
 import "./rxjs-operators";
 
-const backendRestUrlRoot = "http://localhost:8080";
+const backendRestUrlRoot = environment.serverUrl;
 
 @Injectable()
 export class BackAPI {

@@ -1,14 +1,14 @@
-describe('QuickStart E2E Tests', function () {
+import { OkpdmarketWebPage } from './app.po';
 
-  let expectedMsg = 'My First Angular App';
+describe('okpdmarket-web App', function() {
+  let page: OkpdmarketWebPage;
 
-
-  beforeEach(function () {
-    browser.get('');
+  beforeEach(() => {
+    page = new OkpdmarketWebPage();
   });
 
-  it('should display: ' + expectedMsg, function () {
-    expect(element(by.css('h1')).getText()).toEqual(expectedMsg);
+  it('should display message saying app works', () => {
+    page.navigateTo();
+    expect(page.getParagraphText()).toEqual('app works!');
   });
-
 });

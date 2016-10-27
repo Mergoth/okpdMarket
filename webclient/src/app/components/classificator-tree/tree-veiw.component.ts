@@ -2,7 +2,6 @@ import {Component, Input, Output, EventEmitter} from "@angular/core";
 import {Tree} from "./tree";
 
 @Component({
-  moduleId: module.id,
   selector: 'tree-view',
   templateUrl: 'tree-view.html'
 })
