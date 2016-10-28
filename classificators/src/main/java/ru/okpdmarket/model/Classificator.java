@@ -1,14 +1,9 @@
 package ru.okpdmarket.model;
 
 import lombok.Data;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-
-
-
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -20,7 +15,6 @@ import java.util.UUID;
 public class Classificator implements Serializable {
 
     private final String name;
-
     private UUID id;
     private String description;
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
@@ -29,7 +23,6 @@ public class Classificator implements Serializable {
     public void add(String code, String name) {
         this.add(code,name,null);
     }
-
 
     public void add(String code, String name, String parentCode) {
         ClassificatorItem classificatorItem = new ClassificatorItem(code,name);
@@ -60,7 +53,4 @@ public class Classificator implements Serializable {
     public int size(){
         return elements.size();
     }
-
-
-
 }

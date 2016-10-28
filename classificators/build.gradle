@@ -1,10 +1,10 @@
 plugins {
     id "org.asciidoctor.convert" version "1.5.2"
 }
-
+apply plugin: 'java'
 jar {
     dependsOn asciidoctor
-    baseName = 'okpd-classificators'
+    archiveName = 'classificators-service.jar'
     version = '0.0.1-SNAPSHOT'
     from ("${asciidoctor.outputDir}/html5") {
         into 'static/docs'
@@ -13,7 +13,6 @@ jar {
 
 dependencies {
     compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
-    //compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
     compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
 

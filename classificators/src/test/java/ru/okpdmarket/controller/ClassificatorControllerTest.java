@@ -85,7 +85,9 @@ public class ClassificatorControllerTest {
 
     @Test
     public void search() throws Exception {
-
+        this.mockMvc.perform(get("/classificators/0/search?query=Test query").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("classificator-search-results"));
     }
 
     @Test
