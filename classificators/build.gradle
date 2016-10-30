@@ -4,8 +4,6 @@ plugins {
 apply plugin: 'java'
 jar {
     dependsOn asciidoctor
-    archiveName = 'classificators-service.jar'
-    version = '0.0.1-SNAPSHOT'
     from ("${asciidoctor.outputDir}/html5") {
         into 'static/docs'
     }

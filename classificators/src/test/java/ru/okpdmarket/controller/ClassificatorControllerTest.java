@@ -70,7 +70,7 @@ public class ClassificatorControllerTest {
 
     @Test
     public void getItems() throws Exception {
-        this.mockMvc.perform(get("/classificators/test").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/classificators/code").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-top-item"));
     }
@@ -82,7 +82,7 @@ public class ClassificatorControllerTest {
 
     @Test
     public void search() throws Exception {
-        this.mockMvc.perform(get("/classificators/test/search?query=Test query").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/classificators/code/search?query=Test query").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search-results"));
     }
