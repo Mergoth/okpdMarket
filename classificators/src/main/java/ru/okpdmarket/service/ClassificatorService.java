@@ -12,7 +12,7 @@ public interface ClassificatorService {
 
     List<ClassificatorTypeDto> getClassificatorTypes();
 
-    Classificator getClassifiactor(int classificatorId);
+    Classificator getClassifiactor(String classificatorCode);
 
 
 

@@ -11,26 +11,45 @@ buildscript {
 }
 
 allprojects {
+    plugins.withType(JavaPlugin).whenPluginAdded {
+      configure(project){
+          apply plugin: 'idea'
+          apply plugin: 'spring-boot'
 
-       apply plugin: 'idea'
-       apply plugin: 'spring-boot'
+          version = '0.0.1-SNAPSHOT'
 
-       version = '0.0.1-SNAPSHOT'
+          sourceCompatibility = 1.8
+          targetCompatibility = 1.8
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+          dependencies {
+              compile('org.projectlombok:lombok')
+              compile('org.springframework.boot:spring-boot-starter-web')
 
-    repositories {
-        mavenCentral()
+              testCompile('org.springframework.boot:spring-boot-starter-test')
+              testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+
+          }
+          repositories {
+              mavenCentral()
+          }
+          task copyForDocker(type: Copy)  {
+              from("${buildDir}/libs") {
+                  rename {"${project.name}.jar"}
+              }
+              into "$buildDir"
+              include "${jar.archiveName}"
+
+          }
+
+          build.finalizedBy(copyForDocker)
+      }
     }
 
-    dependencies {
-        compile('org.projectlombok:lombok')
-        compile('org.springframework.boot:spring-boot-starter-web')
+ /*
 
-        testCompile('org.springframework.boot:spring-boot-starter-test')
-        testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+*/
 
-    }
+
 }
+
 

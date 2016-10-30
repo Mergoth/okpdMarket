@@ -49,13 +49,13 @@ public class ClassificatorController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value="id") int classificatorId) {
+    public List<ClassificatorItem> getItems(@PathVariable(value = "id") String classificatorId) {
              return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
     }
 
 
     @RequestMapping(value = "/{id}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value="id") int classificatorId,
+    public List<ClassificatorItem> getItems(@PathVariable(value = "id") String classificatorId,
                                             @PathVariable(value="parentId") String parentId) {
             return classificatorService.getClassifiactor(classificatorId).getChildLevel(parentId);
     }
@@ -63,7 +63,7 @@ public class ClassificatorController {
 
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value="id") int classificatorId, @RequestParam String query) {
+    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
         //TODO: Lucene in-memory search invoked from ClassificatorService
         return searchService.search(classificatorId,query);
     }

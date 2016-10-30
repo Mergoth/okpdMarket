@@ -1,5 +1,6 @@
 package ru.okpdmarket.service
 
+import org.junit.Test
 import ru.okpdmarket.model.Classificator
 
 /**
@@ -18,21 +19,22 @@ class ClassificatorTest extends GroovyTestCase {
 */
     }
 
-
+    @Test
     void testGetItemByCode() {
-        Classificator okpd  = new Classificator("test1");
-        okpd.add("01","Продукция и услуги сельского хозяйства и охоты");
-        okpd.add("01.1","Культуры однолетние");
+        Classificator okpd = new Classificator("test1")
+        okpd.add("01", "Продукция и услуги сельского хозяйства и охоты")
+        okpd.add("01.1", "Культуры однолетние")
         def itemByCode = okpd.getItemByCode("01.1")
         assert(itemByCode)
         assertEquals("Got something wrong by code!","Культуры однолетние",itemByCode.name)
     }
 
+    @Test
     void testName() {
         Classificator okpd = new Classificator("test2")
-        okpd.add("01","Продукция и услуги сельского хозяйства и охоты");
-        okpd.add("01.1","Культуры однолетние");
-        okpd.add("02","Продукция лесоводства, лесозаготовок и связанные с этим услуги");
+        okpd.add("01", "Продукция и услуги сельского хозяйства и охоты")
+        okpd.add("01.1", "Культуры однолетние")
+        okpd.add("02", "Продукция лесоводства, лесозаготовок и связанные с этим услуги")
         assertEquals("Wrong size computation",3,okpd.size())
     }
 }

@@ -4,11 +4,12 @@ import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 
 import java.util.List;
+import java.util.Map;
 
-@Service
+
 public interface ClassificatorRepository {
 
-    List<Classificator> getClassificators();
+    Map<String, Classificator> getClassificators();
 
     void updateClassificators(List<Classificator> classificators);
 
