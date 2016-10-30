@@ -47,7 +47,7 @@ public class ClassificatorControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .apply(documentationConfiguration(this.restDocumentation))
                 .build();
-        Classificator classificator = new Classificator("test");
+        Classificator classificator = new Classificator("code", "test");
         classificator.add("1.","Test");
         classificator.add("1.1","TestLevel2");
         this.classificatorRepository.updateClassificators(Arrays.asList(classificator));

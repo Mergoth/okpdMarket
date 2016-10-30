@@ -29,7 +29,7 @@ public class FakeDaoImpl implements GenericDao<Classificator,UUID> {
 
     @Override
     public List<Classificator> getAll() {
-        Classificator classificator1 = new Classificator("ОКПД");
+        Classificator classificator1 = new Classificator("okpd", "ОКПД");
         classificator1.add("01.","Death");
         classificator1.add("01.01.","Napalm Death","01.");
         return Collections.singletonList(classificator1);

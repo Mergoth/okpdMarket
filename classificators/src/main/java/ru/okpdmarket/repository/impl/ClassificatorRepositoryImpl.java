@@ -39,6 +39,6 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
     @Override
     public void updateClassificators(List<Classificator> classificators) {
-        classificatorsMap = classificators.stream().collect(Collectors.toMap(Classificator::getName, Function.identity()));
+        classificatorsMap = classificators.stream().collect(Collectors.toMap(Classificator::getCode, Function.identity()));
     }
 }

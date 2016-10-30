@@ -14,6 +14,7 @@ import java.util.UUID;
 @Data
 public class Classificator implements Serializable {
 
+    private final String code;
     private final String name;
     private UUID id;
     private String description;
