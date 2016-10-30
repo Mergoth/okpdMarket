@@ -12,22 +12,22 @@ export class BackAPI {
   }
 
   okpdTree(code: String): Promise<any> {
-    return this.get('classificators/okpd', {code: code});
+    return this.get(code ? `classificators/okpd/${code}` :  'classificators/okpd');
   }
 
   okpd2Tree(code: String): Promise<any> {
-    return this.get('classificators/okpd2', {code: code});
+    return this.get(code ?`classificators/okpd2/${code}` :  'classificators/okpd2');
   }
 
   tnvedTree(code: String): Promise<any> {
-    return this.get('classificators/tnved', {code: code});
+    return this.get(code ? `classificators/tnved/${code}` : 'classificators/tnved');
   }
 
   okpdBy(query: string): Promise<any> {
     return this.get(`classificators`, {query: query});
   }
 
-  private get(url: string, params: Object): Promise<any> {
+  private get(url: string, params: Object = {}): Promise<any> {
     let headers = new Headers({'Content-Type': 'application/json'});
     let queryParams = this.buildQueryParams(params);
     let options = new RequestOptions({
