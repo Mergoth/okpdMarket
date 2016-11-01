@@ -10,12 +10,17 @@ export class ClassificatorTreeModel {
 
   treePath:Tree[];
 
-  constructor(private rootId:string) {
-    this.tree = new Tree();
-    this.tree.id = rootId;
-    this.cachedTree = this.tree;
-    this.detailed = null;
-    this.treePath = null;
+  // constructor(private rootId:string) {
+  //   this.tree = new Tree();
+  //   this.tree.id = rootId;
+  //   this.cachedTree = this.tree;
+  //   this.detailed = null;
+  //   this.treePath = null;
+  // }
+
+  setTree(tree: Tree) {
+    this.tree = tree;
+    this.cachedTree = tree;
   }
 
   detail(nodeId:string) {
@@ -40,6 +45,7 @@ export class ClassificatorTreeModel {
     if (rootId == this.rootId) {
       return this.cachedTree;
     }
+    console.log('subTree:' + rootId + ', tree:', this.cachedTree);
     return this.cachedTree.subTree(rootId);
   }
 

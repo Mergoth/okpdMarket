@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {OkpdService} from "./okpd.service";
 import {ClassificatorTreeModel} from "./components/classificator-tree/classificator-tree";
 import {Tree} from "./components/classificator-tree/tree";
-import {ClassificatorTree} from "./classificator";
+import {Classificator} from "./classificator";
 
 
 @Component({
@@ -69,12 +69,14 @@ export class ClassificatorsTreeComponent implements OnInit {
 
   updateTree() {
     const rootId = this.selectedType;
-    this.classificatorTree = new ClassificatorTreeModel(rootId);
+    this.classificatorTree = new ClassificatorTreeModel();
     const  nodeId = this.routeParams.code ? this.routeParams.code : rootId;
-    this.loadTree(nodeId).then(_ => {
+    this.loadTree(nodeId).then(tree => {
         if (this.routeParams.code) {
           const nodeId = this.routeParams.code;
           this.classificatorTree.detail(nodeId);
+        } else {
+          this.classificatorTree.setTree(tree);
         }
       })
       .catch(err => console.error('Error in classificator load', err));
@@ -107,29 +109,34 @@ export class ClassificatorsTreeComponent implements OnInit {
 
   }
 
-  loadTree(nodeId:string):Promise<Tree> {
-    let node = this.classificatorTree.treeBy(nodeId);
+  loadTree(rootId:string):Promise<Tree> {
+    let node = this.classificatorTree.treeBy(rootId);
     if (node == null) {
-      return this.treeClassificatorBy(nodeId).then(classificatorTree => {
-        if(classificatorTree.length == 0) return null;
-        const parentId = classificatorTree[0].parentCode ? classificatorTree[0].parentCode : this.selectedType;
+      return this.treeClassificatorBy(rootId).then(classificator => {
+        if(classificator.length == 0) return null;
+        const parentId = classificator.parentCode ? classificator.parentCode : this.selectedType;
           //console.log('>>parentId:', parentId);
-        return this.loadTree(parentId).then(p => {
-          const currentTree = this.classificatorTree.treeBy(nodeId);
-          fillNodes(currentTree, classificatorTree);
-          return currentTree;
+        return this.loadTree(parentId).then(node => {
+          //const tree = this.classificatorTree.treeBy(rootId);
+          console.log('node>>>:', node);
+          fillTree(node, classificator);
+          return node;
         });
-      })
-    }
-    if (node.nodes == null) {
-      return this.treeClassificatorBy(nodeId).then(classificators => {
-        //const tree = this.classificatorTree.treeBy(nodeId);
-        fillNodes(node, classificators);
-        return node;
       })
     } else {
       return Promise.resolve(node);
     }
+    // console.log('node1:', node);
+    // if (node.nodes == null) {
+    //   return this.treeClassificatorBy(node.id).then(classificators => {
+    //     //const tree = this.classificatorTree.treeBy(node.id);
+    //     console.log('fillNodes2')
+    //     fillTree(node, classificators);
+    //     return node;
+    //   })
+    // } else {
+    //   return Promise.resolve(node);
+    // }
   }
 
 
@@ -149,10 +156,14 @@ export class ClassificatorsTreeComponent implements OnInit {
 
 }
 
-function fillNodes(model:Tree, classificatorTree:ClassificatorTree) {
-  if (classificatorTree == null) return model;
+function fillTree(model:Tree, classificator:Classificator) {
+  if (classificator == null) return model;
+  console.log('model2:', model);
+  model.name = classificator.name;
+  model.id = classificator.code;
+  model.parent = classificator.parentCode;
   model.nodes = [];
-  for (let classificator of classificatorTree) {
+  for (let classificator of classificator.children) {
     const node = new Tree();
     node.name = classificator.name;
     node.id = classificator.code;

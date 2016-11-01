@@ -167,5 +167,5 @@ nav a.router-link-active {
   display: block;
   width: 24px;
   height: 24px;
-  background-image: url('/static/img/loading.gif');
+  background-image: url('../static/img/loading.gif');
 }
