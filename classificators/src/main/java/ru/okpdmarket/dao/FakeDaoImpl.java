@@ -30,8 +30,8 @@ public class FakeDaoImpl implements GenericDao<Classificator,UUID> {
     @Override
     public List<Classificator> getAll() {
         Classificator classificator1 = new Classificator("okpd", "ОКПД");
-        classificator1.add("01.","Death");
-        classificator1.add("01.01.","Napalm Death","01.");
+        classificator1.add("1", "Death");
+        classificator1.add("1.1", "Napalm Death", "1");
         return Collections.singletonList(classificator1);
     }
 

@@ -1,6 +1,8 @@
 package ru.okpdmarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +27,9 @@ import java.util.List;
 @RequestMapping("/classificators")
 public class ClassificatorController {
 
-    private final
-    ClassificatorService classificatorService;
-    private final
-    SearchService searchService;
+    private final ClassificatorService classificatorService;
+
+    private final SearchService searchService;
 
     @Autowired
     public ClassificatorController(ClassificatorService classificatorService, SearchService searchService) {
@@ -42,14 +43,9 @@ public class ClassificatorController {
         return classificatorService.getClassificatorTypes();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Classificator addClassificator (@RequestBody final Classificator model,
-                                           HttpServletRequest request, HttpServletResponse response) {
-        return null;
-    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value = "id") String classificatorId) {
+    public List<ClassificatorItem> getTopItems(@PathVariable(value = "id") String classificatorId) {
              return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
     }
 
@@ -60,14 +56,14 @@ public class ClassificatorController {
             return classificatorService.getClassifiactor(classificatorId).getChildLevel(parentId);
     }
 
-
-
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
     public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
         //TODO: Lucene in-memory search invoked from ClassificatorService
         return searchService.search(classificatorId,query);
     }
 
+
+    //TODO: do we need this? Here?
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     public List<Classificator>  exportClassificators(){
 
