@@ -7,9 +7,9 @@ export interface Classificator {
   children?: Classificator[];
 }
 
-export interface ClassificatorTree extends Array<Classificator> {
-  name: string;
-}
+// export interface ClassificatorTree extends Classificator {
+//   name: string;
+// }
 
 export interface ClassificatorUnited {
   okpd?: Classificator;

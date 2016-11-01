@@ -1,4 +1,4 @@
-<ul *ngIf="model != null">
+<ul *ngIf="model != null" >
   <li *ngFor="let node of model.nodes">
     <span *ngIf="node.hasNodes" style="cursor:pointer;" (click)="expand(node)">{{ node.id }} {{node.name}}</span>
     <span *ngIf="!node.hasNodes">{{ node.id }} {{node.name}}</span>
@@ -7,4 +7,4 @@
     </div>
   </li>
 </ul>
-<div class="loading" *ngIf="model == null"></div>
+<div class="loading" *ngIf="model == null || model.nodes == null"></div>
