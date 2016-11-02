@@ -14,10 +14,16 @@ import java.util.UUID;
 @Data
 public class Classificator implements Serializable {
 
+    // Unique classificator code in english
     private final String code;
+    // Classificator name in Russian
     private final String name;
+    // Used for database only
     private UUID id;
+    // Classificator description
     private String description;
+
+
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 

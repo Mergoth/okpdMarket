@@ -1,7 +1,11 @@
 plugins {
     id "org.asciidoctor.convert" version "1.5.2"
 }
+
+apply plugin: 'groovy'
 apply plugin: 'java'
+
+
 jar {
     dependsOn asciidoctor
     from ("${asciidoctor.outputDir}/html5") {
@@ -14,6 +18,7 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
     compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
 
+    //testCompile 'org.spockframework:spock-core:0.7-groovy-2.0-SNAPSHOT'
     testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
     testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:1.1.2.RELEASE'
 }

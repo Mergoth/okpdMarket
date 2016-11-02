@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
  */
 @Data
 @RequiredArgsConstructor
+@ToString(of = {"code", "name"})
 public class ClassificatorItem implements Serializable {
 
     private final String code;
