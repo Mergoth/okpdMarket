@@ -12,9 +12,9 @@ import {Classificator} from "./classificator";
 })
 export class ClassificatorsTreeComponent implements OnInit {
 
-  private maxLevel:number = 3;
+  private maxLevel: number = 3;
 
-  tabs:[{
+  tabs: [{
     type: string;
     title: string;
     selected: boolean;
@@ -36,11 +36,11 @@ export class ClassificatorsTreeComponent implements OnInit {
     }
   ];
 
-  classificatorTree:ClassificatorTreeModel;
-  activeTabIndex:number = 0;
-  routeParams:RouteParams;
+  classificatorTree: ClassificatorTreeModel;
+  activeTabIndex: number = 0;
+  routeParams: RouteParams;
 
-  constructor(private route:ActivatedRoute, private router:Router, private okpdService:OkpdService) {
+  constructor(private route: ActivatedRoute, private router: Router, private okpdService: OkpdService) {
     this.route.params.subscribe(params => {
       this.routeParams = params as RouteParams;
     });
@@ -51,9 +51,9 @@ export class ClassificatorsTreeComponent implements OnInit {
     return selectedTab ? selectedTab.type : null;
   }
 
-  set selectedType(code:string) {
+  set selectedType(code: string) {
     // console.log('selectedType:' + code);
-    let needLoad:string = null;
+    let needLoad: string = null;
     this.tabs.forEach(t => {
       if (t.type == code) {
         if (!t.selected) needLoad = t.type;
@@ -69,113 +69,84 @@ export class ClassificatorsTreeComponent implements OnInit {
 
   updateTree() {
     const rootId = this.selectedType;
-    this.classificatorTree = new ClassificatorTreeModel();
-    const  nodeId = this.routeParams.code ? this.routeParams.code : rootId;
-    this.loadTree(nodeId).then(tree => {
-        if (this.routeParams.code) {
-          const nodeId = this.routeParams.code;
-          this.classificatorTree.detail(nodeId);
-        } else {
-          this.classificatorTree.setTree(tree);
-        }
-      })
-      .catch(err => console.error('Error in classificator load', err));
+    const nodeId = this.routeParams.code ? this.routeParams.code : rootId;
+    const detailed = rootId != nodeId;
+    const params = detailed ? {path:true} : {};
+    this.treeClassificatorBy(nodeId, params).then(classificator => {
+      //console.log('>>parentId:', parentId);
+      this.classificatorTree = new ClassificatorTreeModel();
+      this.classificatorTree.detailed = detailed;
+      this.classificatorTree.tree = new Tree();
+      this.classificatorTree.tree.id = nodeId;
+      fillTree(this.classificatorTree.tree, classificator);
+
+    });
   }
 
-  ngOnInit():void {
+  ngOnInit(): void {
     // console.log('ngOnInit', this.routeParams);
     this.selectedType = this.routeParams.type ? this.routeParams.type : 'okpd';
   }
 
-  onPathClick(nodeId:string) {
-   // console.log('onPathClick', nodeId);
+  onPathClick(nodeId: string) {
+    // console.log('onPathClick', nodeId);
     this.updateTree();
   }
 
-  onSelectChange(tab:any) {
+  onSelectChange(tab: any) {
     // console.log('>>>>>>', tab);
     this.activeTabIndex = tab.index;
     this.selectedType = this.tabs[tab.index].type;
     this.router.navigate([`/tree/${this.selectedType}`]);
   }
 
-  onNodeClick(nodeId:string) {
-   // console.log('ROOT:onNodeClick:' + nodeId);
-    this.loadTree(nodeId).then(node => {
-      if (node.level == this.maxLevel) {
-        this.classificatorTree.detail(nodeId);
+  onNodeClick(rootId: string) {
+    //console.log('ROOT:onNodeClick:' + rootId);
+    let subTree = this.classificatorTree.treeBy(rootId);
+    //console.log('subTree:onNodeClick:', subTree);
+    if (subTree.nodes == null) {
+      if ((subTree.level % this.maxLevel) == 0) {
+        //todo
+        let code = subTree.id.replace(/\./g, '')
+        this.router.navigate([`/tree/${this.selectedType}/${code}`]);
+      } else {
+        this.treeClassificatorBy(subTree.id).then(classificators => {
+          fillTree(subTree, classificators);
+        })
       }
-    }).catch(err => console.error('Error in classificator load', err));
-
-  }
-
-  loadTree(rootId:string):Promise<Tree> {
-    let node = this.classificatorTree.treeBy(rootId);
-    if (node == null) {
-      return this.treeClassificatorBy(rootId).then(classificator => {
-        if(classificator.length == 0) return null;
-        const parentId = classificator.parentCode ? classificator.parentCode : this.selectedType;
-          //console.log('>>parentId:', parentId);
-        return this.loadTree(parentId).then(node => {
-          //const tree = this.classificatorTree.treeBy(rootId);
-          console.log('node>>>:', node);
-          fillTree(node, classificator);
-          return node;
-        });
-      })
-    } else {
-      return Promise.resolve(node);
     }
-    // console.log('node1:', node);
-    // if (node.nodes == null) {
-    //   return this.treeClassificatorBy(node.id).then(classificators => {
-    //     //const tree = this.classificatorTree.treeBy(node.id);
-    //     console.log('fillNodes2')
-    //     fillTree(node, classificators);
-    //     return node;
-    //   })
-    // } else {
-    //   return Promise.resolve(node);
-    // }
   }
 
 
-  treeClassificatorBy(rootId:string):Promise<ClassificatorTree> {
+  treeClassificatorBy(rootId: string, params: Object = {}): Promise<Classificator> {
     const nodeId = (this.selectedType == rootId) ? null : rootId;
-    switch (this.selectedType) {
-      case 'okpd':
-        return this.okpdService.okpdTreeBy(nodeId);
-      case 'okpd2':
-        return this.okpdService.okpd2TreeBy(nodeId);
-      case 'tnved':
-        return this.okpdService.tnvedTreeBy(nodeId);
-      default:
-        throw new Error(`Type ${this.selectedType} don't support`);
-    }
+    return this.okpdService.classificatorTree(this.selectedType, nodeId, params);
   }
 
 }
 
-function fillTree(model:Tree, classificator:Classificator) {
-  if (classificator == null) return model;
-  console.log('model2:', model);
+function fillTree(model: Tree, classificator: Classificator) {
+  if (classificator == null) return new Tree();
+  model = model ? model : new Tree();
   model.name = classificator.name;
   model.id = classificator.code;
-  model.parent = classificator.parentCode;
+  model.parentId = classificator.parentCode;
   model.nodes = [];
-  for (let classificator of classificator.children) {
+  model.path = classificator.path;
+  for (let child of classificator.children) {
     const node = new Tree();
-    node.name = classificator.name;
-    node.id = classificator.code;
-    node.parentId = classificator.parentCode;
-    node.notes = classificator.notes;
-    node.hasNodes = classificator.hasChildren;
+    node.name = child.name;
+    node.id = child.code;
+    node.parentId = child.parentCode;
+    node.notes = child.notes;
+    node.hasNodes = child.hasChildren;
     model.nodes.push(node);
   }
+ // console.log('model2:', model);
   return model;
 }
 
 class RouteParams {
-  type:string;
-  code:string;
+  type: string;
+  code: string;
 }

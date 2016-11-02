@@ -11,16 +11,8 @@ export class BackAPI {
   constructor(private http: Http, private jsonp: Jsonp) {
   }
 
-  okpdTree(code: String): Promise<any> {
-    return this.get(code ? `classificators/okpd/${code}` :  'classificators/okpd');
-  }
-
-  okpd2Tree(code: String): Promise<any> {
-    return this.get(code ?`classificators/okpd2/${code}` :  'classificators/okpd2');
-  }
-
-  tnvedTree(code: String): Promise<any> {
-    return this.get(code ? `classificators/tnved/${code}` : 'classificators/tnved');
+  classificatorTree(classificator: string, nodeId: string,  params: Object): Promise<any> {
+    return this.get((nodeId ? `classificators/${classificator}/${nodeId}` :  `classificators/${classificator}`), params);
   }
 
   okpdBy(query: string): Promise<any> {

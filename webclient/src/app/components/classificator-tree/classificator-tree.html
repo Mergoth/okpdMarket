@@ -1,6 +1,6 @@
-<div class="path" *ngIf="model.detailed != null">
-  <div *ngFor="let item of model.treePath ">
-    <div class="node" [style.margin-left.px]="item.level*7" (click)="onPathClick(item.id)"> - {{item.id}} {{item.name}}</div>
+<div class="path" *ngIf="model.detailed && model.tree.path">
+  <div *ngFor="let item of model.tree.path">
+    <div class="node" [style.margin-left.px]="item.level*7" (click)="onPathClick(item[0])"> - {{item[0]}} {{item[1]}}</div>
   </div>
 </div>
 <div *ngIf="model.detailed && model.tree">

@@ -7,6 +7,7 @@ export class Tree {
   name: string;
   notes: string;
   hasNodes: boolean;
+  path?: [string, string][];
   nodes: Tree[];
 
   subTree(nodeId: string, tree: Tree = this, level: number = 0): Tree {

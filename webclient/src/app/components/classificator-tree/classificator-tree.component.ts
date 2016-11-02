@@ -28,6 +28,8 @@ export class ClassificatorTreeComponent {
 
   onPathClick(nodeId: string) {
    // console.log('onPathClick', nodeId);
+    //todo
+    nodeId = nodeId.replace(/\./g, '');
     this.pathClick.emit(nodeId);
     this.router.navigateByUrl(`/tree/okpd/${encodeURIComponent(nodeId)}`);
   }
