@@ -10,7 +10,7 @@ services:
           max-size: "10m"
           max-file: "10"
 
-  application:
+  cassandra:
       image: 'bitnami/cassandra:latest'
       ports:
         - '7000:7000'
