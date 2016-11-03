@@ -20,7 +20,10 @@ public class ClassificatorItem implements Serializable {
 
     private final String code;
     private final String name;
-    @JsonIgnore
+    private final String notes;
+    private final int level;
+    private final String parentCode;
+    private List<List<String>> path;
     private List<ClassificatorItem> children = new ArrayList<>();
     @JsonIgnore
     private Classificator classificator;
