@@ -19,7 +19,7 @@ dependencies {
 
     //testCompile 'org.spockframework:spock-core:0.7-groovy-2.0-SNAPSHOT'
     testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
-    testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['spring-restdocs.version']}'
+    testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['spring-restdocs.version']}"
 }
 
 
