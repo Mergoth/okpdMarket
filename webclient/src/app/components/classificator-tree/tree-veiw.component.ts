@@ -3,7 +3,8 @@ import {Tree} from "./tree";
 
 @Component({
   selector: 'tree-view',
-  templateUrl: 'tree-view.html'
+  templateUrl: 'tree-view.html',
+  styleUrls: ['tree-view.css']
 })
 export class TreeViewComponent {
 
@@ -17,8 +18,10 @@ export class TreeViewComponent {
   }
 
   expand(treeNode: Tree) {
-    treeNode.expanded = !treeNode.expanded;
-    this.onNodeClick(treeNode.id);
+    if(treeNode.hasNodes) {
+      treeNode.expanded = !treeNode.expanded;
+      this.onNodeClick(treeNode.id);
+    }
   }
 
 }

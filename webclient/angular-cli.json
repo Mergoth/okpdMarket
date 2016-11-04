@@ -18,7 +18,8 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "../static/styles.css"
+        "../static/styles.css",
+        "../node_modules/@angular/material/core/theming/prebuilt/indigo-pink.css"
       ],
       "scripts": [],
       "environments": {

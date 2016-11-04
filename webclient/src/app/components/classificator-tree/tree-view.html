@@ -1,10 +1,14 @@
-<ul *ngIf="model != null" >
-  <li *ngFor="let node of model.nodes">
-    <span *ngIf="node.hasNodes" style="cursor:pointer;" (click)="expand(node)">{{ node.id }} {{node.name}}</span>
-    <span *ngIf="!node.hasNodes">{{ node.id }} {{node.name}}</span>
+<div *ngIf="model != null" class="list-group" >
+  <div *ngFor="let node of model.nodes" class="list-group-item" >
+    <div *ngIf="node.hasNodes" (click)="expand(node)" class="list-item">
+      <span [style.margin-left.px]="model.level*20"></span>
+      <md-icon *ngIf="!node.expanded">keyboard_arrow_down</md-icon>
+      <md-icon *ngIf="node.expanded">keyboard_arrow_right</md-icon>
+      <span class="code">{{ node.id }}</span> {{node.name}}
+    </div>
     <div *ngIf="node.expanded">
       <tree-view (nodeClick)="onNodeClick($event)" [model]="node"></tree-view>
     </div>
-  </li>
-</ul>
-<div class="loading" *ngIf="model == null || model.nodes == null"></div>
+  </div>
+</div>
+<div class="loading" style="float: right; position: relative; top: -25px" *ngIf="model == null || model.nodes == null"></div>

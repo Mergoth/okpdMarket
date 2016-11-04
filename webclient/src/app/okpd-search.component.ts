@@ -23,6 +23,7 @@ export class OkpdSearchComponent {
   }
 
   toOkpd(code: string) {
+    code = code.replace(/\./g, '');
     this.router.navigate([`/tree/okpd/${encodeURIComponent(code)}`])
   }
 
