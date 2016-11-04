@@ -50,10 +50,15 @@ public class ClassificatorController {
     }
 
 
-    @RequestMapping(value = "/{id}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value = "id") String classificatorId,
+    /**
+     * @param classificatorCode
+     * @param parentId
+     * @return
+     */
+    @RequestMapping(value = "/{code}/{parentId}", method = RequestMethod.GET)
+    public List<ClassificatorItem> getItems(@PathVariable(value = "code") String classificatorCode,
                                             @PathVariable(value="parentId") String parentId) {
-            return classificatorService.getClassifiactor(classificatorId).getChildLevel(parentId);
+        return classificatorService.getClassifiactor(classificatorCode).getChildLevel(parentId);
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
