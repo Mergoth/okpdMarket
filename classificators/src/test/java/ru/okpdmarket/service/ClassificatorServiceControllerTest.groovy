@@ -1,6 +1,10 @@
 package ru.okpdmarket.service
 
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
+import org.springframework.test.context.web.WebAppConfiguration
 import ru.okpdmarket.model.Classificator
 
 /**
@@ -19,9 +23,9 @@ class ClassificatorTest extends GroovyTestCase {
 */
     }
 
-    @Test
+
     void testGetItemByCode() {
-        Classificator okpd = new Classificator("test1")
+        Classificator okpd = new Classificator("test1", "Test Name")
         okpd.add("01", "Продукция и услуги сельского хозяйства и охоты")
         okpd.add("01.1", "Культуры однолетние")
         def itemByCode = okpd.getItemByCode("01.1")
@@ -29,9 +33,9 @@ class ClassificatorTest extends GroovyTestCase {
         assertEquals("Got something wrong by code!","Культуры однолетние",itemByCode.name)
     }
 
-    @Test
+
     void testName() {
-        Classificator okpd = new Classificator("test2")
+        Classificator okpd = new Classificator("test2", "Test2 Name")
         okpd.add("01", "Продукция и услуги сельского хозяйства и охоты")
         okpd.add("01.1", "Культуры однолетние")
         okpd.add("02", "Продукция лесоводства, лесозаготовок и связанные с этим услуги")

@@ -4,6 +4,7 @@ package ru.okpdmarket.repository.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.dao.FakeDaoImpl;
+import ru.okpdmarket.dao.GenericDao;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import javax.annotation.PostConstruct;
@@ -18,18 +19,18 @@ import java.util.stream.Collectors;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-    private final FakeDaoImpl fakeDao;
+    private final GenericDao genericDao;
 
     private Map<String, Classificator> classificatorsMap;
 
     @Autowired
-    public ClassificatorRepositoryImpl(FakeDaoImpl fakeDao) {
-        this.fakeDao = fakeDao;
+    public ClassificatorRepositoryImpl(GenericDao genericDao) {
+        this.genericDao = genericDao;
     }
 
     @PostConstruct
     private void init() {
-        updateClassificators(fakeDao.getAll());
+        updateClassificators(genericDao.getAll());
     }
 
     @Override
