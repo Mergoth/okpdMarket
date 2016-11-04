@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
+import ru.okpdmarket.dto.ClassificatorUnited;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
@@ -50,16 +51,25 @@ public class ClassificatorController {
     }
 
 
+    /**
+     *
+     * @param classificatorId
+     * @param parentId
+     * @param path если передано  path=true, то в корневом Classificator заполняется  List<List<String>> path
+     * @return
+     */
     @RequestMapping(value = "/{id}/{parentId}", method = RequestMethod.GET)
     public List<ClassificatorItem> getItems(@PathVariable(value = "id") String classificatorId,
-                                            @PathVariable(value="parentId") String parentId) {
+                                            @PathVariable(value="parentId") String parentId,
+                                            @RequestParam(value = "path", required = false) boolean  path) {
             return classificatorService.getClassifiactor(classificatorId).getChildLevel(parentId);
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
+    public List<ClassificatorUnited> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
         //TODO: Lucene in-memory search invoked from ClassificatorService
-        return searchService.search(classificatorId,query);
+        //return searchService.search(classificatorId,query);
+        return null;
     }
 
 
