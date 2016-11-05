@@ -1,27 +1,53 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
 import {Classificator} from "./classificator";
-import {OkpdService} from "./okpd.service";
+import {ClassificatorService} from "./classificator.service";
+import {TabsModel} from "./tab-model";
 
 @Component({
   selector: 'classificator-search',
   styleUrls: ['classificator-search.css'],
   templateUrl: 'classificator-search.html',
-  providers: [OkpdService]
+  providers: [ClassificatorService]
 })
 export class ClassificatorSearchComponent extends OnInit {
 
+  tabModel: TabsModel = new TabsModel();
+
   classificatorTypes: Classificator[];
+
   query: string = "";
+
   searchResult: Classificator[];
 
-  constructor(private router: Router, private okpdService: OkpdService) {
+  searching:boolean = false;
+
+  constructor(private router: Router, private classificatorService: ClassificatorService) {
     super();
   }
 
   ngOnInit():void {
-    this.okpdService.classificatorTypes().then(res => this.classificatorTypes = res);
+    this.classificatorService.classificatorTypes().then(res => {
+      this.classificatorTypes = res;
+      this.tabModel.clear();
+      this.classificatorTypes.forEach(clsfType => this.tabModel.push({
+        type: clsfType.code,
+        title: clsfType.name,
+        selected: false
+      }));
+    }).then(_ => {
+      this.tabModel.selectedType = this.classificatorTypes[0].code;
+    });
+  }
 
+  highlight(text: string) {
+    let res = text.replace(new RegExp(this.query, 'gi'), '<b>$&</b>');
+    return res;
+  }
+
+  onSelectChange(tab: any) {
+    // console.log('>>>>>>', tab);
+    this.tabModel.selectedIndex = tab.index;
   }
 
   toTree(type: string, code: string) {
@@ -30,9 +56,10 @@ export class ClassificatorSearchComponent extends OnInit {
   }
 
   search() {
-    this.okpdService.getList(this.query).then(res => {
+    this.searching = true;
+    this.classificatorService.getList(this.query, this.tabModel.selectedType).then(res => {
       this.searchResult = res;
-    });
+    }).then(_ => this.searching = false);
   }
 
 }

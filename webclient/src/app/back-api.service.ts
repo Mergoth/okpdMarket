@@ -19,8 +19,8 @@ export class BackAPI {
     return this.get((nodeId ? `classificators/${classificator}/${nodeId}` :  `classificators/${classificator}`), params);
   }
 
-  okpdBy(query: string): Promise<any> {
-    return this.get('classificators/search', {query: query});
+  classificatorsBy(query: string, type: string = null): Promise<any> {
+    return this.get('classificators/search', {query: query, type : type});
   }
 
   private get(url: string, params: Object = {}): Promise<any> {

@@ -7,7 +7,7 @@ import {AppComponent} from "./app.component";
 import {ClassificatorSearchComponent} from "./classificator-search.component";
 import {ClassificatorsTreeComponent} from "./classificators-tree.component";
 import {ClassificatorTreeComponent} from "./components/classificator-tree/classificator-tree.component";
-import {OkpdService} from "./okpd.service";
+import {ClassificatorService} from "./classificator.service";
 import {BackAPI} from "./back-api.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {TreeViewComponent} from "./components/classificator-tree/tree-veiw.component";
@@ -37,7 +37,7 @@ import {TreeViewComponent} from "./components/classificator-tree/tree-veiw.compo
   bootstrap: [AppComponent],
   providers: [
     BackAPI,
-    OkpdService
+    ClassificatorService
   ]
 })
 export class AppModule {
