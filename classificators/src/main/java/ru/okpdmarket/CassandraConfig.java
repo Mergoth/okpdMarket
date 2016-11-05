@@ -22,8 +22,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
  * Created by lalka on 10/28/2016.
  */
 @Configuration
-@PropertySource(value = {"classpath:META-INF/cassandra.properties"})
-@EnableCassandraRepositories(basePackages = {"ru.okpdmarket"})
+@EnableCassandraRepositories(basePackages = {"ru.okpdmarket.dao"})
 public class CassandraConfig {
     @Autowired
     private Environment environment;
@@ -31,8 +30,8 @@ public class CassandraConfig {
     @Bean
     public CassandraClusterFactoryBean cluster() {
         CassandraClusterFactoryBean cluster = new CassandraClusterFactoryBean();
-        cluster.setContactPoints(environment.getProperty("cassandra.contactpoints"));
-        cluster.setPort(Integer.parseInt(environment.getProperty("cassandra.port")));
+        cluster.setContactPoints("127.0.0.1");
+        cluster.setPort(Integer.parseInt(("9042")));
         return cluster;
     }
     @Bean
@@ -47,7 +46,7 @@ public class CassandraConfig {
     public CassandraSessionFactoryBean session() throws Exception {
         CassandraSessionFactoryBean session = new CassandraSessionFactoryBean();
         session.setCluster(cluster().getObject());
-        session.setKeyspaceName(environment.getProperty("cassandra.keyspace"));
+        session.setKeyspaceName("okpd");
         session.setConverter(converter());
         session.setSchemaAction(SchemaAction.NONE);
         return session;

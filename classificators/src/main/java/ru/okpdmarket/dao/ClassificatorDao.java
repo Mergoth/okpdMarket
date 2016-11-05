@@ -1,4 +1,4 @@
-package java.ru.okpdmarket.dao;
+package ru.okpdmarket.dao;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.data.cassandra.repository.Query;

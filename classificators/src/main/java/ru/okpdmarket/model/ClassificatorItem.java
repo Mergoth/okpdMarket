@@ -3,6 +3,11 @@ package ru.okpdmarket.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
+import org.springframework.cassandra.core.Ordering;
+import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -13,8 +18,14 @@ import java.util.List;
  */
 @Data
 @ToString(of = {"code", "name"})
+@Table
 public class ClassificatorItem implements Serializable {
 
+    @PrimaryKeyColumn(
+            name = "code",
+            ordinal = 2,
+            type = PrimaryKeyType.PARTITIONED,
+            ordering = Ordering.DESCENDING)
     private final String code;
     private final String name;
     private final String notes;
