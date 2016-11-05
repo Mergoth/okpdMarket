@@ -1,27 +1,35 @@
-import {ClassificatorUnited} from "../classificator";
+import {Classificator} from "../classificator";
 
-export const OKPD_SEARCH_RESULT: ClassificatorUnited[] = [
-  {
-    okpd: {
+export const OKPD_SEARCH_RESULT: Classificator[] = [
+  [
+    {
+      code: "01",
+      parentCode: null,
+      name: "",
+      notes: null,
+      hasChildren: true,
+      type: "okpd",
+      matched: [
+        {
+          code: "01",
+          name: "",
+          type: "tnved"
+        }
+      ]
+    },
+    {
       code: "01",
       parentCode: null,
       name: "",
       notes: null,
       hasChildren: true,
     },
-    okpd2: {
-      code: "01",
-      parentCode: null,
-      name: "",
-      notes: null,
-      hasChildren: true,
-    },
-    tnved: {
+    {
       code: "01",
       parentCode: null,
       name: "",
       notes: null,
       hasChildren: true,
     }
-  }
+  ]
 ];

@@ -1,0 +1,29 @@
+Поиск по ОКПД
+<md-input [(ngModel)]="query" placeholder="Полнотекстовый поиск"></md-input>
+<button md-button (click)="search()">Искать</button>
+
+<md-tab-group class="demo-tab-group">
+  <md-tab *ngFor="let clsfType of classificatorTypes">
+    <template md-tab-label>{{clsfType.name}}</template>
+    <template md-tab-content>
+      <table class="search-result" *ngIf="searchResult">
+        <tr>
+          <th>Код</th>
+          <th>Наименование</th>
+          <th>Связи</th>
+        </tr>
+        <tr *ngFor="let item of  searchResult">
+          <td class="code">{{item.code}}</td>
+          <td class="name">{{item.name}}</td>
+          <td class="">
+            <span *ngFor="let match of item.matched">
+              {{match.name}}<span class="href" (click)="toTree(match.type, match.code)">{{match.code}}</span>
+              <br>
+            </span>
+          </td>
+        </tr>
+      </table>
+    </template>
+  </md-tab>
+
+</md-tab-group>

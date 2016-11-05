@@ -11,12 +11,16 @@ export class BackAPI {
   constructor(private http: Http, private jsonp: Jsonp) {
   }
 
+  classificatorTypes(): Promise<any> {
+    return this.get('classificators');
+  }
+
   classificatorTree(classificator: string, nodeId: string,  params: Object): Promise<any> {
     return this.get((nodeId ? `classificators/${classificator}/${nodeId}` :  `classificators/${classificator}`), params);
   }
 
   okpdBy(query: string): Promise<any> {
-    return this.get(`classificators`, {query: query});
+    return this.get('classificators/search', {query: query});
   }
 
   private get(url: string, params: Object = {}): Promise<any> {

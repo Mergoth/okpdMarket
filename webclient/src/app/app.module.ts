@@ -4,7 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
 import {MaterialModule} from "@angular/material";
 import {AppComponent} from "./app.component";
-import {OkpdSearchComponent} from "./okpd-search.component";
+import {ClassificatorSearchComponent} from "./classificator-search.component";
 import {ClassificatorsTreeComponent} from "./classificators-tree.component";
 import {ClassificatorTreeComponent} from "./components/classificator-tree/classificator-tree.component";
 import {OkpdService} from "./okpd.service";
@@ -29,7 +29,7 @@ import {TreeViewComponent} from "./components/classificator-tree/tree-veiw.compo
   ],
   declarations: [
     AppComponent,
-    OkpdSearchComponent,
+    ClassificatorSearchComponent,
     ClassificatorsTreeComponent,
     ClassificatorTreeComponent,
     TreeViewComponent

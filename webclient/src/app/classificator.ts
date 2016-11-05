@@ -1,15 +1,11 @@
 export interface Classificator {
   code: string;
-  parentCode: string;
   name: string;
+  parentCode?: string;
   notes?: string;
-  hasChildren: boolean;
+  hasChildren?: boolean;
   path?:[string, string][];
   children?: Classificator[];
-}
-
-export interface ClassificatorUnited {
-  okpd?: Classificator;
-  okpd2?: Classificator;
-  tnved?: Classificator;
+  matched?: Classificator[];
+  type?: Classificator[];
 }
