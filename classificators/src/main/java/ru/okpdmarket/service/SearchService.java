@@ -10,5 +10,5 @@ import java.util.List;
  */
 @Service
 public interface SearchService {
-    List<ClassificatorItem> search(int classificatorId, String query);
+    List<ClassificatorItem> search(String classificatorId, String query);
 }

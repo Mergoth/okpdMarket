@@ -1,0 +1,254 @@
+= RESTful Classificators API Guide
+Vlad Vorobev;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PATCH`
+| Used to update an existing resource, including partial updates
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+[[overview-errors]]
+== Errors
+
+Whenever an error response (status code >= 400) is returned, the body will contain a JSON object
+that describes the problem. The error object has the following structure:
+
+include::{snippets}/error-example/response-fields.adoc[]
+
+For example, a request that attempts to apply a non-existent tag to a note will produce a
+`400 Bad Request` response:
+
+include::{snippets}/error-example/http-response.adoc[]
+
+[[API]]
+= API
+
+
+
+[[resources-classificators]]
+== Classificators
+
+
+[[resources-classificators-access]]
+=== Accessing classificators list
+
+A `GET` request is used to access classificators list
+
+==== Response structure
+
+include::{snippets}/classificators/http-response.adoc[]
+
+==== Example response
+
+include::{snippets}/index-example/http-response.adoc[]
+
+
+
+[[resources-index-links]]
+==== Links
+
+include::{snippets}/index-example/links.adoc[]
+
+
+
+[[resources-notes]]
+== Notes
+
+The Notes resources is used to create and list notes
+
+
+
+[[resources-notes-list]]
+=== Listing notes
+
+A `GET` request will list all of the service's notes.
+
+==== Response structure
+
+include::{snippets}/notes-list-example/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/notes-list-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/notes-list-example/http-response.adoc[]
+
+[[resources-notes-list-links]]
+==== Links
+
+include::{snippets}/notes-list-example/links.adoc[]
+
+
+[[resources-notes-create]]
+=== Creating a note
+
+A `POST` request is used to create a note
+
+==== Request structure
+
+include::{snippets}/notes-create-example/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/notes-create-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/notes-create-example/http-response.adoc[]
+
+
+
+[[resources-tags]]
+== Tags
+
+The Tags resource is used to create and list tags.
+
+
+
+[[resources-tags-list]]
+=== Listing tags
+
+A `GET` request will list all of the service's tags.
+
+==== Response structure
+
+include::{snippets}/tags-list-example/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/tags-list-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/tags-list-example/http-response.adoc[]
+
+[[resources-tags-list-links]]
+==== Links
+
+include::{snippets}/tags-list-example/links.adoc[]
+
+
+
+[[resources-tags-create]]
+=== Creating a tag
+
+A `POST` request is used to create a note
+
+==== Request structure
+
+include::{snippets}/tags-create-example/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/tags-create-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/tags-create-example/http-response.adoc[]
+
+
+
+[[resources-note]]
+== Note
+
+The Note resource is used to retrieve, update, and delete individual notes
+
+
+
+[[resources-note-links]]
+=== Links
+
+include::{snippets}/note-get-example/links.adoc[]
+
+
+
+[[resources-note-retrieve]]
+=== Retrieve a note
+
+A `GET` request will retrieve the details of a note
+
+==== Response structure
+
+include::{snippets}/note-get-example/response-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/note-get-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/note-get-example/http-response.adoc[]
+
+
+
+[[resources-note-update]]
+=== Update a note
+
+A `PATCH` request is used to update a note
+
+==== Request structure
+
+include::{snippets}/note-update-example/request-fields.adoc[]
+
+To leave an attribute of a note unchanged, any of the above may be omitted from the request.
+
+==== Example request
+
+include::{snippets}/note-update-example/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/note-update-example/http-response.adoc[]

@@ -4,11 +4,8 @@ export interface Classificator {
   name: string;
   notes?: string;
   hasChildren: boolean;
+  path?:[string, string][];
   children?: Classificator[];
-}
-
-export interface ClassificatorTree extends Array<Classificator> {
-  name: string;
 }
 
 export interface ClassificatorUnited {

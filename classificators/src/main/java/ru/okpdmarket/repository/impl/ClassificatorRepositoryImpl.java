@@ -4,12 +4,14 @@ package ru.okpdmarket.repository.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.dao.FakeDaoImpl;
+import ru.okpdmarket.dao.GenericDao;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
-
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by lalka on 10/9/2016.
@@ -17,27 +19,27 @@ import java.util.List;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-    private final FakeDaoImpl fakeDao;
+    private final GenericDao genericDao;
 
-    private List<Classificator> classificatorList;
+    private Map<String, Classificator> classificatorsMap;
 
     @Autowired
-    public ClassificatorRepositoryImpl(FakeDaoImpl fakeDao) {
-        this.fakeDao = fakeDao;
+    public ClassificatorRepositoryImpl(GenericDao genericDao) {
+        this.genericDao = genericDao;
     }
 
     @PostConstruct
     private void init() {
-        classificatorList = new ArrayList<>(fakeDao.getAll());
+        updateClassificators(genericDao.getAll());
     }
 
     @Override
-    public List<Classificator> getClassificators() {
-        return classificatorList;
+    public Map<String, Classificator> getClassificators() {
+        return classificatorsMap;
     }
 
     @Override
     public void updateClassificators(List<Classificator> classificators) {
-        this.classificatorList = new ArrayList<>(classificators);
+        classificatorsMap = classificators.stream().collect(Collectors.toMap(Classificator::getCode, Function.identity()));
     }
 }

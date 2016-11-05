@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {BackAPI} from "./back-api.service";
-import {ClassificatorUnited, ClassificatorTree} from "./classificator";
+import {ClassificatorUnited, Classificator} from "./classificator";
 
 @Injectable()
 export class OkpdService {
@@ -12,17 +12,12 @@ export class OkpdService {
     return this.backApi.okpdBy(query).then(response => response as ClassificatorUnited[]);
   }
 
-  okpdTreeBy(rootCode: string): Promise<ClassificatorTree> {
-    return this.backApi.okpdTree(rootCode).then(response => response as ClassificatorTree);
+  classificatorTree(classificator: string, code: string, params: Object): Promise<Classificator> {
+    return this.backApi.classificatorTree(classificator, prepareCode(code), params).then(response => response as Classificator);
   }
 
-  okpd2TreeBy(rootCode: string): Promise<ClassificatorTree> {
-    return this.backApi.okpd2Tree(rootCode).then(response => response as ClassificatorTree);
-  }
+}
 
-  tnvedTreeBy(rootCode: string): Promise<ClassificatorTree> {
-    return this.backApi.tnvedTree(rootCode).then(response => response as ClassificatorTree);
-  }
-
-
+function prepareCode(code: string) {
+  return code ? code.replace(/\./g, '') : null;
 }

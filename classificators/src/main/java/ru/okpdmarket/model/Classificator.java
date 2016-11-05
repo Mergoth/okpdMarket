@@ -2,13 +2,10 @@ package ru.okpdmarket.model;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import org.springframework.data.cassandra.mapping.Column;
-import org.springframework.data.cassandra.mapping.PrimaryKey;
-import org.springframework.data.cassandra.mapping.Table;
-
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -17,34 +14,40 @@ import java.util.UUID;
  * Created by Vladislav on 29.08.2016.
  */
 @Data
-@Table
 public class Classificator implements Serializable {
 
-    private String name;
-
-    @PrimaryKey
+    // Unique classificator code in english
+    private final String code;
+    // Classificator name in Russian
+    private final String name;
+    // Used for database only
     private UUID id;
+    // Classificator description
     private String description;
+
+
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
     public void add(String code, String name) {
-        this.add(code,name,null);
+
+        tree.addIfAbsent(this.add(code, name, null));
     }
 
-
-    public void add(String code, String name, String parentCode) {
-        ClassificatorItem classificatorItem = new ClassificatorItem(code,name);
-        classificatorItem.setClassificator(this);
-        elements.putIfAbsent(code,classificatorItem);
-
+    public ClassificatorItem add(String code, String name, String parentCode) {
+        ClassificatorItem parentItem = getItemByCode(parentCode);
+        ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
         if (parentCode!=null) {
-            ClassificatorItem parentItem = getItemByCode(parentCode);
             parentItem.getChildren().add(classificatorItem);
-            classificatorItem.setParent(parentItem);
-        } else {
-            tree.addIfAbsent(classificatorItem);
         }
+        return classificatorItem;
+    }
+
+    private ClassificatorItem createClassificatorItem(String code, String name, ClassificatorItem parentItem) {
+        ClassificatorItem classificatorItem = new ClassificatorItem(parentItem, code, name);
+        classificatorItem.setClassificator(this);
+        elements.putIfAbsent(code, classificatorItem);
+        return classificatorItem;
     }
 
     public ClassificatorItem getItemByCode(String code){
@@ -62,7 +65,4 @@ public class Classificator implements Serializable {
     public int size(){
         return elements.size();
     }
-
-
-
 }

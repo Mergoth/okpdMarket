@@ -23,7 +23,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     }
 
     @Override
-    public Classificator getClassifiactor(int classificatorId) {
-        return repository.getClassificators().get(classificatorId);
+    public Classificator getClassifiactor(String classificatorCode) {
+        return repository.getClassificators().get(classificatorCode);
     }
 }
