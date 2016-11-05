@@ -18,13 +18,17 @@ public class ClassificatorItem implements Serializable {
     private final String code;
     private final String name;
     private final String notes;
-    private final int level;
-    private final String parentCode;
+
     @JsonIgnore
     private final ClassificatorItem parent;
-    private List<PathElement> path;
+    private final String parentCode;
+    private final int level;
+    private final List<PathElement> path;
+
     @JsonIgnore
     private List<ClassificatorItem> children = new ArrayList<>();
+    private boolean hasChildren = false;
+
     @JsonIgnore
     private Classificator classificator;
 
@@ -39,17 +43,19 @@ public class ClassificatorItem implements Serializable {
         this.notes = notes;
         this.level = calcLevel();
         this.parentCode = calcParentCode();
-        calcPath();
+        this.path = calcPath();
     }
 
-    private void calcPath() {
+    private List<PathElement> calcPath() {
+        List<PathElement> res;
         if (this.parent != null) {
-            this.path = new LinkedList<>(parent.getPath());
+            res = new LinkedList<>(parent.getPath());
 
         } else {
-            this.path = new LinkedList<>();
+            res = new LinkedList<>();
         }
-        this.path.add(new PathElement(this.getCode(), this.getName()));
+        res.add(new PathElement(this.getCode(), this.getName()));
+        return res;
     }
 
     private String calcParentCode() {
@@ -60,7 +66,6 @@ public class ClassificatorItem implements Serializable {
         }
     }
 
-
     private int calcLevel() {
         if (this.parent != null) {
             return this.parent.calcLevel() + 1;
@@ -69,8 +74,13 @@ public class ClassificatorItem implements Serializable {
         }
     }
 
+    public void setChildren(List<ClassificatorItem> children) {
+        this.children = children;
+        this.hasChildren = !children.isEmpty();
+    }
+
     @Data
-    private class PathElement {
+    public class PathElement {
         public final String name;
         public final String code;
 

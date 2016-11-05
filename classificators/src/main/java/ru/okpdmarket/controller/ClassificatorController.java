@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.okpdmarket.dto.ClassificatorItemDto;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
@@ -45,8 +46,8 @@ public class ClassificatorController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getTopItems(@PathVariable(value = "id") String classificatorId) {
-             return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
+    public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "id") String classificatorId) {
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel());
     }
 
 
@@ -56,9 +57,9 @@ public class ClassificatorController {
      * @return
      */
     @RequestMapping(value = "/{code}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value = "code") String classificatorCode,
-                                            @PathVariable(value="parentId") String parentId) {
-        return classificatorService.getClassifiactor(classificatorCode).getChildLevel(parentId);
+    public List<ClassificatorItemDto> getItems(@PathVariable(value = "code") String classificatorCode,
+                                               @PathVariable(value="parentId") String parentId) {
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorCode).getChildLevel(parentId));
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
