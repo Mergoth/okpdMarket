@@ -102,8 +102,8 @@ include::{snippets}/index-example/links.adoc[]
 
 
 
-[[resources-notes]]
-== Notes
+[[resources-classificator-top-level]]
+== Classificator
 
 The Notes resources is used to create and list notes
 

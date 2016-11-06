@@ -26,7 +26,7 @@ public class ClassificatorItemDtoConverterTest {
         ClassificatorItemDto dto = ClassificatorItemDto.Converter.toDto(parentItem, true);
         Assert.assertEquals("1", dto.getCode());
         Assert.assertEquals("parentName", dto.getName());
-        Assert.assertEquals(0, dto.getLevel());
+        Assert.assertEquals(Integer.valueOf(0), dto.getLevel());
         Assert.assertEquals("item1Name", dto.getChildren().get(0).getName());
         Assert.assertEquals(2, dto.getChildren().size());
         Assert.assertEquals(0, dto.getChildren().get(1).getChildren().size());
@@ -45,7 +45,7 @@ public class ClassificatorItemDtoConverterTest {
         Assert.assertEquals("1", dto.getCode());
         Assert.assertEquals("parentName", dto.getName());
         Assert.assertNull(dto.getParentCode());
-        Assert.assertEquals(0, dto.getLevel());
+        Assert.assertNull(dto.getLevel());
         Assert.assertEquals(0, dto.getChildren().size());
     }
 

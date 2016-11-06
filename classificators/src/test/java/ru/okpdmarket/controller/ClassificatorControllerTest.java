@@ -27,6 +27,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -69,7 +71,7 @@ public class ClassificatorControllerTest {
     public void getClassificatorTypes() throws Exception {
         this.mockMvc.perform(get("/classificators").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificators"));
+                .andDo(document("classificators", preprocessResponse(prettyPrint())));
     }
 
 
@@ -77,21 +79,21 @@ public class ClassificatorControllerTest {
     public void getTopItems() throws Exception {
         this.mockMvc.perform(get("/classificators/code").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-top-items"));
+                .andDo(document("classificator-top-items", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void getItems() throws Exception {
         this.mockMvc.perform(get("/classificators/code/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-items"));
+                .andDo(document("classificator-items", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void search() throws Exception {
         this.mockMvc.perform(get("/classificators/code/search?query=Test query").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-search-results"));
+                .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
     }
 
     @Ignore
