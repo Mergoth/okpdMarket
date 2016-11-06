@@ -52,14 +52,14 @@ public class ClassificatorController {
 
 
     /**
-     * @param classificatorCode
-     * @param parentId
-     * @return
+     * @param classificatorCode - code of the classificator
+     * @param itemId - code of the ClassificatorItem to get
+     * @return ClassificatorItemDto - with
      */
-    @RequestMapping(value = "/{code}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItemDto> getItems(@PathVariable(value = "code") String classificatorCode,
-                                               @PathVariable(value="parentId") String parentId) {
-        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorCode).getChildLevel(parentId));
+    @RequestMapping(value = "/{code}/{itemId}", method = RequestMethod.GET)
+    public ClassificatorItemDto getItem(@PathVariable(value = "code") String classificatorCode,
+                                        @PathVariable(value = "itemId") String itemId) {
+        return ClassificatorItemDto.Converter.toDto(classificatorService.getClassifiactor(classificatorCode).getItemByCode(itemId));
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
