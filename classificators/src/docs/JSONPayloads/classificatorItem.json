@@ -1,0 +1,25 @@
+{
+  "code": "1.1",
+  "name": "TestLevel11",
+  "notes": "",
+  "level": 1,
+  "parentCode": "1",
+  "path": [
+    {
+      "name": "1",
+      "code": "Test"
+    },
+    {
+      "name": "1.1",
+      "code": "TestLevel11"
+    }
+  ],
+  "children": [
+    {
+      "code": "1.1.1",
+      "name": "Test",
+      "notes": "Notes",
+      "hasChildren": "true"
+    }
+  ]
+}

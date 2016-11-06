@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.okpdmarket.dto.ClassificatorItemDto;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
-import ru.okpdmarket.dto.ClassificatorUnited;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
@@ -46,30 +46,26 @@ public class ClassificatorController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getTopItems(@PathVariable(value = "id") String classificatorId) {
-             return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
+    public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "id") String classificatorId) {
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel());
     }
 
 
     /**
-     *
-     * @param classificatorId
+     * @param classificatorCode
      * @param parentId
-     * @param path если передано  path=true, то в корневом Classificator заполняется  List<List<String>> path
      * @return
      */
-    @RequestMapping(value = "/{id}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value = "id") String classificatorId,
-                                            @PathVariable(value="parentId") String parentId,
-                                            @RequestParam(value = "path", required = false) boolean  path) {
-            return classificatorService.getClassifiactor(classificatorId).getChildLevel(parentId);
+    @RequestMapping(value = "/{code}/{parentId}", method = RequestMethod.GET)
+    public List<ClassificatorItemDto> getItems(@PathVariable(value = "code") String classificatorCode,
+                                               @PathVariable(value="parentId") String parentId) {
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorCode).getChildLevel(parentId));
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorUnited> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
+    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
         //TODO: Lucene in-memory search invoked from ClassificatorService
-        //return searchService.search(classificatorId,query);
-        return null;
+        return searchService.search(classificatorId,query);
     }
 
 

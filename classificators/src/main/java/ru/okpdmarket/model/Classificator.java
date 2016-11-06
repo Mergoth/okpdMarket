@@ -1,6 +1,8 @@
 package ru.okpdmarket.model;
 
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -28,21 +30,24 @@ public class Classificator implements Serializable {
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
     public void add(String code, String name) {
-        this.add(code,name,null);
+
+        tree.addIfAbsent(this.add(code, name, null));
     }
 
-    public void add(String code, String name, String parentCode) {
-        ClassificatorItem classificatorItem = new ClassificatorItem(code,name);
-        classificatorItem.setClassificator(this);
-        elements.putIfAbsent(code,classificatorItem);
-
+    public ClassificatorItem add(String code, String name, String parentCode) {
+        ClassificatorItem parentItem = getItemByCode(parentCode);
+        ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
         if (parentCode!=null) {
-            ClassificatorItem parentItem = getItemByCode(parentCode);
             parentItem.getChildren().add(classificatorItem);
-            classificatorItem.setParent(parentItem);
-        } else {
-            tree.addIfAbsent(classificatorItem);
         }
+        return classificatorItem;
+    }
+
+    private ClassificatorItem createClassificatorItem(String code, String name, ClassificatorItem parentItem) {
+        ClassificatorItem classificatorItem = new ClassificatorItem(parentItem, code, name);
+        classificatorItem.setClassificator(this);
+        elements.putIfAbsent(code, classificatorItem);
+        return classificatorItem;
     }
 
     public ClassificatorItem getItemByCode(String code){

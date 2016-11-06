@@ -2,32 +2,88 @@ package ru.okpdmarket.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Vladislav on 29.08.2016.
  */
 @Data
-@RequiredArgsConstructor
 @ToString(of = {"code", "name"})
 public class ClassificatorItem implements Serializable {
 
     private final String code;
     private final String name;
     private final String notes;
-    private final int level;
+
+    @JsonIgnore
+    private final ClassificatorItem parent;
     private final String parentCode;
-    private List<List<String>> path;
+    private final int level;
+    private final List<PathElement> path;
+
+    @JsonIgnore
     private List<ClassificatorItem> children = new ArrayList<>();
+    private boolean hasChildren = false;
+
     @JsonIgnore
     private Classificator classificator;
-    @JsonIgnore
-    private ClassificatorItem parent;
 
+    public ClassificatorItem(ClassificatorItem parent, String code, String name) {
+        this(parent, code, name, "");
+    }
+
+    public ClassificatorItem(ClassificatorItem parent, String code, String name, String notes) {
+        this.parent = parent;
+        this.code = code;
+        this.name = name;
+        this.notes = notes;
+        this.level = calcLevel();
+        this.parentCode = calcParentCode();
+        this.path = calcPath();
+    }
+
+    private List<PathElement> calcPath() {
+        List<PathElement> res;
+        if (this.parent != null) {
+            res = new LinkedList<>(parent.getPath());
+
+        } else {
+            res = new LinkedList<>();
+        }
+        res.add(new PathElement(this.getCode(), this.getName()));
+        return res;
+    }
+
+    private String calcParentCode() {
+        if (this.parent != null) {
+            return this.parent.getCode();
+        } else {
+            return "";
+        }
+    }
+
+    private int calcLevel() {
+        if (this.parent != null) {
+            return this.parent.calcLevel() + 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public void setChildren(List<ClassificatorItem> children) {
+        this.children = children;
+        this.hasChildren = !children.isEmpty();
+    }
+
+    @Data
+    public class PathElement {
+        public final String name;
+        public final String code;
+
+
+    }
 }

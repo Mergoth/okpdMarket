@@ -18,7 +18,10 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -49,7 +52,11 @@ public class ClassificatorControllerTest {
                 .build();
         Classificator classificator = new Classificator("code", "test");
         classificator.add("1", "Test");
-        classificator.add("1.1","TestLevel2");
+        classificator.add("1.1", "TestLevel11", "1");
+        classificator.add("1.2", "TestLevel12", "1");
+        classificator.add("1.3", "TestLevel13", "1");
+        classificator.add("1.2.1", "TestLevel121", "1.2");
+        classificator.add("2", "Test2");
         this.classificatorRepository.updateClassificators(Collections.singletonList(classificator));
     }
 
