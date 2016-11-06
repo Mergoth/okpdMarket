@@ -83,10 +83,10 @@ public class ClassificatorControllerTest {
     }
 
     @Test
-    public void getItems() throws Exception {
+    public void getItem() throws Exception {
         this.mockMvc.perform(get("/classificators/code/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-items", preprocessResponse(prettyPrint())));
+                .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }
 
     @Test
