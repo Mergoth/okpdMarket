@@ -9,13 +9,21 @@ services:
         options:
           max-size: "10m"
           max-file: "10"
+
   cassandra:
-      image: cassandra
-      restart: always
-      logging:
-        options:
-           max-size: "10m"
-           max-file: "10"
+      image: 'bitnami/cassandra:latest'
+      ports:
+        - '7000:7000'
+        - '7001:7001'
+        - '9042:9042'
+        - '9160:9160'
+      volumes:
+        - 'cassandra_data:/bitnami/cassandra'
+
+  volumes:
+    cassandra_data:
+      driver: local
+
   config:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
