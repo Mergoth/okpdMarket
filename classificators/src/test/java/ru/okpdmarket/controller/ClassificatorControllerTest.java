@@ -9,22 +9,17 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cassandra.core.cql.CqlIdentifier;
-import org.springframework.data.cassandra.core.CassandraAdminOperations;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import ru.okpdmarket.CassandraConfig;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -35,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by Vladislav on 25.10.2016.
  */
-@ContextConfiguration(classes = CassandraConfig.class)
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 public class ClassificatorControllerTest {
@@ -47,8 +42,7 @@ public class ClassificatorControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
-    @Autowired
-    private CassandraAdminOperations adminTemplate;
+
 
     public static final String KEYSPACE_CREATION_QUERY = "CREATE KEYSPACE IF NOT EXISTS okpd WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '3' };";
 
@@ -56,7 +50,7 @@ public class ClassificatorControllerTest {
 
     public static final String CLASSIFICATOR_TABLE_NAME = "classificator";
 
-    public static final String query = "create table okpd.classificator (uuid text primary key,first text, last text);";
+    public static final String query = "create table okpd.classificator (id uuid primary key, name text, code text, description text);";
 
     @BeforeClass
     public static void startCassandraEmbedded() throws InterruptedException, TTransportException, ConfigurationException, IOException {
@@ -65,13 +59,13 @@ public class ClassificatorControllerTest {
         final Session session = cluster.connect();
         session.execute(KEYSPACE_CREATION_QUERY);
         session.execute(KEYSPACE_ACTIVATE_QUERY);
-        //session.execute(query);
+       session.execute(query);
         Thread.sleep(5000);
     }
 
     @Before
     public void createTable() throws InterruptedException, TTransportException, ConfigurationException, IOException {
-        adminTemplate.createTable(true, CqlIdentifier.cqlId(CLASSIFICATOR_TABLE_NAME), Classificator.class, new HashMap<String, Object>());
+      //adminTemplate.createTable(true, CqlIdentifier.cqlId(CLASSIFICATOR_TABLE_NAME), Classificator.class, new HashMap<String, Object>());
     }
 
     public void setUp() {
