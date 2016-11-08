@@ -51,6 +51,7 @@ public class ClassificatorControllerTest {
     public static final String CLASSIFICATOR_TABLE_NAME = "classificator";
 
     public static final String query = "create table okpd.classificator (id uuid primary key, name text, code text, description text);";
+    public static final String query2 = "create table okpd.classificatorItem (code text primary key, name text, notes text, parentCode text);";
 
     @BeforeClass
     public static void startCassandraEmbedded() throws InterruptedException, TTransportException, ConfigurationException, IOException {
@@ -60,14 +61,12 @@ public class ClassificatorControllerTest {
         session.execute(KEYSPACE_CREATION_QUERY);
         session.execute(KEYSPACE_ACTIVATE_QUERY);
        session.execute(query);
+        session.execute(query2);
         Thread.sleep(5000);
     }
 
-    @Before
-    public void createTable() throws InterruptedException, TTransportException, ConfigurationException, IOException {
-      //adminTemplate.createTable(true, CqlIdentifier.cqlId(CLASSIFICATOR_TABLE_NAME), Classificator.class, new HashMap<String, Object>());
-    }
 
+    @Before
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .apply(documentationConfiguration(this.restDocumentation))
