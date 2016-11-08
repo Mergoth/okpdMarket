@@ -10,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
 import org.springframework.data.cassandra.config.CassandraSessionFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
+import org.springframework.data.cassandra.config.java.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.convert.CassandraConverter;
 import org.springframework.data.cassandra.convert.MappingCassandraConverter;
 import org.springframework.data.cassandra.core.CassandraOperations;
@@ -24,7 +25,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 @Configuration
 @PropertySource(value = {"classpath:cassandra.properties"})
 @EnableCassandraRepositories(basePackages = {"ru.okpdmarket.dao"})
-public class CassandraConfig {
+public class CassandraConfig extends AbstractCassandraConfiguration {
     @Autowired
     private Environment environment;
 
@@ -52,8 +53,15 @@ public class CassandraConfig {
         session.setSchemaAction(SchemaAction.NONE);
         return session;
     }
+
+    @Override
+    protected String getKeyspaceName() {
+        return environment.getProperty("cassandra.keyspace");
+    }
+
+    @Override
     @Bean
-    public CassandraOperations cassandraTemplate() throws Exception {
-        return new CassandraTemplate(session().getObject());
+    public CassandraMappingContext cassandraMapping() throws ClassNotFoundException {
+        return new BasicCassandraMappingContext();
     }
 }
