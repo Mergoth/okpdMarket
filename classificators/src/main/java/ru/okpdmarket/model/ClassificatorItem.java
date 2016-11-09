@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.ToString;
 import org.springframework.cassandra.core.Ordering;
 import org.springframework.cassandra.core.PrimaryKeyType;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,14 +20,10 @@ import java.util.List;
  */
 @Data
 @ToString(of = {"code", "name"})
-@Table
+@Document
 public class ClassificatorItem implements Serializable {
 
-    @PrimaryKeyColumn(
-            name = "code",
-            ordinal = 2,
-            type = PrimaryKeyType.PARTITIONED,
-            ordering = Ordering.DESCENDING)
+    @Id
     private final String code;
     private final String name;
     private final String notes;
