@@ -23,6 +23,6 @@ public class MongoConfig extends AbstractMongoConfiguration {
 
     @Override
     protected String getMappingBasePackage() {
-        return "ru.okdp";
+        return "ru.okdpmarket";
     }
 }

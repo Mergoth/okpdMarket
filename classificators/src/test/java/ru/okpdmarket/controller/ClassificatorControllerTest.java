@@ -1,14 +1,21 @@
 package ru.okpdmarket.controller;
 
-import com.datastax.driver.core.Cluster;
-import com.datastax.driver.core.Session;
-import org.apache.cassandra.exceptions.ConfigurationException;
-import org.apache.thrift.transport.TTransportException;
-import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import de.flapdoodle.embed.mongo.MongodExecutable;
+import de.flapdoodle.embed.mongo.MongodProcess;
+import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
+import de.flapdoodle.embed.process.runtime.Network;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -43,41 +50,43 @@ public class ClassificatorControllerTest {
     @Autowired
     private WebApplicationContext context;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
-    public static final String KEYSPACE_CREATION_QUERY = "CREATE KEYSPACE IF NOT EXISTS okpd WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': '3' };";
-
-    public static final String KEYSPACE_ACTIVATE_QUERY = "USE okpd;";
-
-    public static final String CLASSIFICATOR_TABLE_NAME = "classificator";
-
-    public static final String query = "create table okpd.classificator (id uuid primary key, name text, code text, description text);";
-    public static final String query2 = "create table okpd.classificatorItem (code text primary key, name text, notes text, parentCode text);";
-
-    @BeforeClass
-    public static void startCassandraEmbedded() throws InterruptedException, TTransportException, ConfigurationException, IOException {
-        EmbeddedCassandraServerHelper.startEmbeddedCassandra();
-        final Cluster cluster = Cluster.builder().addContactPoints("127.0.0.1").withPort(9142).build();
-        final Session session = cluster.connect();
-        session.execute(KEYSPACE_CREATION_QUERY);
-        session.execute(KEYSPACE_ACTIVATE_QUERY);
-       session.execute(query);
-        session.execute(query2);
-        Thread.sleep(5000);
-    }
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception{
+        MongodStarter starter = MongodStarter.getDefaultInstance();
+
+        int port = 27017;
+        IMongodConfig mongodConfig = new MongodConfigBuilder()
+                .version(Version.Main.PRODUCTION)
+                .net(new Net(port, Network.localhostIsIPv6()))
+                .build();
+
+        MongodExecutable mongodExecutable = null;
+        try {
+            mongodExecutable = starter.prepare(mongodConfig);
+            MongodProcess mongod = mongodExecutable.start();
+        } catch (Exception e){
+
+        }
+            MongoClient mongo = new MongoClient("localhost", port);
+        if (!mongoTemplate.collectionExists(Classificator.class)) {
+            mongoTemplate.createCollection(Classificator.class);
+        }
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .apply(documentationConfiguration(this.restDocumentation))
                 .build();
         Classificator classificator = new Classificator();
         classificator.add("1", "Test");
-        classificator.add("1.1", "TestLevel11", "1");
-        classificator.add("1.2", "TestLevel12", "1");
-        classificator.add("1.3", "TestLevel13", "1");
-        classificator.add("1.2.1", "TestLevel121", "1.2");
+        classificator.add("11", "TestLevel11", "1");
+        classificator.add("12", "TestLevel12", "1");
+        classificator.add("13", "TestLevel13", "1");
+        classificator.add("121", "TestLevel121", "12");
         classificator.add("2", "Test2");
+        mongoTemplate.save(classificator);
         this.classificatorRepository.updateClassificators(Collections.singletonList(classificator));
     }
 
