@@ -1,6 +1,6 @@
 # To build and run with Docker:
-#  $ docker build -t weblicent .
-#  $ docker run -d -p 8080:4200 -it weblicent
+#  $ docker build -t webclient .
+#  $ docker run -p 4200:4200 -p 49152:49152 -it webclient
 #
 FROM node:6
 
@@ -22,6 +22,6 @@ RUN chown -R $APP_USER:$APP_USER $HOME/*
 USER $APP_USER
 WORKDIR $APP_DIR
 
-EXPOSE 4200
+EXPOSE 4200 49152
 
-CMD ["ng", "serve", "--prod"]
+CMD ng serve
