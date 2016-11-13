@@ -1,12 +1,12 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {OkpdSearchComponent} from "./okpd-search.component";
 import {ClassificatorsTreeComponent} from "./classificators-tree.component";
+import {ClassificatorSearchComponent} from "./classificator-search.component";
 
 const routes: Routes = [
   {
     path: 'search',
-    component: OkpdSearchComponent
+    component: ClassificatorSearchComponent
   },
   {
     path: 'tree',

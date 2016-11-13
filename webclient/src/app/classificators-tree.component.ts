@@ -1,9 +1,10 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {OkpdService} from "./okpd.service";
+import {ClassificatorService} from "./classificator.service";
 import {ClassificatorTreeModel} from "./components/classificator-tree/classificator-tree";
 import {Tree} from "./components/classificator-tree/tree";
 import {Classificator} from "./classificator";
+import {TabsModel} from "./tab-model";
 
 
 @Component({
@@ -14,64 +15,26 @@ export class ClassificatorsTreeComponent implements OnInit {
 
   private maxLevel: number = 3;
 
-  tabs: [{
-    type: string;
-    title: string;
-    selected: boolean;
-  }] = [
-    {
-      type: 'okpd',
-      title: 'ОКПД',
-      selected: false
-    },
-    {
-      type: 'okpd2',
-      title: 'ОКПД2',
-      selected: false
-    },
-    {
-      type: 'tnved',
-      title: 'ТНВЭД',
-      selected: false
-    }
-  ];
+  classificatorTypes: Classificator[];
+
+  tabModel: TabsModel = new TabsModel();
 
   classificatorTree: ClassificatorTreeModel;
-  activeTabIndex: number = 0;
+
   routeParams: RouteParams;
 
-  constructor(private route: ActivatedRoute, private router: Router, private okpdService: OkpdService) {
+  constructor(private route: ActivatedRoute, private router: Router, private classificatorService: ClassificatorService) {
     this.route.params.subscribe(params => {
       this.routeParams = params as RouteParams;
     });
   }
 
-  get selectedType() {
-    let selectedTab = this.tabs.find(t => t.selected);
-    return selectedTab ? selectedTab.type : null;
-  }
-
-  set selectedType(code: string) {
-    // console.log('selectedType:' + code);
-    let needLoad: string = null;
-    this.tabs.forEach(t => {
-      if (t.type == code) {
-        if (!t.selected) needLoad = t.type;
-        t.selected = true;
-      } else {
-        t.selected = false;
-      }
-    });
-    if (needLoad) {
-      this.updateTree();
-    }
-  }
-
-  updateTree() {
-    const rootId = this.selectedType;
-    const nodeId = this.routeParams.code ? this.routeParams.code : rootId;
+  updateTree(nodeId: string = null) {
+    this.classificatorTree = null;
+    const rootId = this.tabModel.selectedType;
+    nodeId =  nodeId ? nodeId : (this.routeParams.code ? this.routeParams.code : rootId);
     const detailed = rootId != nodeId;
-    const params = detailed ? {path:true} : {};
+    const params = detailed ? {path: true} : {};
     this.treeClassificatorBy(nodeId, params).then(classificator => {
       //console.log('>>parentId:', parentId);
       this.classificatorTree = new ClassificatorTreeModel();
@@ -84,20 +47,28 @@ export class ClassificatorsTreeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log('ngOnInit', this.routeParams);
-    this.selectedType = this.routeParams.type ? this.routeParams.type : 'okpd';
+    this.classificatorService.classificatorTypes().then(res => {
+      this.classificatorTypes = res;
+      this.tabModel.clear();
+      this.classificatorTypes.forEach(clsfType => this.tabModel.push({
+        type: clsfType.code,
+        title: clsfType.name,
+        selected: false
+      }));
+    }).then(_ => {
+      this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].code;
+      this.updateTree();
+    });
   }
 
   onPathClick(nodeId: string) {
     // console.log('onPathClick', nodeId);
-    this.updateTree();
+    this.updateTree(nodeId);
   }
 
   onSelectChange(tab: any) {
-    // console.log('>>>>>>', tab);
-    this.activeTabIndex = tab.index;
-    this.selectedType = this.tabs[tab.index].type;
-    this.router.navigate([`/tree/${this.selectedType}`]);
+    this.tabModel.selectedIndex = tab.index;
+    this.updateTree();
   }
 
   onNodeClick(rootId: string) {
@@ -108,7 +79,7 @@ export class ClassificatorsTreeComponent implements OnInit {
       if ((subTree.level % this.maxLevel) == 0) {
         //todo
         let code = subTree.id.replace(/\./g, '')
-        this.router.navigate([`/tree/${this.selectedType}/${code}`]);
+        this.router.navigate([`/tree/${this.tabModel.selectedType}/${code}`]);
       } else {
         this.treeClassificatorBy(subTree.id).then(classificators => {
           fillTree(subTree, classificators);
@@ -119,8 +90,8 @@ export class ClassificatorsTreeComponent implements OnInit {
 
 
   treeClassificatorBy(rootId: string, params: Object = {}): Promise<Classificator> {
-    const nodeId = (this.selectedType == rootId) ? null : rootId;
-    return this.okpdService.classificatorTree(this.selectedType, nodeId, params);
+    const nodeId = (this.tabModel.selectedType == rootId) ? null : rootId;
+    return this.classificatorService.classificatorTree(this.tabModel.selectedType, nodeId, params);
   }
 
 }
@@ -142,7 +113,7 @@ function fillTree(model: Tree, classificator: Classificator) {
     node.hasNodes = child.hasChildren;
     model.nodes.push(node);
   }
- // console.log('model2:', model);
+  // console.log('model2:', model);
   return model;
 }
 
@@ -150,3 +121,5 @@ class RouteParams {
   type: string;
   code: string;
 }
+
+

@@ -1,15 +1,19 @@
 import {Injectable} from "@angular/core";
 import {BackAPI} from "./back-api.service";
-import {ClassificatorUnited, Classificator} from "./classificator";
+import {Classificator} from "./classificator";
 
 @Injectable()
-export class OkpdService {
+export class ClassificatorService {
 
   constructor(private backApi: BackAPI) {
   }
 
-  getList(query: string): Promise<ClassificatorUnited[]> {
-    return this.backApi.okpdBy(query).then(response => response as ClassificatorUnited[]);
+  classificatorTypes(): Promise<Classificator[]> {
+    return this.backApi.classificatorTypes().then(response => response as Classificator[]);;
+  }
+
+  getList(query: string, type: string): Promise<Classificator[]> {
+    return this.backApi.classificatorsBy(query, type).then(response => response as Classificator[]);
   }
 
   classificatorTree(classificator: string, code: string, params: Object): Promise<Classificator> {

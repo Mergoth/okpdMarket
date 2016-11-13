@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import { environment } from '../environments/environment';
-import {Http, Headers, Response, Jsonp, URLSearchParams, RequestOptions} from "@angular/http";
+import {Http, Headers, Response, URLSearchParams, RequestOptions} from "@angular/http";
 import "./rxjs-operators";
 
 const backendRestUrlRoot = environment.serverUrl;
@@ -8,15 +8,19 @@ const backendRestUrlRoot = environment.serverUrl;
 @Injectable()
 export class BackAPI {
 
-  constructor(private http: Http, private jsonp: Jsonp) {
+  constructor(private http: Http) {
+  }
+
+  classificatorTypes(): Promise<any> {
+    return this.get('classificators');
   }
 
   classificatorTree(classificator: string, nodeId: string,  params: Object): Promise<any> {
     return this.get((nodeId ? `classificators/${classificator}/${nodeId}` :  `classificators/${classificator}`), params);
   }
 
-  okpdBy(query: string): Promise<any> {
-    return this.get(`classificators`, {query: query});
+  classificatorsBy(query: string, type: string = null): Promise<any> {
+    return this.get(`classificators/${type}/search`, {query: query});
   }
 
   private get(url: string, params: Object = {}): Promise<any> {

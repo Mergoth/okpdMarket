@@ -1,8 +1,10 @@
-<div class="path" *ngIf="model.detailed && model.tree.path">
-  <div *ngFor="let item of model.tree.path">
-    <div class="node" [style.margin-left.px]="item.level*7" (click)="onPathClick(item[0])"> - {{item[0]}} {{item[1]}}</div>
+<nav class="path" *ngIf="model.detailed && model.tree.path">
+  <div *ngFor="let item of model.tree.path;let i=index">
+    <a class="node" [style.margin-left.px]="i*10"  (click)="onPathClick(item[0])">
+      <md-icon>keyboard_arrow_right</md-icon>&nbsp;<span class="code">{{item[0]}}</span> {{item[1]}}
+    </a>
   </div>
-</div>
+</nav>
 <div *ngIf="model.detailed && model.tree">
   <h2>{{model.tree.id}} {{model.tree.name}}</h2>
   {{model.tree.notes}}
