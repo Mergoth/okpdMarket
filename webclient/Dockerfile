@@ -1,6 +1,6 @@
 # To build and run with Docker:
 #  $ docker build -t webclient .
-#  $ docker run -p 4200:4200 -p 49152:49152 -it webclient
+#  $ docker run -d -p 4200:4200 -p 49152:49152 -it webclient
 #
 FROM node:6
 
@@ -24,4 +24,4 @@ WORKDIR $APP_DIR
 
 EXPOSE 4200 49152
 
-CMD ng serve
+CMD ng serve --host 0.0.0.0
