@@ -16,8 +16,9 @@ dependencies {
     compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
     compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
-    compile 'org.springframework.data:spring-data-cassandra:1.4.4.RELEASE'
-
+    compile group: 'org.hectorclient', name: 'hector-core', version: '2.0-0'
+    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.9.3.RELEASE'
+    compile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '1.50.5'
     //testCompile 'org.spockframework:spock-core:0.7-groovy-2.0-SNAPSHOT'
     testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
     testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['spring-restdocs.version']}"
