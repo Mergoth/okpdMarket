@@ -10,15 +10,13 @@ services:
           max-size: "10m"
           max-file: "10"
 
-  cassandra:
-      image: 'bitnami/cassandra:latest'
-      ports:
-        - '7000:7000'
-        - '7001:7001'
-        - '9042:9042'
-        - '9160:9160'
-      volumes:
-        - 'cassandra_data:/bitnami/cassandra'
+  MongoDB:
+    image: sameersbn/mongodb:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - /srv/docker/mongodb:/var/lib/mongodb
+    restart: always
 
   volumes:
     cassandra_data:
