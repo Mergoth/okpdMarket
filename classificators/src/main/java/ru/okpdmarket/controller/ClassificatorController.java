@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.okpdmarket.dto.ClassificatorItemDto;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
@@ -45,20 +46,20 @@ public class ClassificatorController {
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getTopItems(@PathVariable(value = "id") String classificatorId) {
-             return classificatorService.getClassifiactor(classificatorId).getFirstLevel();
+    public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "id") String classificatorId) {
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel());
     }
 
 
     /**
-     * @param classificatorCode
-     * @param parentId
-     * @return
+     * @param classificatorCode - code of the classificator
+     * @param itemId - code of the ClassificatorItem to get
+     * @return ClassificatorItemDto - with
      */
-    @RequestMapping(value = "/{code}/{parentId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getItems(@PathVariable(value = "code") String classificatorCode,
-                                            @PathVariable(value="parentId") String parentId) {
-        return classificatorService.getClassifiactor(classificatorCode).getChildLevel(parentId);
+    @RequestMapping(value = "/{code}/{itemId}", method = RequestMethod.GET)
+    public ClassificatorItemDto getItem(@PathVariable(value = "code") String classificatorCode,
+                                        @PathVariable(value = "itemId") String itemId) {
+        return ClassificatorItemDto.Converter.toDto(classificatorService.getClassifiactor(classificatorCode).getItemByCode(itemId));
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)

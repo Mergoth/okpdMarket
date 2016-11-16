@@ -5,7 +5,7 @@ import {ClassificatorTreeModel} from "./classificator-tree";
 @Component({
   selector: 'classificator-tree',
   templateUrl: 'classificator-tree.html',
-  styles: [`.path .node { cursor: pointer; color: #039be5; text-decoration: underline;} .path {margin: 20px}`]
+  styleUrls: ['classificator-tree.css']
 
 })
 export class ClassificatorTreeComponent {
