@@ -1,11 +1,7 @@
 package ru.okpdmarket.model;
 
 import lombok.Data;
-import org.springframework.cassandra.core.Ordering;
-import org.springframework.cassandra.core.PrimaryKeyType;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.mapping.Table;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -72,4 +68,5 @@ public class Classificator implements Serializable {
     public int size(){
         return elements.size();
     }
+
 }

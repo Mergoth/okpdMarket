@@ -18,9 +18,6 @@ services:
       - /srv/docker/mongodb:/var/lib/mongodb
     restart: always
 
-  volumes:
-    cassandra_data:
-      driver: local
 
   config:
     environment:

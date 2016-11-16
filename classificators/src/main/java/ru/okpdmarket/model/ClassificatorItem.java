@@ -3,11 +3,7 @@ package ru.okpdmarket.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.cassandra.core.Ordering;
-import org.springframework.cassandra.core.PrimaryKeyType;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.mapping.Table;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -78,11 +74,11 @@ public class ClassificatorItem implements Serializable {
         }
     }
 
-    @Data
+/*    @Data
     private class PathElement {
         public final String name;
         public final String code;
 
 
-    }
+    } */
 }
