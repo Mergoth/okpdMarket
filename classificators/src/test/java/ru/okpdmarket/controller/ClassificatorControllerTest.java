@@ -74,14 +74,16 @@ public class ClassificatorControllerTest {
         } catch (Exception e){
 
         }
-            MongoClient mongo = new MongoClient("localhost", port);
+
+        MongoClient mongo = new MongoClient("localhost", port);
         if (!mongoTemplate.collectionExists(Classificator.class)) {
             mongoTemplate.createCollection(Classificator.class);
         }
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .apply(documentationConfiguration(this.restDocumentation))
                 .build();
-        Classificator classificator = new Classificator();
+
+        Classificator classificator = new Classificator("code", "test");
         classificator.add("1", "Test");
         classificator.add("11", "TestLevel11", "1");
         classificator.add("12", "TestLevel12", "1");
@@ -129,7 +131,7 @@ public class ClassificatorControllerTest {
     @Ignore
     @Test
     public void putClassificator() throws Exception {
-        Classificator testClassificator = new Classificator();
+        Classificator testClassificator = new Classificator("okpd", "ОКПД");
         this.mockMvc.perform(put("/update/classificators", testClassificator).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(document("classificators-put"));
@@ -141,9 +143,5 @@ public class ClassificatorControllerTest {
 
     }
 
-    @AfterClass
-    public static void stopCassandraEmbedded() {
-        //EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
-    }
 
 }
