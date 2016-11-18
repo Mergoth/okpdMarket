@@ -1,6 +1,5 @@
 package ru.okpdmarket.controller;
 
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -9,7 +8,6 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.runtime.Network;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -25,7 +23,6 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
-import java.io.IOException;
 import java.util.Collections;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -55,8 +52,8 @@ public class ClassificatorControllerTest {
 
 
 
-    @Before
-    public void setUp() throws Exception{
+    @BeforeClass
+    public static void setUpMongo() throws Exception{
         MongodStarter starter = MongodStarter.getDefaultInstance();
 
         int port = 27017;
@@ -72,8 +69,11 @@ public class ClassificatorControllerTest {
         } catch (Exception e){
 
         }
+    }
 
-        MongoClient mongo = new MongoClient("localhost", port);
+    @Before
+    public void setUpInitial(){
+        MongoClient mongo = new MongoClient("localhost", 27017);
         if (!mongoTemplate.collectionExists(Classificator.class)) {
             mongoTemplate.createCollection(Classificator.class);
         }

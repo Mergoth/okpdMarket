@@ -24,7 +24,7 @@ public class Classificator implements Serializable {
     // Classificator name in Russian
     private final String name;
     @Id
-    private UUID id;
+    private String id;
     // Classificator description
     private String description;
 
