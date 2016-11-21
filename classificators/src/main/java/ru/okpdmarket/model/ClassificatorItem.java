@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -25,12 +26,14 @@ public class ClassificatorItem implements Serializable {
     private final String notes;
 
     @JsonIgnore
+    @DBRef
     private final ClassificatorItem parent;
     private final String parentCode;
     private final int level;
     private final List<PathElement> path;
 
     @JsonIgnore
+    @DBRef
     private List<ClassificatorItem> children = new ArrayList<>();
     private boolean hasChildren = false;
 
@@ -71,6 +74,7 @@ public class ClassificatorItem implements Serializable {
         }
     }
 
+
     private int calcLevel() {
         if (this.parent != null) {
             return this.parent.calcLevel() + 1;
@@ -78,6 +82,7 @@ public class ClassificatorItem implements Serializable {
             return 0;
         }
     }
+
 
     public void setChildren(List<ClassificatorItem> children) {
         this.children = children;

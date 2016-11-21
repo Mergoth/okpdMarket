@@ -13,6 +13,7 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
@@ -39,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@PropertySource(value = {"classpath:mongodb.properties"})
 public class ClassificatorControllerTest {
     @Rule
     public JUnitRestDocumentation restDocumentation =
@@ -51,6 +53,8 @@ public class ClassificatorControllerTest {
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    static MongodProcess mongod;
 
 
 
@@ -67,7 +71,7 @@ public class ClassificatorControllerTest {
         MongodExecutable mongodExecutable = null;
         try {
             mongodExecutable = starter.prepare(mongodConfig);
-            MongodProcess mongod = mongodExecutable.start();
+             mongod = mongodExecutable.start();
         } catch (Exception e){
 
         }
@@ -96,7 +100,7 @@ public class ClassificatorControllerTest {
 
     @After
     public void tearDown() throws Exception {
-
+       // mongod.stop();
     }
 
     @Test
