@@ -14,7 +14,7 @@ public class ClassificatorDto {
     // Classificator name in Russian
     private  String name;
 
-    private UUID id;
+    private String id;
     // Classificator description
     private String description;
 

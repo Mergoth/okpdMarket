@@ -2,6 +2,7 @@ package ru.okpdmarket.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -29,7 +30,9 @@ public class Classificator implements Serializable {
     private String description;
 
 
+    @DBRef
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
+    @DBRef
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
     public void add(String code, String name) {
