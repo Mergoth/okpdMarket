@@ -1,20 +1,9 @@
 package ru.okpdmarket.controller;
 
-import com.mongodb.MongoClient;
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.runtime.Network;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@PropertySource(value = {"classpath:mongodb.properties"})
 public class ClassificatorControllerTest {
     @Rule
     public JUnitRestDocumentation restDocumentation =
@@ -51,38 +39,12 @@ public class ClassificatorControllerTest {
     @Autowired
     private WebApplicationContext context;
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    static MongodProcess mongod;
 
 
-
-    @BeforeClass
-    public static void setUpMongo() throws Exception{
-        MongodStarter starter = MongodStarter.getDefaultInstance();
-
-        int port = 27017;
-        IMongodConfig mongodConfig = new MongodConfigBuilder()
-                .version(Version.Main.PRODUCTION)
-                .net(new Net(port, Network.localhostIsIPv6()))
-                .build();
-
-        MongodExecutable mongodExecutable = null;
-        try {
-            mongodExecutable = starter.prepare(mongodConfig);
-             mongod = mongodExecutable.start();
-        } catch (Exception e){
-
-        }
-    }
 
     @Before
     public void setUpInitial(){
-        MongoClient mongo = new MongoClient("localhost", 27017);
-        if (!mongoTemplate.collectionExists(Classificator.class)) {
-            mongoTemplate.createCollection(Classificator.class);
-        }
+
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
                 .apply(documentationConfiguration(this.restDocumentation))
                 .build();
@@ -94,7 +56,6 @@ public class ClassificatorControllerTest {
         classificator.add("13", "TestLevel13", "1");
         classificator.add("121", "TestLevel121", "12");
         classificator.add("2", "Test2");
-        mongoTemplate.save(classificator);
         this.classificatorRepository.updateClassificators(Collections.singletonList(classificator));
     }
 
