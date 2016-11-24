@@ -46,10 +46,12 @@ allprojects {
       }
     }
 
- /*
+task runDocker(type: Exec) {
 
-*/
 
+
+}
+runDocker.dependsOn 'build'
 
 }
 

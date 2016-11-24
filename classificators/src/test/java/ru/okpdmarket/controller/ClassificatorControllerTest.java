@@ -34,13 +34,11 @@ public class ClassificatorControllerTest {
     public JUnitRestDocumentation restDocumentation =
             new JUnitRestDocumentation("build/generated-snippets");
     @Autowired
+    private
     ClassificatorRepository classificatorRepository;
     private MockMvc mockMvc;
     @Autowired
     private WebApplicationContext context;
-
-
-
 
     @Before
     public void setUpInitial(){
