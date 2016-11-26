@@ -14,7 +14,6 @@ import java.util.List;
  * Created by Vladislav on 31.08.2016.
  */
 @RestController
-@RequestMapping("/classificators")
 public class ClassificatorController {
 
     private final ClassificatorService classificatorService;
