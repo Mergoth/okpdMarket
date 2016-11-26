@@ -1,24 +1,13 @@
 package ru.okpdmarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.okpdmarket.dto.ClassificatorItemDto;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
-import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -50,7 +39,6 @@ public class ClassificatorController {
         return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel());
     }
 
-
     /**
      * @param classificatorCode - code of the classificator
      * @param itemId - code of the ClassificatorItem to get
@@ -67,15 +55,4 @@ public class ClassificatorController {
         //TODO: Lucene in-memory search invoked from ClassificatorService
         return searchService.search(classificatorId,query);
     }
-
-
-    //TODO: do we need this? Here?
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
-    public List<Classificator>  exportClassificators(){
-
-
-        return null;
-    }
-
-
 }

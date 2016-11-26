@@ -47,7 +47,7 @@ services:
     build: webclient
     restart: always
     ports:
-      - 8181:1000
+      - 4200:4200
     logging:
       options:
         max-size: "10m"
