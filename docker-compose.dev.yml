@@ -17,4 +17,6 @@ services:
 
   classificators:
     build: classificators
+    ports:
+      - 6000:6000
 

@@ -1,5 +1,5 @@
 spring:
   data:
     mongodb:
-      database: classificatorsTest
+      database: okpd
       port: 0
