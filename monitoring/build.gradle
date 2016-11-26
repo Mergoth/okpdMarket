@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: "io.spring.dependency-management"
+dependencyManagement {
+	imports {
+		mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
+		mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
+	}
+}
+
+jar {
+	baseName = 'monitoring'
+	version = '0.0.1-SNAPSHOT'
+}
+
+dependencies {
+	compile('org.springframework.cloud:spring-cloud-starter-turbine-stream')
+	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	compile('org.springframework.cloud:spring-cloud-starter-hystrix-dashboard')
+	//compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+    compile('org.springframework.cloud:spring-cloud-starter-config')
+}
+
