@@ -84,3 +84,5 @@ dist/
 typings/
 
 *.iml
+
+!/mongodb/dump/*-dump.js

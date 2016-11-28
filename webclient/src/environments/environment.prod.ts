@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-    serverUrl: "http://classificators:6000"
+    serverUrl: "http://localhost:6000"
 };

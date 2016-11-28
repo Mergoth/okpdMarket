@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.14.0'
     }
 }
 
@@ -25,7 +26,7 @@ subprojects {
             dependencies {
                 compile('org.projectlombok:lombok')
                 compile('org.springframework.boot:spring-boot-starter-web')
-
+                compile("org.springframework.boot:spring-boot-starter-actuator")
                 testCompile('org.springframework.boot:spring-boot-starter-test')
                 testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
 
@@ -48,6 +49,9 @@ subprojects {
         //for the debug purposes. Run as: gradle debug run
         task debug {
             doLast {
+                dependencies {
+                    compile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.50.3"
+                }
                 bootRun {
                     jvmArgs '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
                 }
