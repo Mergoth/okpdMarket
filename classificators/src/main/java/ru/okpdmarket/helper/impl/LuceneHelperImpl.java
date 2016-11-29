@@ -36,8 +36,7 @@ import java.nio.file.Paths;
 @Service
 public class LuceneHelperImpl implements LuceneHelper {
 
-    @Autowired
-    RAMDirectory idx;
+    RAMDirectory idx = new RAMDirectory();
 
     @Override
     public void indexDirectory() {
