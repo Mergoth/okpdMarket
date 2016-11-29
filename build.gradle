@@ -16,12 +16,21 @@ subprojects {
         configure(project) {
             apply plugin: 'idea'
             apply plugin: 'spring-boot'
+            apply plugin: "io.spring.dependency-management"
+            apply plugin: 'groovy'
 
             version = '0.0.1-SNAPSHOT'
 
             def langLevel = 1.8
             sourceCompatibility = langLevel
             targetCompatibility = langLevel
+
+            dependencyManagement {
+                imports {
+                    mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
+                    mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
+                }
+            }
 
             dependencies {
                 compile('org.projectlombok:lombok')

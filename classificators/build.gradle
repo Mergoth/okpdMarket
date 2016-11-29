@@ -1,39 +1,34 @@
 plugins {
     id "org.asciidoctor.convert" version "1.5.2"
 }
-apply plugin: "io.spring.dependency-management"
-dependencyManagement {
-    imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
-        mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
-    }
-}
-
-
-apply plugin: 'groovy'
 apply plugin: 'java'
+
+
 
 ext {
     snippetsDir = file('build/generated-snippets')
+    springRestdocsVersion =  '1.1.2.RELEASE'
+    luceneVersion = '5.0.0'
 }
 
-ext['spring-restdocs.version'] = '1.1.2.RELEASE'
 
 dependencies {
+
    // asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor:${project.ext['spring-restdocs.version']}"
-    compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
-    compile ('org.springframework.cloud:spring-cloud-starter-config')
-    compile 'org.springframework.cloud:spring-cloud-starter-eureka'
-    compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
-    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
-    compile group: 'org.hectorclient', name: 'hector-core', version: '2.0-0'
-    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '1.9.3.RELEASE'
-    compile group: 'org.apache.lucene', name: 'lucene-core', version: '5.0.0'
-    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '5.0.0'
-    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: '5.0.0'
-    testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.50.3"
+    compile "org.springframework.restdocs:spring-restdocs-mockmvc"
+    compile "org.springframework.cloud:spring-cloud-starter-config"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka"
+    compile "org.springframework:spring-core"
+    compile "org.springframework.data:spring-data-mongodb"
+    compile "javax.persistence:persistence-api:1.0"
+    compile "org.hectorclient:hector-core:2.0-0"
+    compile "org.apache.lucene:lucene-core:${project.ext['luceneVersion']}"
+    compile "org.apache.lucene:lucene-analyzers-common:${project.ext['luceneVersion']}"
+    compile "org.apache.lucene:lucene-queryparser:${project.ext['luceneVersion']}"
+
+    testCompile "de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.3"
     //testCompile 'org.spockframework:spock-core:0.7-groovy-2.0-SNAPSHOT'
-    testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['spring-restdocs.version']}"
+    testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['springRestdocsVersion']}"
 }
 
 
