@@ -18,7 +18,7 @@ services:
   mongodb:
     build: mongodb
     ports:
-      - 26000:27017
+      - 27017:27017
 
   webclient:
     build: webclient
