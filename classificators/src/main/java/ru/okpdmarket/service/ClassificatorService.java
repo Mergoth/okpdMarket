@@ -14,6 +14,6 @@ public interface ClassificatorService {
 
     Classificator getClassifiactor(String classificatorCode);
 
-
+    void commitClassificators(List<Classificator> classificators);
 
 }

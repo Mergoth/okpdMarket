@@ -11,6 +11,7 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorItem;
 
 import java.util.Collections;
 
@@ -30,17 +31,24 @@ public class ClassificatorDaoTest {
     ClassificatorDao classificatorDao;
 
     @Autowired
+    ClassificatorItemDao classificatorItemDao;
+
+    @Autowired
     private WebApplicationContext context;
 
     @Test
     public void addClassificator(){
         Classificator classificator = new Classificator("code", "test");
+
+        ClassificatorItem test = new ClassificatorItem(null, "1", "test");
+        classificatorItemDao.save(test);
         classificator.add("1", "Test");
         classificator.add("11", "TestLevel11", "1");
         classificator.add("12", "TestLevel12", "1");
         classificator.add("13", "TestLevel13", "1");
         classificator.add("121", "TestLevel121", "12");
         classificator.add("2", "Test2");
+        //classificator.setElements();
         classificatorDao.save(classificator);
     }
 
