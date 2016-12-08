@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import { environment } from '../../environments/environment';
+import {environment} from "../../environments/environment";
 import {Http, Headers, Response, URLSearchParams, RequestOptions} from "@angular/http";
 import "./rxjs-operators";
 
@@ -12,7 +12,7 @@ export class BackAPI {
   }
 
   classificatorTypes(): Promise<any> {
-    return this.get('classificators');
+      return this.get('classificators/');
   }
 
   classificatorTree(classificator: string, nodeId: string,  params: Object): Promise<any> {
@@ -20,7 +20,7 @@ export class BackAPI {
   }
 
   classificatorsBy(query: string, type: string = null): Promise<any> {
-    return this.get(`classificators/${type}/search`, {query: query});
+      return this.get(`classificators/${type}/search/`, {query: query});
   }
 
   private get(url: string, params: Object = {}): Promise<any> {

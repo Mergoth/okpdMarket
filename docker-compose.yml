@@ -60,20 +60,6 @@ services:
         max-size: "10m"
         max-file: "10"
 
-  webclient:
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    build: webclient
-    restart: always
-    ports:
-      - 4200:4200
-    depends_on:
-      - config
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
   classificators:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
