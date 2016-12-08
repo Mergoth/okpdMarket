@@ -4,13 +4,13 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
 import {MaterialModule} from "@angular/material";
 import {AppComponent} from "./app.component";
-import {ClassificatorSearchComponent} from "./classificator-search.component";
-import {ClassificatorsTreeComponent} from "./classificators-tree.component";
-import {ClassificatorTreeComponent} from "./components/classificator-tree/classificator-tree.component";
-import {ClassificatorService} from "./classificator.service";
-import {BackAPI} from "./back-api.service";
+import {ClassificatorSearchComponent} from "./components/classificator-search/classificator-search.component";
+import {ClassificatorsTreeComponent} from "./components/classificators-tree/classificators-tree.component";
+import {ClassificatorTreeComponent} from "./components/classificators-tree/classificator-tree/classificator-tree.component";
+import {ClassificatorService} from "./service/classificator.service";
+import {BackAPI} from "./service/back-api.service";
 import {AppRoutingModule} from "./app-routing.module";
-import {TreeViewComponent} from "./components/classificator-tree/tree-veiw.component";
+import {TreeViewComponent} from "./components/classificators-tree/classificator-tree/tree-veiw.component";
 
 
 // Imports for loading & configuring the in-memory web api
