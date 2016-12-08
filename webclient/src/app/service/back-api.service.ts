@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import {Http, Headers, Response, URLSearchParams, RequestOptions} from "@angular/http";
 import "./rxjs-operators";
 

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {BackAPI} from "./back-api.service";
-import {Classificator} from "./classificator";
+import {Classificator} from "../domain/classificator";
 
 @Injectable()
 export class ClassificatorService {

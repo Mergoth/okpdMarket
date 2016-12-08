@@ -1,3 +1,4 @@
+//todo вынести tabs-classificator в компонент
 export class TabsModel {
 
   tabs: TabModel[] = [];
