@@ -4,6 +4,7 @@ import {Http, Headers, Response, URLSearchParams, RequestOptions} from "@angular
 import "./rxjs-operators";
 
 const backendRestUrlRoot = environment.serverUrl;
+const classificatorsEndpoint = "classificators";
 
 @Injectable()
 export class BackAPI {
@@ -12,15 +13,15 @@ export class BackAPI {
   }
 
   classificatorTypes(): Promise<any> {
-    return this.get('classificators');
+    return this.get(${classificatorsEndpoint});
   }
 
   classificatorTree(classificator: string, nodeId: string,  params: Object): Promise<any> {
-    return this.get((nodeId ? `classificators/${classificator}/${nodeId}` :  `classificators/${classificator}`), params);
+    return this.get((nodeId ? `${classificatorsEndpoint}/${classificator}/${nodeId}` :  `${classificatorsEndpoint}/${classificator}`), params);
   }
 
   classificatorsBy(query: string, type: string = null): Promise<any> {
-    return this.get(`classificators/${type}/search`, {query: query});
+    return this.get(`${classificatorsEndpoint}/${type}/search`, {query: query});
   }
 
   private get(url: string, params: Object = {}): Promise<any> {
