@@ -1,42 +1,38 @@
 package ru.okpdmarket.model;
 
 import lombok.Data;
-import org.springframework.cassandra.core.Ordering;
-import org.springframework.cassandra.core.PrimaryKeyType;
-import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.io.Serializable;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 /**
  * Interface for classificator and work with its items
  * Created by Vladislav on 29.08.2016.
  */
 @Data
-@Table
+@Document
 public class Classificator implements Serializable {
 
     // Unique classificator code in english
     private final String code;
     // Classificator name in Russian
     private final String name;
-    // Used for database only
-    @PrimaryKeyColumn(
-            name = "id",
-            ordinal = 2,
-            type = PrimaryKeyType.PARTITIONED,
-            ordering = Ordering.DESCENDING)
-    private UUID id;
+    @Id
+    private String id;
     // Classificator description
     private String description;
 
 
+    @DBRef
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
+    @DBRef
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
     public void add(String code, String name) {
@@ -75,4 +71,5 @@ public class Classificator implements Serializable {
     public int size(){
         return elements.size();
     }
+
 }

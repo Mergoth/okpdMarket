@@ -1,5 +1,7 @@
 package ru.okpdmarket.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
 import ru.okpdmarket.model.ClassificatorItem;
@@ -15,12 +17,13 @@ import java.util.stream.Collectors;
  */
 @Data
 @ToString(of = {"code", "name"})
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ClassificatorItemDto implements Serializable {
     private final String code;
     private final String name;
     private final String notes;
     private final boolean hasChildren;
-    private int level;
+    private Integer level;
     private String parentCode;
     private List<ClassificatorItem.PathElement> path;
 

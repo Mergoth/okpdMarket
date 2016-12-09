@@ -3,11 +3,10 @@ package ru.okpdmarket.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.cassandra.core.Ordering;
-import org.springframework.cassandra.core.PrimaryKeyType;
-import org.springframework.data.cassandra.mapping.PrimaryKeyColumn;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,25 +17,23 @@ import java.util.List;
  */
 @Data
 @ToString(of = {"code", "name"})
-@Table
+@Document
 public class ClassificatorItem implements Serializable {
 
-    @PrimaryKeyColumn(
-            name = "code",
-            ordinal = 2,
-            type = PrimaryKeyType.PARTITIONED,
-            ordering = Ordering.DESCENDING)
+    @Id
     private final String code;
     private final String name;
     private final String notes;
 
     @JsonIgnore
+    @DBRef
     private final ClassificatorItem parent;
     private final String parentCode;
     private final int level;
     private final List<PathElement> path;
 
     @JsonIgnore
+    @DBRef
     private List<ClassificatorItem> children = new ArrayList<>();
     private boolean hasChildren = false;
 
@@ -77,6 +74,7 @@ public class ClassificatorItem implements Serializable {
         }
     }
 
+
     private int calcLevel() {
         if (this.parent != null) {
             return this.parent.calcLevel() + 1;
@@ -84,6 +82,7 @@ public class ClassificatorItem implements Serializable {
             return 0;
         }
     }
+
 
     public void setChildren(List<ClassificatorItem> children) {
         this.children = children;

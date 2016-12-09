@@ -1,25 +1,35 @@
 plugins {
     id "org.asciidoctor.convert" version "1.5.2"
 }
-
-apply plugin: 'groovy'
 apply plugin: 'java'
+
+
 
 ext {
     snippetsDir = file('build/generated-snippets')
+    springRestdocsVersion =  '1.1.2.RELEASE'
+    luceneVersion = '5.0.0'
 }
 
-ext['spring-restdocs.version'] = '1.1.2.RELEASE'
 
 dependencies {
-    asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor:${project.ext['spring-restdocs.version']}"
-    compile ("org.springframework.restdocs:spring-restdocs-mockmvc")
-    compile group: 'org.springframework', name: 'spring-core', version: '4.3.3.RELEASE'
-    compile group: 'javax.persistence', name: 'persistence-api', version: '1.0'
 
+   // asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor:${project.ext['spring-restdocs.version']}"
+    compile "org.springframework.restdocs:spring-restdocs-mockmvc"
+    compile "org.springframework.cloud:spring-cloud-starter-config"
+    compile "org.springframework.cloud:spring-cloud-starter-eureka"
+    compile "org.springframework:spring-core"
+    compile "org.springframework.data:spring-data-mongodb"
+    compile "javax.persistence:persistence-api:1.0"
+    compile "org.hectorclient:hector-core:2.0-0"
+    compile "org.apache.lucene:lucene-core:${project.ext['luceneVersion']}"
+    compile "org.apache.lucene:lucene-analyzers-common:${project.ext['luceneVersion']}"
+    compile "org.apache.lucene:lucene-queryparser:${project.ext['luceneVersion']}"
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+
+    testCompile "de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.3"
     //testCompile 'org.spockframework:spock-core:0.7-groovy-2.0-SNAPSHOT'
-    testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
-    testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['spring-restdocs.version']}"
+    testCompile "org.springframework.restdocs:spring-restdocs-mockmvc:${project.ext['springRestdocsVersion']}"
 }
 
 
