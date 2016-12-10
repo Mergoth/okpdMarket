@@ -47,7 +47,8 @@ public class ClassificatorServiceImpl implements ClassificatorService {
                 Map.Entry pair = (Map.Entry) iteator.next();
                 classificatorItemDao.save((ClassificatorItem) pair.getValue());
             }
-            classificatorDao.save(classificator);
+            // FIXME: update DAO logic
+            //  classificatorDao.save(classificator);
         }
     }
 }

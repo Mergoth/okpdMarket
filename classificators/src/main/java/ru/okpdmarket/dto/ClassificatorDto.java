@@ -3,11 +3,11 @@ package ru.okpdmarket.dto;
 
 import ru.okpdmarket.model.Classificator;
 
-import java.util.UUID;
-
 /**
  * Created by lalka on 11/17/2016.
  */
+// TODO: do we need this?
+@Deprecated
 public class ClassificatorDto {
 
     private  String code;
