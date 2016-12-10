@@ -12,11 +12,18 @@ services:
   registry:
     build: registry
 
-  webclient:
-    build: webclient
+  gateway:
+    build: gateway
+
+  mongodb:
+    build: mongodb
+    ports:
+      - 27017:27017
 
   classificators:
     build: classificators
     ports:
-      - 6000:6000
+      - 8086:6000
 
+  monitoring:
+      build: monitoring

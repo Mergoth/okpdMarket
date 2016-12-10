@@ -1,0 +1,15 @@
+// frontend build.gradle
+// Deatils read here: https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+
+plugins {
+    id "com.moowork.node" version "1.0.1"
+}
+
+//def generatedWebResources = "${buildDir}/generated-web-resources"
+
+/*sourceSets {
+	main {
+		output.dir(generatedWebResources, builtBy: 'npm_run_build')
+	}
+}*/
+

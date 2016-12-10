@@ -55,7 +55,7 @@ subprojects {
             build.finalizedBy(copyForDocker)
         }
 
-        //for the debug purposes. Run as: gradle debug run
+        //for the debug purposes. Run as: gradle debug bootRun
         task debug {
             doLast {
                 dependencies {

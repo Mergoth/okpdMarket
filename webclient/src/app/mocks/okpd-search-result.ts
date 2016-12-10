@@ -1,4 +1,4 @@
-import {Classificator} from "../classificator";
+import {Classificator} from "../domain/classificator";
 
 export const OKPD_SEARCH_RESULT: Classificator[] = [
   [
