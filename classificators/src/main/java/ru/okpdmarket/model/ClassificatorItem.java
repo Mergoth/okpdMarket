@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -17,23 +18,25 @@ import java.util.List;
  */
 @Data
 @ToString(of = {"code", "name"})
-@Document
+//@Document
 public class ClassificatorItem implements Serializable {
 
-    @Id
+   // @Id
     private final String code;
     private final String name;
     private final String notes;
 
     @JsonIgnore
-    @DBRef
+   // @DBRef
     private final ClassificatorItem parent;
     private final String parentCode;
     private final int level;
+    @Transient
     private final List<PathElement> path;
 
     @JsonIgnore
-    @DBRef
+   // @DBRef
+    @Transient
     private List<ClassificatorItem> children = new ArrayList<>();
     private boolean hasChildren = false;
 
