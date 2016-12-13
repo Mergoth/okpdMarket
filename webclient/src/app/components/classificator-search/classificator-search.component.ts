@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {Classificator} from "../../domain/classificator";
+import {ClassificatorItem, Classificator} from "../../domain/classificator";
 import {ClassificatorService} from "../../service/classificator.service";
 import {TabsModel} from "../../tab-model";
 
@@ -18,7 +18,7 @@ export class ClassificatorSearchComponent extends OnInit {
 
   query: string = "";
 
-  searchResult: Classificator[];
+    searchResult: ClassificatorItem[];
 
   searching:boolean = false;
 
@@ -31,12 +31,12 @@ export class ClassificatorSearchComponent extends OnInit {
       this.classificatorTypes = res;
       this.tabModel.clear();
       this.classificatorTypes.forEach(clsfType => this.tabModel.push({
-        type: clsfType.code,
+          type: clsfType.id,
         title: clsfType.name,
         selected: false
       }));
     }).then(_ => {
-      this.tabModel.selectedType = this.classificatorTypes[0].code;
+        this.tabModel.selectedType = this.classificatorTypes[0].id;
     });
   }
 

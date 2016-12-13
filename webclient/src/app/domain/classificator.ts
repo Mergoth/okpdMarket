@@ -1,11 +1,16 @@
 export interface Classificator {
-  code: string;
-  name: string;
-  parentCode?: string;
-  notes?: string;
-  hasChildren?: boolean;
-  path?:[string, string][];
-  children?: Classificator[];
-  matched?: Classificator[];
-  type?: Classificator[];
+    id: string;
+    name: string;
+}
+
+export interface ClassificatorItem {
+    code: string;
+    name: string;
+    parentCode?: string;
+    notes?: string;
+    hasChildren?: boolean;
+    type?: string;
+    path?: [string, string][];
+    children?: ClassificatorItem[];
+    matched?: ClassificatorItem[];
 }

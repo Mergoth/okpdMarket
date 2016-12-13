@@ -87,25 +87,22 @@ A `GET` request is used to access classificators list
 
 ==== Response structure
 
-include::{snippets}/classificators/http-response.adoc[]
+
 
 ==== Example response
 
-include::{snippets}/index-example/http-response.adoc[]
+include::{snippets}/classificators/http-response.adoc[]
 
 
 
-[[resources-index-links]]
-==== Links
 
-include::{snippets}/index-example/links.adoc[]
 
 
 
 [[resources-classificator-top-level]]
 == Classificator
 
-The Notes resources is used to create and list notes
+To get classificator items
 
 
 
