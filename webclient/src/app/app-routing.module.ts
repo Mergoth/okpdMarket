@@ -1,7 +1,7 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {ClassificatorsTreeComponent} from "./classificators-tree.component";
-import {ClassificatorSearchComponent} from "./classificator-search.component";
+import {ClassificatorsTreeComponent} from "./components/classificators-tree/classificators-tree.component";
+import {ClassificatorSearchComponent} from "./components/classificator-search/classificator-search.component";
 
 const routes: Routes = [
   {

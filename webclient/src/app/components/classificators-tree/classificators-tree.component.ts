@@ -1,10 +1,10 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ClassificatorService} from "./classificator.service";
-import {ClassificatorTreeModel} from "./components/classificator-tree/classificator-tree";
-import {Tree} from "./components/classificator-tree/tree";
-import {Classificator} from "./classificator";
-import {TabsModel} from "./tab-model";
+import {ClassificatorService} from "../../service/classificator.service";
+import {ClassificatorTreeModel} from "./classificator-tree/classificator-tree";
+import {Tree} from "./tree";
+import {Classificator} from "../../domain/classificator";
+import {TabsModel} from "../../tab-model";
 
 
 @Component({

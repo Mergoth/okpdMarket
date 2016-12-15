@@ -7,6 +7,7 @@ import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.service.ClassificatorService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
     @Override
     public List<ClassificatorTypeDto> getClassificatorTypes() {
-        return null;
+        return ClassificatorTypeDto.Converter.toDtoList(new ArrayList<>(repository.getClassificators().values()));
     }
 
     @Override

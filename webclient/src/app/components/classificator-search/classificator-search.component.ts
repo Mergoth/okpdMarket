@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {Router} from "@angular/router";
-import {Classificator} from "./classificator";
-import {ClassificatorService} from "./classificator.service";
-import {TabsModel} from "./tab-model";
+import {Classificator} from "../../domain/classificator";
+import {ClassificatorService} from "../../service/classificator.service";
+import {TabsModel} from "../../tab-model";
 
 @Component({
   selector: 'classificator-search',
