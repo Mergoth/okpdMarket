@@ -4,9 +4,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import ru.okpdmarket.dao.ClassificatorDao;
+import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.model.Classificator;
-
-import java.util.Collections;
 
 /**
  * Created by vladislav on 09/12/2016.
@@ -16,18 +15,18 @@ import java.util.Collections;
 @Primary
 public class FakeClassificatorDaoImpl implements ClassificatorDao {
     @Override
-    public Classificator save(Classificator entity) {
+    public ClassificatorDaoDto save(ClassificatorDaoDto entity) {
         return null;
     }
 
 
     @Override
-    public <S extends Classificator> Iterable<S> save(Iterable<S> entities) {
+    public <S extends ClassificatorDaoDto> Iterable<S> save(Iterable<S> entities) {
         return null;
     }
 
     @Override
-    public Classificator findOne(String s) {
+    public ClassificatorDaoDto findOne(String s) {
         return null;
     }
 
@@ -37,7 +36,7 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
     }
 
     @Override
-    public Iterable<Classificator> findAll() {
+    public Iterable<ClassificatorDaoDto> findAll() {
         Classificator classificator = new Classificator("code", "test");
         classificator.add("1", "Test");
         classificator.add("11", "TestLevel11", "1");
@@ -45,11 +44,13 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         classificator.add("13", "TestLevel13", "1");
         classificator.add("121", "TestLevel121", "12");
         classificator.add("2", "Test2");
-        return Collections.singletonList(classificator);
+        // return Collections.singletonList(classificator);
+        // FIXME: update DAO logic
+        return null;
     }
 
     @Override
-    public Iterable<Classificator> findAll(Iterable<String> strings) {
+    public Iterable<ClassificatorDaoDto> findAll(Iterable<String> strings) {
         return null;
     }
 
@@ -64,12 +65,12 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
     }
 
     @Override
-    public void delete(Classificator entity) {
+    public void delete(ClassificatorDaoDto entity) {
 
     }
 
     @Override
-    public void delete(Iterable<? extends Classificator> entities) {
+    public void delete(Iterable<? extends ClassificatorDaoDto> entities) {
 
     }
 

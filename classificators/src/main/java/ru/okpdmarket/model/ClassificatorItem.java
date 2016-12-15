@@ -40,6 +40,7 @@ public class ClassificatorItem implements Serializable {
     @JsonIgnore
     private Classificator classificator;
 
+
     public ClassificatorItem(ClassificatorItem parent, String code, String name) {
         this(parent, code, name, "");
     }
