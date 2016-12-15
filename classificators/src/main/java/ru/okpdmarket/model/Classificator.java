@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -41,10 +40,17 @@ public class Classificator implements Serializable {
     }
 
     public ClassificatorItem add(String code, String name, String parentCode) {
+
+        // FIXME: clean this mess
+
         ClassificatorItem parentItem = getItemByCode(parentCode);
         ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
         if (parentCode!=null) {
-            parentItem.getChildren().add(classificatorItem);
+            List<ClassificatorItem> children = parentItem.getChildren();
+            children.add(classificatorItem);
+            parentItem.setChildren(children);
+        } else {
+            tree.addIfAbsent(classificatorItem);
         }
         return classificatorItem;
     }

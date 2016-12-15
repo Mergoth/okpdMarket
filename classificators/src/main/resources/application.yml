@@ -4,7 +4,15 @@ spring:
       host: localhost
       database: okpd
       port: 27017
+  profiles:
+    active: debug
+eureka:
+  client:
+    register-with-eureka: false
+    eureka.client.fetch-registry: false
+
 
 server:
   context-path: /classificators
-  port: 8086
+  port: 8080
+
