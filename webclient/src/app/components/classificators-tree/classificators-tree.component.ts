@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ClassificatorService} from "../../service/classificator.service";
 import {ClassificatorTreeModel} from "./classificator-tree/classificator-tree";
 import {Tree} from "./tree";
-import {Classificator} from "../../domain/classificator";
+import {Classificator, ClassificatorItem} from "../../domain/classificator";
 import {TabsModel} from "../../tab-model";
 
 
@@ -51,12 +51,12 @@ export class ClassificatorsTreeComponent implements OnInit {
       this.classificatorTypes = res;
       this.tabModel.clear();
       this.classificatorTypes.forEach(clsfType => this.tabModel.push({
-        type: clsfType.code,
+        type: clsfType.id,
         title: clsfType.name,
         selected: false
       }));
     }).then(_ => {
-      this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].code;
+      this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].id;
       this.updateTree();
     });
   }
@@ -89,14 +89,14 @@ export class ClassificatorsTreeComponent implements OnInit {
   }
 
 
-  treeClassificatorBy(rootId: string, params: Object = {}): Promise<Classificator> {
+  treeClassificatorBy(rootId: string, params: Object = {}): Promise<ClassificatorItem> {
     const nodeId = (this.tabModel.selectedType == rootId) ? null : rootId;
     return this.classificatorService.classificatorTree(this.tabModel.selectedType, nodeId, params);
   }
 
 }
 
-function fillTree(model: Tree, classificator: Classificator) {
+function fillTree(model: Tree, classificator: ClassificatorItem) {
   if (classificator == null) return new Tree();
   model = model ? model : new Tree();
   model.name = classificator.name;
@@ -104,14 +104,16 @@ function fillTree(model: Tree, classificator: Classificator) {
   model.parentId = classificator.parentCode;
   model.nodes = [];
   model.path = classificator.path;
-  for (let child of classificator.children) {
-    const node = new Tree();
-    node.name = child.name;
-    node.id = child.code;
-    node.parentId = child.parentCode;
-    node.notes = child.notes;
-    node.hasNodes = child.hasChildren;
-    model.nodes.push(node);
+  if (classificator.hasChildren) {
+    for (let child of classificator.children) {
+      const node = new Tree();
+      node.name = child.name;
+      node.id = child.code;
+      node.parentId = child.parentCode;
+      node.notes = child.notes;
+      node.hasNodes = child.hasChildren;
+      model.nodes.push(node);
+    }
   }
   // console.log('model2:', model);
   return model;

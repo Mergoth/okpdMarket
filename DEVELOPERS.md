@@ -3,9 +3,9 @@
 ## Run local cloud
 From project root folder 
 
-* `gradle clean build` 
-* go to `webclient/`
-* Run `ng build --prod`
+* Build all modules with `gradle clean build` ('webclient' is not included right now) 
+* Go to `webclient/` 
+* Run `ng build --prod` - to build JS UI part
 * Copy `webclient/dist/**` to `gateway/src/main/resources/static`
 * Run `sh dev-start.sh`
 * Wait 1-2 minutes
