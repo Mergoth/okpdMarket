@@ -4,8 +4,8 @@ import {ClassificatorTreeModel} from "./classificator-tree";
 
 @Component({
   selector: 'classificator-tree',
-  templateUrl: 'classificator-tree.html',
-  styleUrls: ['classificator-tree.css']
+  templateUrl: './classificator-tree.html',
+  styleUrls: ['./classificator-tree.css']
 
 })
 export class ClassificatorTreeComponent {

@@ -6,8 +6,8 @@ import {TabsModel} from "../../tab-model";
 
 @Component({
   selector: 'classificator-search',
-  styleUrls: ['classificator-search.css'],
-  templateUrl: 'classificator-search.html',
+  styleUrls: ['./classificator-search.css'],
+  templateUrl: './classificator-search.html',
   providers: [ClassificatorService]
 })
 export class ClassificatorSearchComponent extends OnInit {

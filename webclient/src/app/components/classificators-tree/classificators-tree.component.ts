@@ -9,7 +9,7 @@ import {TabsModel} from "../../tab-model";
 
 @Component({
   selector: 'classificators-tree',
-  templateUrl: 'classificators-tree.html'
+  templateUrl: './classificators-tree.html'
 })
 export class ClassificatorsTreeComponent implements OnInit {
 
@@ -21,7 +21,7 @@ export class ClassificatorsTreeComponent implements OnInit {
 
   classificatorTree: ClassificatorTreeModel;
 
-  routeParams: RouteParams;
+  private routeParams: RouteParams;
 
   constructor(private route: ActivatedRoute, private router: Router, private classificatorService: ClassificatorService) {
     this.route.params.subscribe(params => {

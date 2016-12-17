@@ -41,7 +41,7 @@ export class TabsModel {
   }
 }
 
-class TabModel {
+export class TabModel {
   type: string;
   title: string;
   selected: boolean;
