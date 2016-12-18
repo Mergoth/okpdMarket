@@ -46,7 +46,7 @@ public class ClassificatorController {
     @RequestMapping(value = "/{code}/{itemId}", method = RequestMethod.GET)
     public ClassificatorItemDto getItem(@PathVariable(value = "code") String classificatorCode,
                                         @PathVariable(value = "itemId") String itemId) {
-        return ClassificatorItemDto.Converter.toDto(classificatorService.getClassifiactor(classificatorCode).getItemByCode(itemId));
+        return ClassificatorItemDto.Converter.toDto(classificatorService.getClassifiactor(classificatorCode).getItemByCode(itemId), true);
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)

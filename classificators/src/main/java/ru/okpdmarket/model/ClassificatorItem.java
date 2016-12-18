@@ -1,13 +1,8 @@
 package ru.okpdmarket.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,27 +12,19 @@ import java.util.List;
  */
 @Data
 @ToString(of = {"code", "name"})
-@Document
-public class ClassificatorItem implements Serializable {
+public class ClassificatorItem {
 
-    @Id
+    // Main fields
     private final String code;
     private final String name;
-    private final String notes;
-
-    @JsonIgnore
-    @DBRef
     private final ClassificatorItem parent;
+    // Calculatable fields
     private final String parentCode;
     private final int level;
     private final List<PathElement> path;
-
-    @JsonIgnore
-    @DBRef
+    private String notes;
+    // Relations
     private List<ClassificatorItem> children = new ArrayList<>();
-    private boolean hasChildren = false;
-
-    @JsonIgnore
     private Classificator classificator;
 
 
@@ -87,8 +74,12 @@ public class ClassificatorItem implements Serializable {
 
     public void setChildren(List<ClassificatorItem> children) {
         this.children = children;
-        this.hasChildren = !children.isEmpty();
     }
+
+    public boolean hasChildren() {
+        return !children.isEmpty();
+    }
+
 
     @Data
     public class PathElement {
