@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Service
 public interface SearchService {
-    List<ClassificatorItem> search(String classificatorId, String query);
+    List<ClassificatorItem> findClassificator(String classificatorId, String query);
 
     void indexClassificator(Classificator classificator);
 
