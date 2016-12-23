@@ -35,7 +35,7 @@ public class ClassificatorController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "id") String classificatorId) {
-        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel());
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel(), true);
     }
 
     /**

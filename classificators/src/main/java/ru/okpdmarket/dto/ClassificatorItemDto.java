@@ -8,6 +8,7 @@ import ru.okpdmarket.model.ClassificatorItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +25,7 @@ public class ClassificatorItemDto implements Serializable {
     private Integer level;
     private String parentCode;
     private List<ClassificatorItem.PathElement> path;
+    private Map<String, List<ClassificatorItemDto>> links;
 
     private List<ClassificatorItemDto> children = new ArrayList<>();
 
@@ -41,14 +43,20 @@ public class ClassificatorItemDto implements Serializable {
                 dto.setPath(item.getPath());
                 dto.setChildren(item.getChildren().stream()
                         .map(Converter::toDto)
-                        .collect(Collectors.toList())
-                );
+                        .collect(Collectors.toList()));
+                Map<String, List<ClassificatorItemDto>> linksDto =
+                        item.getLinks().entrySet().stream().collect(
+                                Collectors.toMap(
+                                        (c) -> c.getKey().getId(),
+                                        (i) -> Converter.toDtoList(i.getValue().getLinkedItems(), false)
+                                ));
+                dto.setLinks(linksDto);
             }
             return dto;
         }
 
-        public static List<ClassificatorItemDto> toDtoList(List<ClassificatorItem> items) {
-            return items.stream().map((item) -> toDto(item, true)).collect(Collectors.toList());
+        public static List<ClassificatorItemDto> toDtoList(List<ClassificatorItem> items, boolean extended) {
+            return items.stream().map((item) -> toDto(item, extended)).collect(Collectors.toList());
         }
     }
 }
