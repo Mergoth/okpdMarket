@@ -26,6 +26,7 @@ dependencies {
     compile "org.apache.lucene:lucene-analyzers-common:${project.ext['luceneVersion']}"
     compile "org.apache.lucene:lucene-queryparser:${project.ext['luceneVersion']}"
     compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+    compile("org.springframework.boot:spring-boot-starter-batch")
 
     testCompile "de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.50.3"
     //testCompile 'org.spockframework:spock-core:0.7-groovy-2.0-SNAPSHOT'
