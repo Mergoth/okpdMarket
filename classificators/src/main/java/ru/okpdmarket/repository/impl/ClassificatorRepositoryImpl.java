@@ -4,8 +4,10 @@ package ru.okpdmarket.repository.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.dao.ClassificatorDao;
+import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.repository.ClassificatorRepository;
+
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +31,9 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
     @PostConstruct
     private void init() {
-        updateClassificators((List<Classificator>) classificatorDao.findAll());
+        // FIXME: update DAO logic
+        List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
+        updateClassificators(ClassificatorDaoDto.Converter.fromDtoList(classificatorDaoAll));
     }
 
     @Override

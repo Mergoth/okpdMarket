@@ -1,11 +1,10 @@
-import {Classificator} from "../classificator";
+import {ClassificatorItem} from "../domain/classificator";
 
-export const OKPD_SEARCH_RESULT: Classificator[] = [
-  [
+export const OKPD_SEARCH_RESULT: ClassificatorItem[] = [
     {
       code: "01",
-      parentCode: null,
       name: "",
+        parentCode: null,
       notes: null,
       hasChildren: true,
       type: "okpd",
@@ -31,5 +30,4 @@ export const OKPD_SEARCH_RESULT: Classificator[] = [
       notes: null,
       hasChildren: true,
     }
-  ]
 ];

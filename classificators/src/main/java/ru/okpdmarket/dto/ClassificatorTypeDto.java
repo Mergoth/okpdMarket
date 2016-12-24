@@ -11,13 +11,20 @@ import java.util.stream.Collectors;
  */
 @Data
 public class ClassificatorTypeDto {
-    private final String name;
+    // Unique id
     private final String id;
+    // Code name in English for URL
+    private final String code;
+    // Classificator name in Russian
+    private final String name;
+    // Classificator description
+    private final String description;
 
     public static class Converter {
 
         public static ClassificatorTypeDto toDto(Classificator item) {
-            ClassificatorTypeDto dto = new ClassificatorTypeDto(item.getName(), item.getCode());
+            // Right now we're using code for ID and code both. Think more about this!
+            ClassificatorTypeDto dto = new ClassificatorTypeDto(item.getCode(), item.getCode(), item.getName(), item.getDescription());
             return dto;
         }
 

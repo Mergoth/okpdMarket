@@ -21,6 +21,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -47,7 +49,7 @@ public class ClassificatorControllerTest {
                 .apply(documentationConfiguration(this.restDocumentation))
                 .build();
 
-        Classificator classificator = new Classificator("code", "test");
+        Classificator classificator = new Classificator("1", "ОКПД");
         classificator.add("1", "Test");
         classificator.add("11", "TestLevel11", "1");
         classificator.add("12", "TestLevel12", "1");
@@ -66,7 +68,9 @@ public class ClassificatorControllerTest {
     public void getClassificatorTypes() throws Exception {
         this.mockMvc.perform(get("").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificators", preprocessResponse(prettyPrint())));
+                .andDo(document("classificators", preprocessResponse(prettyPrint()), responseFields(
+                        fieldWithPath("_id").description("Id of classificator type"),
+                        fieldWithPath("_name").description("Name of classificator type"))));
     }
 
 

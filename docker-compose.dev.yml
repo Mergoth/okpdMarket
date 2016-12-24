@@ -18,15 +18,12 @@ services:
   mongodb:
     build: mongodb
     ports:
-      - 26000:27017
-
-  webclient:
-    build: webclient
+      - 27017:27017
 
   classificators:
     build: classificators
     ports:
-      - 6000:6000
+      - 8086:6000
 
   monitoring:
       build: monitoring

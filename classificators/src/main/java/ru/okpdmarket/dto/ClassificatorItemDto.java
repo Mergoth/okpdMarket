@@ -1,7 +1,6 @@
 package ru.okpdmarket.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.ToString;
 import ru.okpdmarket.model.ClassificatorItem;
@@ -9,7 +8,6 @@ import ru.okpdmarket.model.ClassificatorItem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,8 +33,8 @@ public class ClassificatorItemDto implements Serializable {
         }
 
         public static ClassificatorItemDto toDto(ClassificatorItem item, boolean extended) {
-            String parentCode = Optional.ofNullable(item.getParent()).orElse(new ClassificatorItem(null, "", null)).getCode();
-            ClassificatorItemDto dto = new ClassificatorItemDto(item.getCode(), item.getName(), "", item.isHasChildren());
+
+            ClassificatorItemDto dto = new ClassificatorItemDto(item.getCode(), item.getName(), "", item.hasChildren());
             if (extended) {
                 dto.setLevel(item.getLevel());
                 dto.setParentCode(item.getParentCode());
