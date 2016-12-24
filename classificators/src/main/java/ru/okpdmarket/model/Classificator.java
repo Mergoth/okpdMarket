@@ -2,12 +2,11 @@ package ru.okpdmarket.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Transient;
 
-import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
@@ -16,8 +15,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by Vladislav on 29.08.2016.
  */
 @Data
-@Document
-public class Classificator implements Serializable {
+public class Classificator {
 
     // Unique classificator code in english
     private final String code;
@@ -28,24 +26,20 @@ public class Classificator implements Serializable {
     // Classificator description
     private String description;
 
-
-    @DBRef
+    @Transient
     private LinkedHashMap<String,ClassificatorItem> elements = new LinkedHashMap<>();
-    @DBRef
+
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
     public void add(String code, String name) {
-
         tree.addIfAbsent(this.add(code, name, null));
     }
 
     public ClassificatorItem add(String code, String name, String parentCode) {
 
-        // FIXME: clean this mess
-
         ClassificatorItem parentItem = getItemByCode(parentCode);
         ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
-        if (parentCode!=null) {
+        if (parentCode != null && !Objects.equals(parentCode, "")) {
             List<ClassificatorItem> children = parentItem.getChildren();
             children.add(classificatorItem);
             parentItem.setChildren(children);
