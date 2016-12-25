@@ -10,7 +10,20 @@ dependencyManagement {
 jar {
 	baseName = 'gateway'
 	version = '0.0.1-SNAPSHOT'
+    dependsOn ':webclient:build'
 }
+
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs "${rootDir}/webclient/dist/app"
+        }
+    }
+}
+
+
 
 dependencies {
 	compile 'org.springframework.cloud:spring-cloud-starter-zuul'
