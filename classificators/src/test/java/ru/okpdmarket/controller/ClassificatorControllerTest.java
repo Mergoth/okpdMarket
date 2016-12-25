@@ -1,5 +1,6 @@
 package ru.okpdmarket.controller;
 
+import lombok.val;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,22 +47,31 @@ public class ClassificatorControllerTest {
     public void setUpInitial(){
 
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.context)
-                .apply(documentationConfiguration(this.restDocumentation))
+                .apply(documentationConfiguration(this.restDocumentation).uris()
+                        .withScheme("http")
+                        .withHost("classificators"))
                 .build();
 
-        Classificator classificator = new Classificator("1", "ОКПД");
-        classificator.add("1", "Test");
-        classificator.add("11", "TestLevel11", "1");
-        classificator.add("12", "TestLevel12", "1");
-        classificator.add("13", "TestLevel13", "1");
-        classificator.add("121", "TestLevel121", "12");
-        classificator.add("2", "Test2");
-        this.classificatorRepository.updateClassificators(Collections.singletonList(classificator));
+        Classificator classificator1 = new Classificator("1", "ОКПД");
+        classificator1.setId("1");
+        val item11 = classificator1.add("1", "Test");
+        classificator1.add("11", "TestLevel11", "1");
+        classificator1.add("12", "TestLevel12", "1");
+        classificator1.add("13", "TestLevel13", "1");
+        classificator1.add("121", "TestLevel121", "12");
+        val item12 = classificator1.add("2", "Test2");
+
+        Classificator classificator2 = new Classificator("2", "ТНВД");
+        classificator2.setId("2");
+        val item21 = classificator2.add("1", "TestTnvd");
+        item21.linkItem(item11);
+        item21.linkItem(item12);
+
+        this.classificatorRepository.updateClassificators(Collections.singletonList(classificator1));
     }
 
     @After
     public void tearDown() throws Exception {
-       // mongod.stop();
     }
 
     @Test
@@ -69,21 +79,23 @@ public class ClassificatorControllerTest {
         this.mockMvc.perform(get("").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificators", preprocessResponse(prettyPrint()), responseFields(
-                        fieldWithPath("_id").description("Id of classificator type"),
-                        fieldWithPath("_name").description("Name of classificator type"))));
+                        fieldWithPath("[].id").description("Id of classificator type"),
+                        fieldWithPath("[].code").description("English name of classificator type. To use in URL"),
+                        fieldWithPath("[].name").description("Localized name of Classificator type"),
+                        fieldWithPath("[].description").description("Description"))));
     }
 
 
     @Test
     public void getTopItems() throws Exception {
-        this.mockMvc.perform(get("/code").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-top-items", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void getItem() throws Exception {
-        this.mockMvc.perform(get("/code/1").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/1/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }
@@ -91,7 +103,7 @@ public class ClassificatorControllerTest {
     @Test
     @Ignore
     public void search() throws Exception {
-        this.mockMvc.perform(get("/code/search?query=Test query").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/1/search?query=Test query").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
     }

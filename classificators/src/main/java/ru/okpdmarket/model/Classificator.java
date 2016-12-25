@@ -31,8 +31,10 @@ public class Classificator {
 
     private CopyOnWriteArrayList<ClassificatorItem> tree = new CopyOnWriteArrayList<>();
 
-    public void add(String code, String name) {
-        tree.addIfAbsent(this.add(code, name, null));
+    public ClassificatorItem add(String code, String name) {
+        ClassificatorItem item = this.add(code, name, null);
+        tree.addIfAbsent(item);
+        return item;
     }
 
     public ClassificatorItem add(String code, String name, String parentCode) {

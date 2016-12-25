@@ -83,11 +83,12 @@ include::{snippets}/error-example/http-response.adoc[]
 [[resources-classificators-access]]
 === Accessing classificators list
 
-A `GET` request is used to access classificators list
+A `GET` request to `/classificators` is used to access classificators list
+
 
 ==== Response structure
 
-
+include::{snippets}/classificators/response-fields.adoc[]
 
 ==== Example response
 
@@ -95,157 +96,44 @@ include::{snippets}/classificators/http-response.adoc[]
 
 
 
-
-
-
-
 [[resources-classificator-top-level]]
-== Classificator
+== Classificator top level items
 
-To get classificator items
-
-
-
-[[resources-notes-list]]
-=== Listing notes
-
-A `GET` request will list all of the service's notes.
+A `GET` request to `/classificators/{Id}` is used to get particular classificator top-level items
 
 ==== Response structure
 
-include::{snippets}/notes-list-example/response-fields.adoc[]
-
-==== Example request
-
-include::{snippets}/notes-list-example/curl-request.adoc[]
+include::{snippets}/classificator-top-items/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/notes-list-example/http-response.adoc[]
-
-[[resources-notes-list-links]]
-==== Links
-
-include::{snippets}/notes-list-example/links.adoc[]
-
-
-[[resources-notes-create]]
-=== Creating a note
-
-A `POST` request is used to create a note
-
-==== Request structure
-
-include::{snippets}/notes-create-example/request-fields.adoc[]
-
-==== Example request
-
-include::{snippets}/notes-create-example/curl-request.adoc[]
-
-==== Example response
-
-include::{snippets}/notes-create-example/http-response.adoc[]
+include::{snippets}/classificator-top-items/http-response.adoc[]
 
 
 
-[[resources-tags]]
-== Tags
+[[resources-classificator-item]]
+== Particular classificator item
 
-The Tags resource is used to create and list tags.
-
-
-
-[[resources-tags-list]]
-=== Listing tags
-
-A `GET` request will list all of the service's tags.
+A `GET` request to `/classificators/{Classificator.Id}/{Code}` is used to get particular classificator item
 
 ==== Response structure
 
-include::{snippets}/tags-list-example/response-fields.adoc[]
-
-==== Example request
-
-include::{snippets}/tags-list-example/curl-request.adoc[]
+include::{snippets}/classificator-item/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/tags-list-example/http-response.adoc[]
+include::{snippets}/classificator-item/http-response.adoc[]
 
-[[resources-tags-list-links]]
-==== Links
+[[resources-classificator-search]]
+== Fulltext search in classificator
 
-include::{snippets}/tags-list-example/links.adoc[]
-
-
-
-[[resources-tags-create]]
-=== Creating a tag
-
-A `POST` request is used to create a note
-
-==== Request structure
-
-include::{snippets}/tags-create-example/request-fields.adoc[]
-
-==== Example request
-
-include::{snippets}/tags-create-example/curl-request.adoc[]
-
-==== Example response
-
-include::{snippets}/tags-create-example/http-response.adoc[]
-
-
-
-[[resources-note]]
-== Note
-
-The Note resource is used to retrieve, update, and delete individual notes
-
-
-
-[[resources-note-links]]
-=== Links
-
-include::{snippets}/note-get-example/links.adoc[]
-
-
-
-[[resources-note-retrieve]]
-=== Retrieve a note
-
-A `GET` request will retrieve the details of a note
+A `GET` request to `/classificators/{Classificator.Id}/search?query={fulltext_search_query}` is used to use fulltext search by classificator contents
 
 ==== Response structure
 
-include::{snippets}/note-get-example/response-fields.adoc[]
-
-==== Example request
-
-include::{snippets}/note-get-example/curl-request.adoc[]
+include::{snippets}/classificator-search/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/note-get-example/http-response.adoc[]
+include::{snippets}/classificator-search/http-response.adoc[]
 
-
-
-[[resources-note-update]]
-=== Update a note
-
-A `PATCH` request is used to update a note
-
-==== Request structure
-
-include::{snippets}/note-update-example/request-fields.adoc[]
-
-To leave an attribute of a note unchanged, any of the above may be omitted from the request.
-
-==== Example request
-
-include::{snippets}/note-update-example/curl-request.adoc[]
-
-==== Example response
-
-include::{snippets}/note-update-example/http-response.adoc[]

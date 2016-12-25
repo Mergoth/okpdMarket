@@ -1,17 +1,18 @@
 package ru.okpdmarket.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.val;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Vladislav on 29.08.2016.
  */
 @Data
 @ToString(of = {"code", "name"})
+@EqualsAndHashCode(of = {"code", "name", "notes", "parentCode"})
 public class ClassificatorItem {
 
     // Main fields
@@ -25,6 +26,7 @@ public class ClassificatorItem {
     private String notes;
     // Relations
     private List<ClassificatorItem> children = new ArrayList<>();
+    private Map<Classificator, ClassificatorLinks> links = new HashMap<>();
     private Classificator classificator;
 
 
@@ -41,6 +43,20 @@ public class ClassificatorItem {
         this.parentCode = calcParentCode();
         this.path = calcPath();
     }
+
+    public ClassificatorItem linkItem(ClassificatorItem linkedItem) {
+        val targetClassificator = linkedItem.getClassificator();
+        if (addLink(targetClassificator, linkedItem)) {
+            linkedItem.addLink(this.getClassificator(), this);
+        }
+        return this;
+    }
+
+    private boolean addLink(Classificator targetClassificator, ClassificatorItem linkedItem) {
+        val targetLinks = links.computeIfAbsent(targetClassificator, k -> new ClassificatorLinks());
+        return targetLinks.add(linkedItem);
+    }
+
 
     private List<PathElement> calcPath() {
         List<PathElement> res;
