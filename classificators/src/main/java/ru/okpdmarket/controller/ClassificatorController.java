@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.okpdmarket.dto.ClassificatorItemDto;
 import ru.okpdmarket.dto.ClassificatorTypeDto;
-import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 
@@ -50,8 +49,8 @@ public class ClassificatorController {
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
+    public List<ClassificatorItemDto> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
         //TODO: Lucene in-memory search invoked from ClassificatorService
-        return searchService.search(classificatorId,query);
+        return ClassificatorItemDto.Converter.toDtoList(searchService.search(classificatorId, query), true);
     }
 }
