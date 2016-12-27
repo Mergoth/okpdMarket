@@ -11,63 +11,91 @@ buildscript {
     }
 }
 
-subprojects {
-    plugins.withType(JavaPlugin).whenPluginAdded {
-        configure(project) {
-            apply plugin: 'idea'
-            apply plugin: 'spring-boot'
-            apply plugin: "io.spring.dependency-management"
-            apply plugin: 'groovy'
+allprojects {
 
-            version = '0.0.1-SNAPSHOT'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'spring-boot'
+    // apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'groovy'
+    apply plugin: 'jacoco'
 
-            def langLevel = 1.8
-            sourceCompatibility = langLevel
-            targetCompatibility = langLevel
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
 
-            dependencyManagement {
-                imports {
-                    mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
-                    mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
-                }
+        maven { url "http://repo1.maven.org/maven2/" }
+    }
+
+
+
+
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+        version = '0.0.1-SNAPSHOT'
+
+        dependencyManagement {
+            imports {
+                mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
+                mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
             }
-
-            dependencies {
-                compile 'org.projectlombok:lombok'
-                compile 'org.springframework.boot:spring-boot-starter-web'
-                compile 'org.springframework.boot:spring-boot-starter-actuator'
-                testCompile 'org.springframework.boot:spring-boot-starter-test'
-                testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
-
-            }
-            repositories {
-                mavenCentral()
-            }
-            task copyForDocker(type: Copy) {
-                from("${buildDir}/libs") {
-                    rename { "${project.name}.jar" }
-                }
-                into "$buildDir"
-                include "${jar.archiveName}"
-
-            }
-
-            build.finalizedBy(copyForDocker)
         }
 
-        //for the debug purposes. Run as: gradle debug bootRun
-        task debug {
-            doLast {
-                dependencies {
-                    compile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.50.3"
-                }
-                bootRun {
-                    jvmArgs '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
-                }
+        dependencies {
+            compile 'org.projectlombok:lombok'
+            compile 'org.springframework.boot:spring-boot-starter-web'
+            compile 'org.springframework.boot:spring-boot-starter-actuator'
+            testCompile 'org.springframework.boot:spring-boot-starter-test'
+            testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+
+        }
+
+
+        task copyForDocker(type: Copy) {
+            from("${buildDir}/libs") {
+                rename { "${project.name}.jar" }
+            }
+            into "$buildDir"
+            include "${jar.archiveName}"
+
+        }
+
+        build.finalizedBy(copyForDocker)
+
+
+    //for the debug purposes. Run as: gradle debug bootRun
+    task debug {
+        doLast {
+            dependencies {
+                compile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.50.3"
+            }
+            bootRun {
+                jvmArgs '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
             }
         }
     }
 
+
+}
+
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
+
+    reports {
+        xml.enabled true
+        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        html.enabled false
+        csv.enabled false
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
 }
 
 /*task runDocker(type: Exec) {
