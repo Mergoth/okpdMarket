@@ -9,8 +9,7 @@ export interface ClassificatorItem {
     parentCode?: string;
     notes?: string;
     hasChildren?: boolean;
-    type?: string;
     path?: [string, string][];
     children?: ClassificatorItem[];
-    matched?: ClassificatorItem[];
+    links?: Map<string, ClassificatorItem>;
 }
