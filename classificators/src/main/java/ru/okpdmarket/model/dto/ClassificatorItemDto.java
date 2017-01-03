@@ -1,26 +1,34 @@
 package ru.okpdmarket.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import ru.okpdmarket.model.ClassificatorItem;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Created by Vladislav on 04.11.2016.
  */
-@Data
+@RequiredArgsConstructor
 @ToString(of = {"code", "name"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ClassificatorItemDto implements Serializable {
+
+    @JsonIgnore
     private final ClassificatorItem item;
 
-    private List<ClassificatorItemDto> children = new ArrayList<>();
+    public String getCode() {
+        return item.getCode();
+    }
+
+    public Boolean getHasChildren() {
+        return item.getRelations().hasChildren();
+    }
+
 
     public static class Converter {
         public static ClassificatorItemDto toDto(ClassificatorItem item) {
@@ -28,8 +36,9 @@ public class ClassificatorItemDto implements Serializable {
         }
 
         public static ClassificatorItemDto toDto(ClassificatorItem item, boolean extended) {
+            ClassificatorItemDto dto = new ClassificatorItemDto(item);
 
-            ClassificatorItemDto dto = new ClassificatorItemDto(item.getCode(), item.getName(), "", item.hasChildren());
+            /*ClassificatorItemDto dto = new ClassificatorItemDto(item.getCode(), item.getName(), "", item.hasChildren());
             if (extended) {
                 dto.setLevel(item.getLevel());
                 dto.setParentCode(item.getParentCode());
@@ -44,7 +53,7 @@ public class ClassificatorItemDto implements Serializable {
                                         (i) -> Converter.toDtoList(i.getValue().getLinkedItems(), false)
                                 ));
                 dto.setLinks(linksDto);
-            }
+            }*/
             return dto;
         }
 

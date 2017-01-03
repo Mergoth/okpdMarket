@@ -2,6 +2,7 @@ package ru.okpdmarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.dto.ClassificatorItemDto;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
@@ -26,25 +27,25 @@ public class ClassificatorController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<ClassificatorTypeDto> getClassificatorTypes() {
+    public List<Classificator> getClassificatorTypes() {
         return classificatorService.getClassificatorTypes();
     }
 
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "id") String classificatorId) {
-        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactor(classificatorId).getFirstLevel(), true);
+    @RequestMapping(value = "/{classificatorId}", method = RequestMethod.GET)
+    public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "classificatorId") String classificatorId) {
+        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactorFirstLevel(classificatorId), true);
     }
 
     /**
-     * @param classificatorCode - code of the classificator
-     * @param itemId - code of the ClassificatorItem to get
-     * @return ClassificatorItemDto - with
+     * @param classificatorId - id of the classificator
+     * @param itemCode - code of the ClassificatorItem to get
+     * @return ClassificatorItemDto -
      */
-    @RequestMapping(value = "/{code}/{itemId}", method = RequestMethod.GET)
-    public ClassificatorItemDto getItem(@PathVariable(value = "code") String classificatorCode,
-                                        @PathVariable(value = "itemId") String itemId) {
-        return ClassificatorItemDto.Converter.toDto(classificatorService.getClassifiactor(classificatorCode).getItemByCode(itemId), true);
+    @RequestMapping(value = "/{classificatorId}/{itemCode}", method = RequestMethod.GET)
+    public ClassificatorItemDto getItem(@PathVariable(value = "classificatorId") String classificatorId,
+                                        @PathVariable(value = "itemCode") String itemCode) {
+        return ClassificatorItemDto.Converter.toDto(classificatorService.getItem(classificatorId, itemCode), true);
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)

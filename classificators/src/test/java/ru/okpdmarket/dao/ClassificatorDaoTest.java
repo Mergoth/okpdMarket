@@ -67,7 +67,8 @@ public class ClassificatorDaoTest {
 
     @Test
     public void findById(){
-        Classificator classificator = new Classificator("code", "test");
+        Classificator classificator = new Classificator();
+        //"code", "test"
         classificator.setId("test");
         // TODO: fix test
         // classificatorDao.save(classificator);

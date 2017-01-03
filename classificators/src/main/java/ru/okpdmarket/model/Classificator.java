@@ -4,7 +4,7 @@ import lombok.Data;
 
 
 /**
- * Interface for classificator and work with its items
+ * Classificator domain model
  * Created by Vladislav on 29.08.2016.
  */
 @Data

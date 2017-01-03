@@ -17,9 +17,14 @@ public class ClassificatorItemCached {
 
     public ClassificatorItemCached(ClassificatorItem item) {
         this.item = item;
+        //recalculate();
+    }
+
+    public ClassificatorItemCached recalculate() {
         this.path = calcPath();
         this.parentCode = calcParentCode();
         this.level = calcLevel();
+        return this;
     }
 
     private List<PathElement> calcPath() {
@@ -41,7 +46,6 @@ public class ClassificatorItemCached {
             return "";
         }
     }
-
 
     public int calcLevel() {
         if (item.getRelations().getParent() != null) {

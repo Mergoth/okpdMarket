@@ -32,9 +32,9 @@ public class ClassificatorContents {
         ClassificatorItem parentItem = getItemByCode(parentCode);
         ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
         if (parentCode != null && !Objects.equals(parentCode, "")) {
-            List<ClassificatorItem> children = parentItem.getChildren();
+            List<ClassificatorItem> children = parentItem.getRelations().getChildren();
             children.add(classificatorItem);
-            parentItem.setChildren(children);
+            //parentItem.getRelations().setChildren(children);
         } else {
             tree.addIfAbsent(classificatorItem);
         }
@@ -42,8 +42,10 @@ public class ClassificatorContents {
     }
 
     private ClassificatorItem createClassificatorItem(String code, String name, ClassificatorItem parentItem) {
-        ClassificatorItem classificatorItem = new ClassificatorItem(parentItem, code, name);
-        classificatorItem.setClassificator(classificator);
+        ClassificatorItem classificatorItem = new ClassificatorItem(code, name);
+        classificatorItem.getRelations().setParent(parentItem);
+        classificatorItem.getRelations().setClassificator(classificator);
+        classificatorItem.getCached().recalculate();
         elements.putIfAbsent(code, classificatorItem);
         return classificatorItem;
     }
@@ -53,7 +55,7 @@ public class ClassificatorContents {
     }
 
     public List<ClassificatorItem> getChildLevel(String code) {
-        return elements.get(code).getChildren();
+        return elements.get(code).getRelations().getChildren();
     }
 
     public List<ClassificatorItem> getFirstLevel() {

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.model.dto.ClassificatorItemDto;
 import ru.okpdmarket.model.dto.ClassificatorLinkDto;
@@ -26,8 +27,8 @@ public class ClassificatorUpdateController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<List<ClassificatorTypeDto>> putClassificator(@RequestBody final ClassificatorTypeDto model) {
-        return new ResponseEntity<>(ClassificatorTypeDto.Converter.toDtoList(classificatorService.put(model)), HttpStatus.OK);
+    public ResponseEntity<List<Classificator>> putClassificator(@RequestBody final Classificator model) {
+        return new ResponseEntity<>(classificatorService.put(model), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/{itemId}", method = RequestMethod.PUT)

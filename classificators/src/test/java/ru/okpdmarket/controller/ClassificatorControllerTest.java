@@ -15,9 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorContents;
 import ru.okpdmarket.repository.ClassificatorRepository;
-
-import java.util.Collections;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -54,22 +53,27 @@ public class ClassificatorControllerTest {
                         .withHost("classificators"))
                 .build();
 
-        Classificator classificator1 = new Classificator("1", "ОКПД");
+        Classificator classificator1 = new Classificator();
+        classificator1.setCode("OKPD");
+        classificator1.setName("ОКПД");
         classificator1.setId("1");
-        val item11 = classificator1.add("1", "Test");
-        classificator1.add("11", "TestLevel11", "1");
-        classificator1.add("12", "TestLevel12", "1");
-        classificator1.add("13", "TestLevel13", "1");
-        classificator1.add("121", "TestLevel121", "12");
-        val item12 = classificator1.add("2", "Test2");
+        ClassificatorContents contents1 = classificatorRepository.putClassificator(classificator1);
+        val item11 = contents1.add("1", "Test");
+        contents1.add("11", "TestLevel11", "1");
+        contents1.add("12", "TestLevel12", "1");
+        contents1.add("13", "TestLevel13", "1");
+        contents1.add("121", "TestLevel121", "12");
+        val item12 = contents1.add("2", "Test2");
 
-        Classificator classificator2 = new Classificator("2", "ТНВД");
+        Classificator classificator2 = new Classificator();
+        classificator2.setCode("tnvd");
+        classificator2.setName("ТНВД");
         classificator2.setId("2");
-        val item21 = classificator2.add("1", "TestTnvd");
-        item21.linkItem(item11);
-        item21.linkItem(item12);
+        ClassificatorContents contents2 = classificatorRepository.putClassificator(classificator2);
+        val item21 = contents2.add("1", "TestTnvd");
+        item21.getRelations().linkItem(item11);
+        item21.getRelations().linkItem(item12);
 
-        this.classificatorRepository.putClassificatorType(Collections.singletonList(classificator1));
     }
 
     @After
@@ -97,7 +101,7 @@ public class ClassificatorControllerTest {
 
     @Test
     public void getItem() throws Exception {
-        this.mockMvc.perform(get("/1/11").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/1/12").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }

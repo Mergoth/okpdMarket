@@ -6,13 +6,10 @@ import ru.okpdmarket.dao.ClassificatorDao;
 import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
-import ru.okpdmarket.model.dto.ClassificatorItemDto;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.service.ClassificatorService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Vladislav on 04.09.2016.
@@ -26,13 +23,13 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     ClassificatorDao classificatorDao;
 
     @Override
-    public List<ClassificatorTypeDto> getClassificatorTypes() {
-        return ClassificatorTypeDto.Converter.toDtoList(new ArrayList<>(repository.getClassificators().values()));
+    public List<Classificator> getClassificatorTypes() {
+        return repository.getClassificators();
     }
 
     @Override
-    public Classificator getClassifiactor(String classificatorCode) {
-        return repository.getClassificators().get(classificatorCode);
+    public List<ClassificatorItem> getClassifiactorFirstLevel(String classificatorId) {
+        return repository.getClassificatorContentsById(classificatorId).getFirstLevel();
     }
 
     @Override
@@ -44,14 +41,19 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     }
 
     @Override
-    public List<Classificator> put(ClassificatorTypeDto classificatorDto) {
-        Classificator newClassificator = new Classificator(classificatorDto.getCode())
-        repository.getClassificators().putIfAbsent(classificator.getCode(), classificator);
-        return repository.getClassificators().values().stream().collect(Collectors.toList());
+    public List<Classificator> put(Classificator classificator) {
+
+        repository.putClassificator(classificator);
+        return repository.getClassificators();
     }
 
     @Override
-    public List<ClassificatorItem> putItem(ClassificatorItemDto item) {
+    public List<ClassificatorItem> putItem(ClassificatorItem item) {
         return null;
+    }
+
+    @Override
+    public ClassificatorItem getItem(String classificatorId, String itemCode) {
+        return repository.getClassificatorContentsById(classificatorId).getItemByCode(itemCode);
     }
 }

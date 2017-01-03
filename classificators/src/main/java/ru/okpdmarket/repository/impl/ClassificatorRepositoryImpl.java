@@ -3,7 +3,6 @@ package ru.okpdmarket.repository.impl;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorContents;
-import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
 import java.util.LinkedHashMap;
@@ -25,13 +24,15 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
     }
 
     @Override
-    public List<ClassificatorItem> getClassificatorContents(String id) {
+    public ClassificatorContents getClassificatorContentsById(String id) {
         //TODO: implement me
-        return null;
+        return classificatorsMap.values().iterator().next();
     }
 
     @Override
-    public void putClassificator(Classificator classificator) {
-        classificatorsMap.putIfAbsent(classificator, new ClassificatorContents(classificator));
+    public ClassificatorContents putClassificator(Classificator classificator) {
+        ClassificatorContents result = classificatorsMap.putIfAbsent(classificator, new ClassificatorContents(classificator));
+        if (result != null) return result;
+        return classificatorsMap.get(classificator);
     }
 }

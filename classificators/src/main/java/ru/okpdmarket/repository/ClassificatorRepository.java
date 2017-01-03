@@ -1,7 +1,7 @@
 package ru.okpdmarket.repository;
 
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.model.ClassificatorContents;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface ClassificatorRepository {
 
     List<Classificator> getClassificators();
 
-    List<ClassificatorItem> getClassificatorContents(String id);
+    ClassificatorContents getClassificatorContentsById(String id);
 
-    void putClassificator(Classificator classificator);
+    ClassificatorContents putClassificator(Classificator classificator);
 }

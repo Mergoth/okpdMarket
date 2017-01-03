@@ -35,4 +35,8 @@ public class ClassificatorItemRelations {
     public void setChildren(List<ClassificatorItem> children) {
         this.children = children;
     }
+
+    public boolean hasChildren() {
+        return !children.isEmpty();
+    }
 }

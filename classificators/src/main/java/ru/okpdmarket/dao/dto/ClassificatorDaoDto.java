@@ -1,10 +1,8 @@
 package ru.okpdmarket.dao.dto;
 
 import lombok.Data;
-import lombok.val;
 import org.springframework.data.annotation.Id;
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +35,8 @@ public class ClassificatorDaoDto {
             dto.setCode(item.getCode());
             dto.setName(item.getName());
             dto.setDescription(item.getDescription());
-            val daoDtoChilderList = ClassificatorItemDaoDto.Converter.toDtoList(item.getTree());
-            dto.setTree(daoDtoChilderList);
+            // val daoDtoChilderList = ClassificatorItemDaoDto.Converter.toDtoList(item.);
+            //dto.setTree(daoDtoChilderList);
             return dto;
         }
 
@@ -47,7 +45,9 @@ public class ClassificatorDaoDto {
         }
 
         public static Classificator fromDto(ClassificatorDaoDto dto) {
-            Classificator classificator = new Classificator(dto.getCode(), dto.getName());
+            Classificator classificator = new Classificator();
+            classificator.setCode(dto.getCode());
+            classificator.setName(dto.getName());
             classificator.setId(dto.getId());
             classificator.setDescription(dto.getDescription());
             loadChildren(null, dto.getTree(), classificator);
@@ -56,8 +56,8 @@ public class ClassificatorDaoDto {
 
         private static void loadChildren(String parentCode, List<ClassificatorItemDaoDto> fromDtoList, Classificator targetClassificator) {
             for (ClassificatorItemDaoDto childDto : fromDtoList) {
-                ClassificatorItem childItem = targetClassificator.add(childDto.getCode(), childDto.getName(), parentCode);
-                childItem.setNotes(childDto.getNotes());
+                //ClassificatorItem childItem = targetClassificator.add(childDto.getCode(), childDto.getName(), parentCode);
+                // childItem.setNotes(childDto.getNotes());
                 if (!childDto.getChildren().isEmpty()) {
                     loadChildren(childDto.getCode(), childDto.getChildren(), targetClassificator);
                 }

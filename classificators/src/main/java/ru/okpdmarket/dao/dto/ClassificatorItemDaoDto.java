@@ -29,7 +29,7 @@ public class ClassificatorItemDaoDto {
             dto.setCode(item.getCode());
             dto.setName(item.getName());
             dto.setNotes(item.getNotes());
-            val daoDtoChildrenList = ClassificatorItemDaoDto.Converter.toDtoList(item.getChildren());
+            val daoDtoChildrenList = ClassificatorItemDaoDto.Converter.toDtoList(item.getRelations().getChildren());
             dto.setChildren(daoDtoChildrenList);
 
             return dto;
