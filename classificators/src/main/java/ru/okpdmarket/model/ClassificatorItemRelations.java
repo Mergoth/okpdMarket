@@ -14,8 +14,8 @@ public class ClassificatorItemRelations {
     final ClassificatorItem item;
 
     ClassificatorItem parent;// Relations
-    List<ClassificatorItem> children = new ArrayList<ClassificatorItem>();
-    Map<Classificator, ClassificatorLinks> links = new HashMap<Classificator, ClassificatorLinks>();
+    List<ClassificatorItem> children = new ArrayList<>();
+    Map<Classificator, ClassificatorLinks> links = new HashMap<>();
     Classificator classificator;
 
     public ClassificatorItem linkItem(ClassificatorItem linkedItem) {

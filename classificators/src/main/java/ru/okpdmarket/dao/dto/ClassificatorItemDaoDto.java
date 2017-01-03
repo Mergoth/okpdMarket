@@ -36,7 +36,7 @@ public class ClassificatorItemDaoDto {
         }
 
         public static List<ClassificatorItemDaoDto> toDtoList(List<ClassificatorItem> items) {
-            return items.stream().map((item) -> toDto(item)).collect(Collectors.toList());
+            return items.stream().map(Converter::toDto).collect(Collectors.toList());
         }
 
     }

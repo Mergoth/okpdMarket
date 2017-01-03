@@ -3,7 +3,6 @@ package ru.okpdmarket.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import ru.okpdmarket.model.ClassificatorItem;
 
 import java.io.Serializable;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
  * Created by Vladislav on 04.11.2016.
  */
 @RequiredArgsConstructor
-@ToString(of = {"code", "name"})
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ClassificatorItemDto implements Serializable {
 

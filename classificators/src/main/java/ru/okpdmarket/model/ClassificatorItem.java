@@ -10,7 +10,7 @@ import lombok.ToString;
  */
 @Data
 @ToString(of = {"code", "name"})
-@EqualsAndHashCode(of = {"code", "name", "notes", "parentCode"})
+@EqualsAndHashCode(of = {"code", "name", "notes"})
 public class ClassificatorItem {
 
     // Main fields
