@@ -1,7 +1,8 @@
 package ru.okpdmarket.service;
 
-import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.model.dto.ClassificatorItemDto;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface ClassificatorService {
 
     void commitClassificators(List<Classificator> classificators);
 
+    List<Classificator> put(ClassificatorTypeDto classificator);
+
+    List<ClassificatorItem> putItem(ClassificatorItemDto item);
 }

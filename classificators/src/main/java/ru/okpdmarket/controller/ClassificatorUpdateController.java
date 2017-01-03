@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
-import ru.okpdmarket.service.ClassificatorUpdateService;
+import ru.okpdmarket.model.dto.ClassificatorItemDto;
+import ru.okpdmarket.model.dto.ClassificatorLinkDto;
+import ru.okpdmarket.service.ClassificatorService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -19,26 +18,37 @@ import java.util.List;
 @RequestMapping("/update")
 public class ClassificatorUpdateController {
 
-
-    private final ClassificatorUpdateService classificatorUpdateService;
-
+    private final ClassificatorService classificatorService;
 
     @Autowired
-    public ClassificatorUpdateController(ClassificatorUpdateService classificatorUpdateService) {
-        this.classificatorUpdateService = classificatorUpdateService;
+    public ClassificatorUpdateController(ClassificatorService classificatorService) {
+        this.classificatorService = classificatorService;
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<List<Classificator>> putClassificator(@RequestBody final Classificator model,
-                                                                HttpServletRequest request, HttpServletResponse response) {
-
-        return new ResponseEntity<List<Classificator>>(classificatorUpdateService.put(model), HttpStatus.CREATED);
+    public ResponseEntity<List<ClassificatorTypeDto>> putClassificator(@RequestBody final ClassificatorTypeDto model) {
+        return new ResponseEntity<>(ClassificatorTypeDto.Converter.toDtoList(classificatorService.put(model)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/item", method = RequestMethod.PUT)
-    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item, @PathVariable(value = "id") String parentCode, String previousCode,
-                                                                        HttpServletResponse response) {
+    @RequestMapping(value = "/{id}/{itemId}", method = RequestMethod.PUT)
+    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItemDto itemDto,
+                                                                        @PathVariable(value = "id") String classificatorId,
+                                                                        @PathVariable(value = "itemId") String itemId) {
+        //TODO: Implement me!
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-        return new ResponseEntity<List<ClassificatorItem>>(classificatorUpdateService.putItem(item), HttpStatus.CREATED);
+    @RequestMapping(value = "/{id}/{itemId}/links", method = RequestMethod.PUT)
+    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorLinkDto linkDto,
+                                                                        @PathVariable(value = "id") String classificatorId,
+                                                                        @PathVariable(value = "itemId") String itemId) {
+        //TODO: Implement me!
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/commit", method = RequestMethod.POST)
+    public ResponseEntity<Object> commit() {
+        //TODO: Implement me!
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

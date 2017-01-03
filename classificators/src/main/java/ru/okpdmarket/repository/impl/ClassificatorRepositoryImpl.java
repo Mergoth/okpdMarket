@@ -1,17 +1,13 @@
 package ru.okpdmarket.repository.impl;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.okpdmarket.dao.ClassificatorDao;
-import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorContents;
+import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
-import javax.annotation.PostConstruct;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -20,29 +16,22 @@ import java.util.stream.Collectors;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-    private ClassificatorDao classificatorDao;
+    private LinkedHashMap<Classificator, ClassificatorContents> classificatorsMap = new LinkedHashMap<>();
 
-    private Map<String, Classificator> classificatorsMap;
 
-    @Autowired
-    public ClassificatorRepositoryImpl(ClassificatorDao classificatorDao) {
-        this.classificatorDao = classificatorDao;
-    }
-
-    @PostConstruct
-    private void init() {
-        // FIXME: update DAO logic
-        List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
-        updateClassificators(ClassificatorDaoDto.Converter.fromDtoList(classificatorDaoAll));
+    @Override
+    public List<Classificator> getClassificators() {
+        return classificatorsMap.keySet().stream().collect(Collectors.toList());
     }
 
     @Override
-    public Map<String, Classificator> getClassificators() {
-        return classificatorsMap;
+    public List<ClassificatorItem> getClassificatorContents(String id) {
+        //TODO: implement me
+        return null;
     }
 
     @Override
-    public void updateClassificators(List<Classificator> classificators) {
-        classificatorsMap = classificators.stream().collect(Collectors.toMap(Classificator::getCode, Function.identity()));
+    public void putClassificator(Classificator classificator) {
+        classificatorsMap.putIfAbsent(classificator, new ClassificatorContents(classificator));
     }
 }

@@ -2,8 +2,7 @@ package ru.okpdmarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.okpdmarket.dto.ClassificatorItemDto;
-import ru.okpdmarket.dto.ClassificatorTypeDto;
+import ru.okpdmarket.model.dto.ClassificatorItemDto;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 

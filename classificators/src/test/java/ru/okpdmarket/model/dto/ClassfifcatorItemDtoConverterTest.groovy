@@ -1,7 +1,5 @@
-package ru.okpdmarket.dto
+package ru.okpdmarket.model.dto
 
-import org.junit.Assert
-import org.junit.Test
 import ru.okpdmarket.model.ClassificatorItem
 
 /**

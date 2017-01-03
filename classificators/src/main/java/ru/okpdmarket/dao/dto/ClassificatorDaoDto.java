@@ -29,7 +29,6 @@ public class ClassificatorDaoDto {
 
     private List<ClassificatorItemDaoDto> tree = new ArrayList<>();
 
-
     public static class Converter {
 
         public static ClassificatorDaoDto toDto(Classificator item) {
@@ -48,19 +47,19 @@ public class ClassificatorDaoDto {
         }
 
         public static Classificator fromDto(ClassificatorDaoDto dto) {
-            Classificator item = new Classificator(dto.getCode(), dto.getName());
-            item.setId(dto.getId());
-            item.setDescription(dto.getDescription());
-            loadChildren(null, dto.getTree(), item);
-            return item;
+            Classificator classificator = new Classificator(dto.getCode(), dto.getName());
+            classificator.setId(dto.getId());
+            classificator.setDescription(dto.getDescription());
+            loadChildren(null, dto.getTree(), classificator);
+            return classificator;
         }
 
-        private static void loadChildren(String parentCode, List<ClassificatorItemDaoDto> fromDtoList, Classificator toItem) {
+        private static void loadChildren(String parentCode, List<ClassificatorItemDaoDto> fromDtoList, Classificator targetClassificator) {
             for (ClassificatorItemDaoDto childDto : fromDtoList) {
-                ClassificatorItem childItem = toItem.add(childDto.getCode(), childDto.getName(), parentCode);
+                ClassificatorItem childItem = targetClassificator.add(childDto.getCode(), childDto.getName(), parentCode);
                 childItem.setNotes(childDto.getNotes());
                 if (!childDto.getChildren().isEmpty()) {
-                    loadChildren(childDto.getCode(), childDto.getChildren(), toItem);
+                    loadChildren(childDto.getCode(), childDto.getChildren(), targetClassificator);
                 }
             }
         }

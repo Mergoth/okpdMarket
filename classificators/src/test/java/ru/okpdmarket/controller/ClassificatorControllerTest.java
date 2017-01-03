@@ -1,7 +1,10 @@
 package ru.okpdmarket.controller;
 
 import lombok.val;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +22,6 @@ import java.util.Collections;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -67,7 +69,7 @@ public class ClassificatorControllerTest {
         item21.linkItem(item11);
         item21.linkItem(item12);
 
-        this.classificatorRepository.updateClassificators(Collections.singletonList(classificator1));
+        this.classificatorRepository.putClassificatorType(Collections.singletonList(classificator1));
     }
 
     @After
@@ -95,33 +97,15 @@ public class ClassificatorControllerTest {
 
     @Test
     public void getItem() throws Exception {
-        this.mockMvc.perform(get("/1/1").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/1/11").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }
 
     @Test
-    @Ignore
     public void search() throws Exception {
         this.mockMvc.perform(get("/1/search?query=Test query").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
     }
-
-    @Ignore
-    @Test
-    public void putClassificator() throws Exception {
-        Classificator testClassificator = new Classificator("okpd", "ОКПД");
-        this.mockMvc.perform(put("/update", testClassificator).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andDo(document("classificators-put"));
-    }
-
-    @Ignore
-    @Test
-    public void exportClassificators() throws Exception {
-
-    }
-
-
 }
