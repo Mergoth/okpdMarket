@@ -3,8 +3,8 @@ import {Tree} from "../tree";
 
 @Component({
   selector: 'tree-view',
-  templateUrl: 'tree-view.html',
-  styleUrls: ['tree-view.css']
+  templateUrl: './tree-view.html',
+  styleUrls: ['./tree-view.css']
 })
 export class TreeViewComponent {
 
