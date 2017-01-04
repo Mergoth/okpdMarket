@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import ru.okpdmarket.model.ClassificatorItem;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class ClassificatorItemDaoDto {
             return dto;
         }
 
-        public static List<ClassificatorItemDaoDto> toDtoList(List<ClassificatorItem> items) {
+        public static List<ClassificatorItemDaoDto> toDtoList(Collection<ClassificatorItem> items) {
             return items.stream().map(Converter::toDto).collect(Collectors.toList());
         }
 

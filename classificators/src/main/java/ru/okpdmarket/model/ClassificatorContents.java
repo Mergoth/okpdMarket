@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -32,7 +33,7 @@ public class ClassificatorContents {
         ClassificatorItem parentItem = getItemByCode(parentCode);
         ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
         if (parentCode != null && !Objects.equals(parentCode, "")) {
-            List<ClassificatorItem> children = parentItem.getRelations().getChildren();
+            Set<ClassificatorItem> children = parentItem.getRelations().getChildren();
             children.add(classificatorItem);
             //parentItem.getRelations().setChildren(children);
         } else {
@@ -54,7 +55,7 @@ public class ClassificatorContents {
         return elements.get(code);
     }
 
-    public List<ClassificatorItem> getChildLevel(String code) {
+    public Set<ClassificatorItem> getChildLevel(String code) {
         return elements.get(code).getRelations().getChildren();
     }
 
