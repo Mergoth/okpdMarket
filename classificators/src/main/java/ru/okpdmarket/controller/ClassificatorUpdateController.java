@@ -31,16 +31,15 @@ public class ClassificatorUpdateController {
         return new ResponseEntity<>(classificatorService.put(model), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/{itemId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
     public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItemDto itemDto,
-                                                                        @PathVariable(value = "id") String classificatorId,
-                                                                        @PathVariable(value = "itemId") String itemId) {
+                                                                        @PathVariable(value = "id") String classificatorId) {
         //TODO: Implement me!
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/{itemId}/links", method = RequestMethod.PUT)
-    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorLinkDto linkDto,
+    public ResponseEntity<List<ClassificatorItem>> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
                                                                         @PathVariable(value = "id") String classificatorId,
                                                                         @PathVariable(value = "itemId") String itemId) {
         //TODO: Implement me!
