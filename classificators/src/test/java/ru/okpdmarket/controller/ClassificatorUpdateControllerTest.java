@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.dto.ClassificatorLinkDto;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -55,17 +56,21 @@ public class ClassificatorUpdateControllerTest {
 
     @Test
     public void putClassificator() throws Exception {
-        // ClassificatorTypeDto classificatorTypeDto = new ClassificatorTypeDto("1", "okpd", "ОКПД", "descr");
-       /* this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
-                this.objectMapper.writeValueAsString(classificatorTypeDto)))
+        Classificator classificator1 = new Classificator();
+        classificator1.setCode("OKPD");
+        classificator1.setName("ОКПД");
+        classificator1.setId("1");
+
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator1)))
                 .andExpect(status().isOk())
-                .andDo(document("put-classificator"));*/
+                .andDo(document("put-classificator"));
     }
 
     @Test
     public void putClassificatorItem() throws Exception {
         String testItemString = "";
-        this.mockMvc.perform(put("/update/code/10").content(testItemString).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(put("/update/OKPD/items").content(testItemString).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("put-classificator-item"));
     }
