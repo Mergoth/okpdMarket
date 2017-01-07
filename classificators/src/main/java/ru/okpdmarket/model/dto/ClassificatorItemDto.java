@@ -64,7 +64,7 @@ public class ClassificatorItemDto implements Serializable {
     }
 
     public Boolean getHasChildren() {
-        return item.getRelations().hasChildren();
+        return item.getCached().hasChildren();
     }
 
     //level
@@ -88,7 +88,7 @@ public class ClassificatorItemDto implements Serializable {
         if (!extended) {
             return null;
         }
-        return item.getRelations().getLinks();
+        return item.getCached().getLinks();
     }
 
     //children
@@ -96,7 +96,7 @@ public class ClassificatorItemDto implements Serializable {
         if (!extended) {
             return null;
         }
-        return item.getRelations().getChildren().stream().map(child -> new ClassificatorItemDto(child, false)).collect(Collectors.toList());
+        return item.getCached().getChildren().stream().map(child -> new ClassificatorItemDto(child, false)).collect(Collectors.toList());
     }
 
     public static class Converter {

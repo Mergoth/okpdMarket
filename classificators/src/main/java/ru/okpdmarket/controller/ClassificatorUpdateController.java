@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
-import ru.okpdmarket.model.dto.ClassificatorItemDto;
 import ru.okpdmarket.model.dto.ClassificatorLinkDto;
 import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.impl.ClassificatorItemService;
 
 import java.util.List;
 
@@ -20,10 +20,13 @@ import java.util.List;
 public class ClassificatorUpdateController {
 
     private final ClassificatorService classificatorService;
+    private final ClassificatorItemService classificatorItemService;
 
     @Autowired
-    public ClassificatorUpdateController(ClassificatorService classificatorService) {
+    public ClassificatorUpdateController(ClassificatorService classificatorService,
+                                         ClassificatorItemService classificatorItemService) {
         this.classificatorService = classificatorService;
+        this.classificatorItemService = classificatorItemService;
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -32,9 +35,9 @@ public class ClassificatorUpdateController {
     }
 
     @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
-    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItemDto itemDto,
+    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item,
                                                                         @PathVariable(value = "id") String classificatorId) {
-        //TODO: Implement me!
+        classificatorItemService.addItem(classificatorId, item);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -42,13 +45,12 @@ public class ClassificatorUpdateController {
     public ResponseEntity<List<ClassificatorItem>> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
                                                                         @PathVariable(value = "id") String classificatorId,
                                                                         @PathVariable(value = "itemId") String itemId) {
-        //TODO: Implement me!
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public ResponseEntity<Object> commit() {
-        //TODO: Implement me!
+        classificatorService.commitClassificators();
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

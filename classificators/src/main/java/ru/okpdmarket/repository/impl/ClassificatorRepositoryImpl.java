@@ -2,15 +2,15 @@ package ru.okpdmarket.repository.impl;
 
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorContents;
 import ru.okpdmarket.repository.ClassificatorRepository;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
- * Created by lalka on 10/9/2016.
+ * Created by vlad on 10/9/2016.
  */
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
@@ -20,13 +20,13 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
     @Override
     public List<Classificator> getClassificators() {
-        return classificatorsMap.keySet().stream().collect(Collectors.toList());
+        return new ArrayList<>(classificatorsMap.keySet());
     }
 
     @Override
     public ClassificatorContents getClassificatorContentsById(String id) {
-        //TODO: implement me
-        return classificatorsMap.values().iterator().next();
+        Optional<Classificator> classificatorOptional = classificatorsMap.keySet().stream().filter(c -> c.getId().equals(id)).findFirst();
+        return classificatorsMap.get(classificatorOptional.orElse(null));
     }
 
     @Override

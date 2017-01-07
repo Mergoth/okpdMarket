@@ -1,7 +1,7 @@
 package ru.okpdmarket.repository;
 
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorContents;
+import ru.okpdmarket.repository.impl.ClassificatorContents;
 
 import java.util.List;
 

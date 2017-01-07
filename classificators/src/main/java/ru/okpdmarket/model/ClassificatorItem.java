@@ -10,17 +10,19 @@ import lombok.ToString;
  */
 @Data
 @ToString(of = {"code", "name"})
-@EqualsAndHashCode(of = {"code", "name", "notes"})
+@EqualsAndHashCode(of = {"code"})
 public class ClassificatorItem {
 
-    // Main fields
-    private final String code;
-    private final String name;
     @JsonIgnore
     private final ClassificatorItemRelations relations = new ClassificatorItemRelations(this);
     @JsonIgnore
     private final ClassificatorItemCached cached = new ClassificatorItemCached(this);
+    // Main fields
+    private String code;
+    private String name;
     private String notes;
+    private String parentCode;
+
 
     public ClassificatorItem(String code, String name) {
         this(code, name, "");

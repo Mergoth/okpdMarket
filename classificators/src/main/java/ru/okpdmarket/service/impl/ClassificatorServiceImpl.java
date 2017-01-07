@@ -1,5 +1,6 @@
 package ru.okpdmarket.service.impl;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dao.ClassificatorDao;
@@ -33,7 +34,8 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     }
 
     @Override
-    public void commitClassificators(List<Classificator> classificators) {
+    public void commitClassificators() {
+        val classificators = getClassificatorTypes();
         for(Classificator classificator : classificators){
             ClassificatorDaoDto daoDto = ClassificatorDaoDto.Converter.toDto(classificator);
             classificatorDao.save(daoDto);
@@ -47,10 +49,6 @@ public class ClassificatorServiceImpl implements ClassificatorService {
         return repository.getClassificators();
     }
 
-    @Override
-    public List<ClassificatorItem> putItem(ClassificatorItem item) {
-        return null;
-    }
 
     @Override
     public ClassificatorItem getItem(String classificatorId, String itemCode) {

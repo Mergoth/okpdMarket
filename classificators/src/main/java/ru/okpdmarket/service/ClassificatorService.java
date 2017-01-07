@@ -14,11 +14,9 @@ public interface ClassificatorService {
 
     List<ClassificatorItem> getClassifiactorFirstLevel(String classificatorCode);
 
-    void commitClassificators(List<Classificator> classificators);
+    void commitClassificators();
 
     List<Classificator> put(Classificator classificator);
-
-    List<ClassificatorItem> putItem(ClassificatorItem item);
 
     ClassificatorItem getItem(String classificatorId, String itemCode);
 }

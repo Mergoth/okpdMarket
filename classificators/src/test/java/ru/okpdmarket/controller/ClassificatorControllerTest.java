@@ -15,8 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorContents;
 import ru.okpdmarket.repository.ClassificatorRepository;
+import ru.okpdmarket.repository.impl.ClassificatorContents;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
