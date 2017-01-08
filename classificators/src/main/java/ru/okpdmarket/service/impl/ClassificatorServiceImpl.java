@@ -1,10 +1,8 @@
 package ru.okpdmarket.service.impl;
 
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dao.ClassificatorDao;
-import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.repository.ClassificatorRepository;
@@ -17,11 +15,16 @@ import java.util.List;
  */
 @Component
 public class ClassificatorServiceImpl implements ClassificatorService {
-    @Autowired
-    ClassificatorRepository repository;
+    final ClassificatorRepository repository;
+
+    final ClassificatorDao classificatorDao;
+
 
     @Autowired
-    ClassificatorDao classificatorDao;
+    public ClassificatorServiceImpl(ClassificatorRepository repository, ClassificatorDao classificatorDao) {
+        this.repository = repository;
+        this.classificatorDao = classificatorDao;
+    }
 
     @Override
     public List<Classificator> getClassificatorTypes() {
@@ -29,22 +32,23 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     }
 
     @Override
-    public List<ClassificatorItem> getClassifiactorFirstLevel(String classificatorId) {
+    public List<ClassificatorItem> getClassificatorFirstLevel(String classificatorId) {
         return repository.getClassificatorContentsById(classificatorId).getFirstLevel();
     }
 
     @Override
     public void commitClassificators() {
-        val classificators = getClassificatorTypes();
-        for(Classificator classificator : classificators){
-            ClassificatorDaoDto daoDto = ClassificatorDaoDto.Converter.toDto(classificator);
+        //val classificators = getClassificatorTypes();
+
+        //TODO: move this to another place
+        //val daoDtos = serializer.serializeList(classificators);
+       /* for(ClassificatorDaoDto daoDto : daoDtos){
             classificatorDao.save(daoDto);
-        }
+        }*/
     }
 
     @Override
     public List<Classificator> put(Classificator classificator) {
-
         repository.putClassificator(classificator);
         return repository.getClassificators();
     }

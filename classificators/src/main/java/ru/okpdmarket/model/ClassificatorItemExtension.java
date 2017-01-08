@@ -1,5 +1,6 @@
 package ru.okpdmarket.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -8,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class ClassificatorItemCached {
+public class ClassificatorItemExtension {
 
+    @JsonIgnore
     private final ClassificatorItem item;
     List<ClassificatorItem> children = new ArrayList<>();
     Map<Classificator, ClassificatorLinks> links = new HashMap<>();
@@ -18,7 +20,7 @@ public class ClassificatorItemCached {
     private List<PathElement> path;
 
 
-    public ClassificatorItemCached(ClassificatorItem item) {
+    public ClassificatorItemExtension(ClassificatorItem item) {
         this.item = item;
     }
 

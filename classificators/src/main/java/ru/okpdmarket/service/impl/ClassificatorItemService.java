@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
-import ru.okpdmarket.model.ClassificatorItemCached;
+import ru.okpdmarket.model.ClassificatorItemExtension;
 import ru.okpdmarket.model.ClassificatorLinks;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.repository.impl.ClassificatorContents;
@@ -28,20 +28,20 @@ public class ClassificatorItemService {
     }
 
     public ClassificatorItem recalculate(ClassificatorItem item) {
-        item.getCached().setPath(calcPath(item));
-        item.getCached().setLevel(calcLevel(item));
+        item.getExt().setPath(calcPath(item));
+        item.getExt().setLevel(calcLevel(item));
         return item;
     }
 
-    private List<ClassificatorItemCached.PathElement> calcPath(ClassificatorItem item) {
-        List<ClassificatorItemCached.PathElement> res;
-        if (item.getRelations().getParent() != null) {
-            res = new LinkedList<>(item.getRelations().getParent().getCached().getPath());
+    private List<ClassificatorItemExtension.PathElement> calcPath(ClassificatorItem item) {
+        List<ClassificatorItemExtension.PathElement> res;
+        if (!item.getParentCode().equals("-")) {
+            res = new LinkedList<>(item.getRelations().getParent().getExt().getPath());
 
         } else {
             res = new LinkedList<>();
         }
-        res.add(new ClassificatorItemCached.PathElement(item.getCode(), item.getName()));
+        res.add(new ClassificatorItemExtension.PathElement(item.getCode(), item.getName()));
         return res;
     }
 
@@ -61,7 +61,7 @@ public class ClassificatorItemService {
         }
         contents.putItem(newItem);
         recalculate(newItem);
-        return newItem.getRelations().getParent().getCached().getChildren();
+        return newItem.getRelations().getParent().getExt().getChildren();
     }
 
     private ClassificatorItem mergeItems(ClassificatorItem currentItem, ClassificatorItem newItem) {
@@ -82,7 +82,7 @@ public class ClassificatorItemService {
     }
 
     private boolean addLink(ClassificatorItem sourceItem, Classificator targetClassificator, ClassificatorItem linkedItem) {
-        val targetLinks = sourceItem.getCached().getLinks().computeIfAbsent(targetClassificator, k -> new ClassificatorLinks());
+        val targetLinks = sourceItem.getExt().getLinks().computeIfAbsent(targetClassificator, k -> new ClassificatorLinks());
         return targetLinks.add(linkedItem);
     }
 }

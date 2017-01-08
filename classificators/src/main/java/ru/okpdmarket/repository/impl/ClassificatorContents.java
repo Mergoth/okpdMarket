@@ -33,7 +33,7 @@ public class ClassificatorContents {
         ClassificatorItem parentItem = getItemByCode(parentCode);
         ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
         if (parentCode != null && !Objects.equals(parentCode, "")) {
-            Set<ClassificatorItem> children = parentItem.getCached().getChildren();
+            Set<ClassificatorItem> children = parentItem.getExt().getChildren();
             children.add(classificatorItem);
             //parentItem.getRelations().setChildren(children);
         } else {
@@ -54,8 +54,9 @@ public class ClassificatorContents {
         }
         ClassificatorItem parentItem = createOrGet(item.getParentCode());
         item.getRelations().setParent(parentItem);
-        parentItem.getCached().getChildren().add(item);
-        return parentItem.getCached().getChildren();
+
+        parentItem.getExt().getChildren().add(item.clone(false));
+        return parentItem.getExt().getChildren();
 
     }
 
@@ -65,7 +66,8 @@ public class ClassificatorContents {
 
         ClassificatorItem tempStub = new ClassificatorItem(itemCode, "tempStub");
         tempStub.getRelations().setClassificator(classificator);
-        return elements.put(itemCode, tempStub);
+        elements.put(itemCode, tempStub);
+        return tempStub;
     }
 
     public ClassificatorItem getItemByCode(String code) {
@@ -73,11 +75,11 @@ public class ClassificatorContents {
     }
 
     public List<ClassificatorItem> getChildLevel(String code) {
-        return elements.get(code).getCached().getChildren();
+        return elements.get(code).getExt().getChildren();
     }
 
     public List<ClassificatorItem> getFirstLevel() {
-        return elements.get(TOP_CODE).getCached().getChildren();
+        return elements.get(TOP_CODE).getExt().getChildren();
     }
 
     public int size() {

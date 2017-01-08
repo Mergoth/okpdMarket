@@ -12,7 +12,7 @@ public interface ClassificatorService {
 
     List<Classificator> getClassificatorTypes();
 
-    List<ClassificatorItem> getClassifiactorFirstLevel(String classificatorCode);
+    List<ClassificatorItem> getClassificatorFirstLevel(String classificatorCode);
 
     void commitClassificators();
 

@@ -3,7 +3,7 @@ package ru.okpdmarket.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.dto.ClassificatorItemDto;
+import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 
@@ -33,24 +33,23 @@ public class ClassificatorController {
 
 
     @RequestMapping(value = "/{classificatorId}", method = RequestMethod.GET)
-    public List<ClassificatorItemDto> getTopItems(@PathVariable(value = "classificatorId") String classificatorId) {
-        return ClassificatorItemDto.Converter.toDtoList(classificatorService.getClassifiactorFirstLevel(classificatorId), true);
+    public List<ClassificatorItem> getTopItems(@PathVariable(value = "classificatorId") String classificatorId) {
+        return classificatorService.getClassificatorFirstLevel(classificatorId);
     }
 
     /**
      * @param classificatorId - id of the classificator
      * @param itemCode - code of the ClassificatorItem to get
-     * @return ClassificatorItemDto -
+     * @return ClassificatorItem -
      */
     @RequestMapping(value = "/{classificatorId}/{itemCode}", method = RequestMethod.GET)
-    public ClassificatorItemDto getItem(@PathVariable(value = "classificatorId") String classificatorId,
-                                        @PathVariable(value = "itemCode") String itemCode) {
-        return ClassificatorItemDto.Converter.toDto(classificatorService.getItem(classificatorId, itemCode), true);
+    public ClassificatorItem getItem(@PathVariable(value = "classificatorId") String classificatorId,
+                                     @PathVariable(value = "itemCode") String itemCode) {
+        return classificatorService.getItem(classificatorId, itemCode);
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItemDto> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
-        //TODO: Lucene in-memory search invoked from ClassificatorService
-        return ClassificatorItemDto.Converter.toDtoList(searchService.search(classificatorId, query), true);
+    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
+        return searchService.search(classificatorId, query);
     }
 }

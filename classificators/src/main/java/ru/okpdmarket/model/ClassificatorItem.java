@@ -1,6 +1,7 @@
 package ru.okpdmarket.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -11,17 +12,21 @@ import lombok.ToString;
 @Data
 @ToString(of = {"code", "name"})
 @EqualsAndHashCode(of = {"code"})
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ClassificatorItem {
 
     @JsonIgnore
-    private final ClassificatorItemRelations relations = new ClassificatorItemRelations(this);
+    private ClassificatorItemRelations relations = new ClassificatorItemRelations(this);
     @JsonIgnore
-    private final ClassificatorItemCached cached = new ClassificatorItemCached(this);
+    private boolean extended;
+
+    private ClassificatorItemExtension ext = new ClassificatorItemExtension(this);
     // Main fields
     private String code;
     private String name;
     private String notes;
     private String parentCode;
+
 
 
     public ClassificatorItem(String code, String name) {
@@ -32,6 +37,24 @@ public class ClassificatorItem {
         this.code = code;
         this.name = name;
         this.notes = notes;
+    }
+
+
+    @Override
+    public Object clone() {
+        ClassificatorItem clone = new ClassificatorItem(this.getCode(), this.getName());
+        clone.setNotes(this.getNotes());
+        clone.setParentCode(this.getParentCode());
+        return clone;
+    }
+
+    public ClassificatorItem clone(boolean extended) {
+        ClassificatorItem clone = (ClassificatorItem) this.clone();
+        if (extended) {
+            clone.setRelations(this.relations);
+            clone.setExt(this.ext);
+        }
+        return clone;
     }
 
 }
