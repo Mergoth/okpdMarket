@@ -37,15 +37,14 @@ public class ClassificatorUpdateController {
     @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
     public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item,
                                                                         @PathVariable(value = "id") String classificatorId) {
-        classificatorItemService.addItem(classificatorId, item);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(classificatorItemService.addItem(classificatorId, item), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/{itemId}/links", method = RequestMethod.PUT)
     public ResponseEntity<List<ClassificatorItem>> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
                                                                         @PathVariable(value = "id") String classificatorId,
                                                                         @PathVariable(value = "itemId") String itemId) {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @RequestMapping(value = "/commit", method = RequestMethod.POST)

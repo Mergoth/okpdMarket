@@ -2,6 +2,11 @@ package ru.okpdmarket.model;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class ClassificatorItemRelations {
 
@@ -10,6 +15,9 @@ public class ClassificatorItemRelations {
     ClassificatorItem parent;// Relations
 
     Classificator classificator;
+
+    List<ClassificatorItem> children = new ArrayList<>();
+    Map<Classificator, ClassificatorLinks> links = new HashMap<>();
 
   /*  public ClassificatorItem linkItem(ClassificatorItem linkedItem) {
         val targetClassificator = linkedItem.getRelations().getClassificator();

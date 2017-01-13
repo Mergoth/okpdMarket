@@ -55,8 +55,8 @@ public class ClassificatorContents {
         ClassificatorItem parentItem = createOrGet(item.getParentCode());
         item.getRelations().setParent(parentItem);
 
-        parentItem.getExt().getChildren().add(item.clone(false));
-        return parentItem.getExt().getChildren();
+        parentItem.getRelations().getChildren().add(item);
+        return parentItem.getRelations().getChildren();
 
     }
 
@@ -75,11 +75,11 @@ public class ClassificatorContents {
     }
 
     public List<ClassificatorItem> getChildLevel(String code) {
-        return elements.get(code).getExt().getChildren();
+        return elements.get(code).getRelations().getChildren();
     }
 
     public List<ClassificatorItem> getFirstLevel() {
-        return elements.get(TOP_CODE).getExt().getChildren();
+        return elements.get(TOP_CODE).getRelations().getChildren();
     }
 
     public int size() {

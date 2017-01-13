@@ -1,6 +1,7 @@
 package ru.okpdmarket.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.val;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.model.dto.ClassificatorLinkDto;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -69,8 +71,13 @@ public class ClassificatorUpdateControllerTest {
 
     @Test
     public void putClassificatorItem() throws Exception {
-        String testItemString = "";
-        this.mockMvc.perform(put("/update/OKPD/items").content(testItemString).accept(MediaType.APPLICATION_JSON))
+        val item = new ClassificatorItem();
+        item.setCode("code");
+        item.setName("name");
+        //item.setExtended(false);
+        //item.setParentCode();
+        this.mockMvc.perform(put("/update/okpd/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item)))
                 .andExpect(status().isOk())
                 .andDo(document("put-classificator-item"));
     }
