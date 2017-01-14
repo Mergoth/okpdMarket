@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.model.ClassificatorLinks;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.repository.impl.ClassificatorContents;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,9 @@ public class ClassificatorItemService {
         return item;
     }
 
-    private List<> calcLinks(ClassificatorItem item) {
+    private Map<Classificator, ClassificatorLinks> calcLinks(ClassificatorItem item) {
+        // FIXME: figure out correct implementation
+        return null;
     }
 
     private List<ClassificatorItem> calcChildren(ClassificatorItem item) {
@@ -92,9 +96,17 @@ public class ClassificatorItemService {
         return sourceItem;
     }
 
+    /**
+     * Add link to in-memory model of Classificator Item. Gets or creates ClassificatorLinks aggregate in map for target classificator.
+     * Then tries to add new link to the list.
+     *
+     * @param sourceItem          - source item, where link goes from. Source and target can be reversed since link always should be two-way
+     * @param targetClassificator - Classificator of target
+     * @param linkedItem          - target Item to link
+     * @return 'true' if added new element, 'false' if this element was already on the list.
+     */
     private boolean addLink(ClassificatorItem sourceItem, Classificator targetClassificator, ClassificatorItem linkedItem) {
-        //FIXME: make link types clearer
-        // val targetLinks = sourceItem.getExt().getLinks().computeIfAbsent(targetClassificator, k -> new ClassificatorLinks());
-        return false;//targetLinks.add(linkedItem);
+        val targetLinks = sourceItem.getRelations().getLinks().computeIfAbsent(targetClassificator, k -> new ClassificatorLinks());
+        return targetLinks.add(linkedItem);
     }
 }

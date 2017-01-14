@@ -8,6 +8,7 @@ import ru.okpdmarket.dao.dto.ClassificatorItemDaoDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.impl.ClassificatorItemService;
 
 import java.util.Collection;
 import java.util.List;
@@ -20,26 +21,20 @@ import java.util.stream.Collectors;
 public class DaoSerializer {
 
     private final ClassificatorService service;
+    private final ClassificatorItemService itemService;
 
     @Autowired
-    public DaoSerializer(ClassificatorService service) {
+    public DaoSerializer(ClassificatorService service, ClassificatorItemService itemService) {
         this.service = service;
+        this.itemService = itemService;
     }
 
     private ClassificatorItemDaoDto serialize(ClassificatorItem item) {
-        String classificatorId = item.getRelations().getClassificator().getId();
-        ClassificatorItemDaoDto dto = new ClassificatorItemDaoDto();
-        dto.setCode(item.getCode());
-        dto.setName(item.getName());
-        dto.setNotes(item.getNotes());
+        val dto = new ClassificatorItemDaoDto(item);
 
         // Serialize children
-        val childrenStubs = item.getExt().getChildren();
-        val fullChildrenList = childrenStubs.stream().map(stub -> {
-            ClassificatorItem expanded = service.getItem(classificatorId, stub.getCode());
-            expanded.getExt().setChildren(expanded.getExt().getChildren());
-            return serialize(expanded);
-        }).collect(Collectors.toList());
+        val childrenItems = item.getRelations().getChildren();
+        val fullChildrenList = childrenItems.stream().map(this::serialize).collect(Collectors.toList());
         dto.setChildren(fullChildrenList);
 
         return dto;
@@ -64,28 +59,31 @@ public class DaoSerializer {
     public List<ClassificatorDaoDto> serializeList(List<Classificator> items) {
         return items.stream().map(this::serialize).collect(Collectors.toList());
     }
-/*
-    public static Classificator fromDto(ClassificatorDaoDto dto) {
+
+    public Classificator deserialize(ClassificatorDaoDto dto) {
         Classificator classificator = new Classificator();
         classificator.setCode(dto.getCode());
         classificator.setName(dto.getName());
         classificator.setId(dto.getId());
         classificator.setDescription(dto.getDescription());
+        service.put(classificator);
         loadChildren(null, dto.getTree(), classificator);
         return classificator;
     }
 
-    private static void loadChildren(String parentCode, List<ClassificatorItemDaoDto> fromDtoList, Classificator targetClassificator) {
+    private void loadChildren(String parentCode, List<ClassificatorItemDaoDto> fromDtoList, Classificator targetClassificator) {
         for (ClassificatorItemDaoDto childDto : fromDtoList) {
-            //ClassificatorItem childItem = targetClassificator.add(childDto.getCode(), childDto.getName(), parentCode);
-            // childItem.setNotes(childDto.getNotes());
+            val item = new ClassificatorItem(childDto.getCode(), childDto.getName(), childDto.getNotes());
+            item.setParentCode(parentCode);
+            itemService.addItem(targetClassificator.getId(), item);
+
             if (!childDto.getChildren().isEmpty()) {
                 loadChildren(childDto.getCode(), childDto.getChildren(), targetClassificator);
             }
         }
     }
 
-    public static List<Classificator> fromDtoList(List<ClassificatorDaoDto> dtos) {
-        return dtos.stream().map(Converter::fromDto).collect(Collectors.toList());
-    }*/
+    public List<Classificator> deserializeList(List<ClassificatorDaoDto> dtos) {
+        return dtos.stream().map(this::deserialize).collect(Collectors.toList());
+    }
 }

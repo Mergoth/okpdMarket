@@ -1,6 +1,5 @@
 package ru.okpdmarket.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
@@ -24,16 +23,12 @@ import lombok.Data;
  * code     : 1102,
  * name     : "Some item name"
  * }
- * <p>
  * ]
  * }
- * <p>
- * <p>
  * }
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ClassificatorLinkDto {
-    //TODO: Implement me!
-
+    private String targetClassificatorId;
+    private String targetItemCode;
 }

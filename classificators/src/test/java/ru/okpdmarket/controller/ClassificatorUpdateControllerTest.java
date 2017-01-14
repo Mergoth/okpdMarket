@@ -58,10 +58,7 @@ public class ClassificatorUpdateControllerTest {
 
     @Test
     public void putClassificator() throws Exception {
-        Classificator classificator1 = new Classificator();
-        classificator1.setCode("OKPD");
-        classificator1.setName("ОКПД");
-        classificator1.setId("1");
+        Classificator classificator1 = createClassificator("OKPD", "ОКПД", "1");
 
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)))
@@ -71,11 +68,12 @@ public class ClassificatorUpdateControllerTest {
 
     @Test
     public void putClassificatorItem() throws Exception {
-        val item = new ClassificatorItem();
-        item.setCode("code");
-        item.setName("name");
-        //item.setExtended(false);
-        //item.setParentCode();
+
+        Classificator classificator1 = createClassificator("OKPD", "ОКПД", "1");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator1)));
+
+        ClassificatorItem item = createClassificatorItem("11", "code", "name", "testNotes");
         this.mockMvc.perform(put("/update/okpd/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item)))
                 .andExpect(status().isOk())
@@ -84,8 +82,27 @@ public class ClassificatorUpdateControllerTest {
 
     @Test
     public void putClassificatorItemLink() throws Exception {
+        Classificator classificator1 = createClassificator("OKPD", "ОКПД", "1");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator1)));
+
+        ClassificatorItem item1 = createClassificatorItem("11", "code", "name", "testNotes");
+        this.mockMvc.perform(put("/update/okpd/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item1)));
+
+        Classificator classificator2 = createClassificator("TNVD", "ТНВД", "2");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator2)));
+
+        ClassificatorItem item2 = createClassificatorItem("22", "code", "name", "testNotes");
+        this.mockMvc.perform(put("/update/tnvd/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item2)));
+
+
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
-        this.mockMvc.perform(put("/update/code/10/links", testLinks).accept(MediaType.APPLICATION_JSON))
+        testLinks.setTargetClassificatorId("2");
+        testLinks.setTargetItemCode("22");
+        this.mockMvc.perform(put("/update/okpd/11/links", testLinks).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("put-classificator-item-links"));
     }
@@ -97,5 +114,20 @@ public class ClassificatorUpdateControllerTest {
                 .andDo(document("update-classificators-commit"));
     }
 
+    private Classificator createClassificator(String code, String name, String id) {
+        Classificator classificator1 = new Classificator();
+        classificator1.setCode(code);
+        classificator1.setName(name);
+        classificator1.setId(id);
+        return classificator1;
+    }
 
+    private ClassificatorItem createClassificatorItem(String paerntCode, String code, String name, String notes) {
+        val item = new ClassificatorItem();
+        item.setCode(code);
+        item.setName(name);
+        item.setNotes(notes);
+        item.setParentCode(paerntCode);
+        return item;
+    }
 }

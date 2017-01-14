@@ -22,7 +22,6 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         return null;
     }
 
-
     @Override
     public <S extends ClassificatorDaoDto> Iterable<S> save(Iterable<S> entities) {
         return null;

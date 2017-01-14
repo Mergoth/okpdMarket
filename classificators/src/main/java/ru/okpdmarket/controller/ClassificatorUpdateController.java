@@ -1,5 +1,6 @@
 package ru.okpdmarket.controller;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,10 @@ public class ClassificatorUpdateController {
     public ResponseEntity<List<ClassificatorItem>> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
                                                                         @PathVariable(value = "id") String classificatorId,
                                                                         @PathVariable(value = "itemId") String itemId) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        val sourceItem = classificatorService.getItem(classificatorId, itemId);
+        val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorId(), linkDto.getTargetItemCode());
+        classificatorItemService.linkItem(sourceItem, targetItem);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
