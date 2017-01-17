@@ -10,10 +10,35 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Vladislav on 29.08.2016.
+ * Links: {
+ * source : {
+ * classificatorId  : 1,
+ * code         : 1010
+ * },
+ * targets : {
+ * "2" : [
+ * {
+ * code     : 1100,
+ * name     : "Some item name"
+ * },
+ * {
+ * code     : 1101,
+ * name     : "Some item name"
+ * },
+ * {
+ * code     : 1102,
+ * name     : "Some item name"
+ * }
+ * ]
+ * }
+ * }
  */
 @Data
 @ToString(of = {"code", "name"})
@@ -75,6 +100,45 @@ public class ClassificatorItem implements Serializable {
             clone.setProperties(properties);
         }
         return clone;
+    }
+
+    public ClassificatorItem recalculate() {
+        setProp("path", calcPath());
+        setProp("level", calcLevel());
+        setProp("hasChildren", !getRelations().getChildren().isEmpty());
+        setProp("children", calcChildren());
+        setProp("links", calcLinks());
+        return this;
+    }
+
+    private int calcLevel() {
+        if (getRelations().getParent() != null) {
+            return getRelations().getParent().calcLevel() + 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private List<PathElement> calcPath() {
+        List<PathElement> res;
+        if (!(getParentCode() == null) && !getParentCode().equals("-")) {
+            res = new LinkedList<>(
+                    (LinkedList<PathElement>) getRelations().getParent().getProperties().get("path")
+            );
+
+        } else {
+            res = new LinkedList<>();
+        }
+        res.add(new PathElement(getCode(), getName()));
+        return res;
+    }
+
+    private List<ClassificatorItem> calcChildren() {
+        return getRelations().getChildren().stream().map(i -> i.clone(false)).collect(Collectors.toList());
+    }
+
+    private Map<String, ClassificatorLinks> calcLinks() {
+        return getRelations().getLinks().entrySet().stream().collect(Collectors.toMap(e -> e.getKey().getCode(), Map.Entry::getValue));
     }
 
     @Data

@@ -9,6 +9,7 @@ import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.model.dto.ClassificatorLinkDto;
 import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.exception.ClassificatorNotFoundException;
 import ru.okpdmarket.service.impl.ClassificatorItemService;
 
 import java.util.List;
@@ -38,17 +39,21 @@ public class ClassificatorUpdateController {
     @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
     public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item,
                                                                         @PathVariable(value = "id") String classificatorId) {
-        return new ResponseEntity<>(classificatorItemService.addItem(classificatorId, item), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(classificatorItemService.addItem(classificatorId, item), HttpStatus.OK);
+        } catch (ClassificatorNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @RequestMapping(value = "/{id}/{itemId}/links", method = RequestMethod.PUT)
-    public ResponseEntity<List<ClassificatorItem>> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
-                                                                        @PathVariable(value = "id") String classificatorId,
-                                                                        @PathVariable(value = "itemId") String itemId) {
+    public ResponseEntity<ClassificatorItem> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
+                                                                  @PathVariable(value = "id") String classificatorId,
+                                                                  @PathVariable(value = "itemId") String itemId) {
         val sourceItem = classificatorService.getItem(classificatorId, itemId);
         val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorId(), linkDto.getTargetItemCode());
         classificatorItemService.linkItem(sourceItem, targetItem);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(classificatorItemService.linkItem(sourceItem, targetItem), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/commit", method = RequestMethod.POST)

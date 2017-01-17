@@ -1,6 +1,8 @@
 package ru.okpdmarket.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import ru.okpdmarket.repository.impl.ClassificatorContents;
 
 
 /**
@@ -14,4 +16,7 @@ public class Classificator {
     private String code;
     private String name;
     private String description;
+
+    @JsonIgnore
+    private ClassificatorContents contents;
 }

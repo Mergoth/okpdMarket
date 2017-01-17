@@ -22,25 +22,6 @@ public class ClassificatorContents {
 
     private LinkedHashMap<String, ClassificatorItem> elements = new LinkedHashMap<>();
 
-   /* public ClassificatorItem add(String code, String name) {
-        ClassificatorItem item = this.add(code, name, null);
-        tree.addIfAbsent(item);
-        return item;
-    }
-
-    public ClassificatorItem add(String code, String name, String parentCode) {
-
-        ClassificatorItem parentItem = getItemByCode(parentCode);
-        ClassificatorItem classificatorItem = createClassificatorItem(code, name, parentItem);
-        if (parentCode != null && !Objects.equals(parentCode, "")) {
-            Set<ClassificatorItem> children = parentItem.getExt().getChildren();
-            children.add(classificatorItem);
-            //parentItem.getRelations().setChildren(children);
-        } else {
-            tree.addIfAbsent(classificatorItem);
-        }
-        return classificatorItem;
-    }*/
 
     public ClassificatorItem putItem(ClassificatorItem newItem) {
         positionItem(newItem);
@@ -54,8 +35,9 @@ public class ClassificatorContents {
         }
         ClassificatorItem parentItem = createOrGet(item.getParentCode());
         item.getRelations().setParent(parentItem);
-
+        item.getRelations().setClassificator(classificator);
         parentItem.getRelations().getChildren().add(item);
+        parentItem.recalculate();
         return parentItem.getRelations().getChildren();
 
     }
@@ -66,6 +48,7 @@ public class ClassificatorContents {
 
         ClassificatorItem tempStub = new ClassificatorItem(itemCode, "tempStub");
         tempStub.getRelations().setClassificator(classificator);
+        tempStub.recalculate();
         elements.put(itemCode, tempStub);
         return tempStub;
     }

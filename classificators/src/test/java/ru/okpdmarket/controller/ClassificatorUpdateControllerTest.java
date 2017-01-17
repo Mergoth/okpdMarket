@@ -23,6 +23,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -63,7 +65,7 @@ public class ClassificatorUpdateControllerTest {
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)))
                 .andExpect(status().isOk())
-                .andDo(document("put-classificator"));
+                .andDo(document("put-classificator", preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -74,10 +76,10 @@ public class ClassificatorUpdateControllerTest {
                 this.objectMapper.writeValueAsString(classificator1)));
 
         ClassificatorItem item = createClassificatorItem("11", "code", "name", "testNotes");
-        this.mockMvc.perform(put("/update/okpd/items").contentType(MediaType.APPLICATION_JSON).content(
+        this.mockMvc.perform(put("/update/1/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item)))
                 .andExpect(status().isOk())
-                .andDo(document("put-classificator-item"));
+                .andDo(document("put-classificator-item", preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -86,32 +88,33 @@ public class ClassificatorUpdateControllerTest {
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
-        ClassificatorItem item1 = createClassificatorItem("11", "code", "name", "testNotes");
-        this.mockMvc.perform(put("/update/okpd/items").contentType(MediaType.APPLICATION_JSON).content(
+        ClassificatorItem item1 = createClassificatorItem("11", "111", "name", "testNotes");
+        this.mockMvc.perform(put("/update/1/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item1)));
 
         Classificator classificator2 = createClassificator("TNVD", "ТНВД", "2");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator2)));
 
-        ClassificatorItem item2 = createClassificatorItem("22", "code", "name", "testNotes");
-        this.mockMvc.perform(put("/update/tnvd/items").contentType(MediaType.APPLICATION_JSON).content(
+        ClassificatorItem item2 = createClassificatorItem("22", "222", "name", "testNotes");
+        this.mockMvc.perform(put("/update/2/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item2)));
 
 
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
         testLinks.setTargetClassificatorId("2");
-        testLinks.setTargetItemCode("22");
-        this.mockMvc.perform(put("/update/okpd/11/links", testLinks).accept(MediaType.APPLICATION_JSON))
+        testLinks.setTargetItemCode("222");
+        this.mockMvc.perform(put("/update/1/111/links").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(testLinks)))
                 .andExpect(status().isOk())
-                .andDo(document("put-classificator-item-links"));
+                .andDo(document("put-classificator-item-links", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void commit() throws Exception {
         this.mockMvc.perform(post("/update/commit").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("update-classificators-commit"));
+                .andDo(document("update-classificators-commit", preprocessResponse(prettyPrint())));
     }
 
     private Classificator createClassificator(String code, String name, String id) {
