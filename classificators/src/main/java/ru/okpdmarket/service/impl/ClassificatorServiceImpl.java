@@ -2,13 +2,17 @@ package ru.okpdmarket.service.impl;
 
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dao.ClassificatorDao;
+import ru.okpdmarket.dao.DaoSerializer;
+import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.service.ClassificatorService;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -16,15 +20,25 @@ import java.util.List;
  */
 @Component
 public class ClassificatorServiceImpl implements ClassificatorService {
-    final ClassificatorRepository repository;
+    private final ClassificatorRepository repository;
 
-    final ClassificatorDao classificatorDao;
+    private final ClassificatorDao classificatorDao;
 
+    private final DaoSerializer daoSerializer;
 
     @Autowired
-    public ClassificatorServiceImpl(ClassificatorRepository repository, ClassificatorDao classificatorDao) {
+    public ClassificatorServiceImpl(ClassificatorRepository repository, ClassificatorDao classificatorDao, @Lazy DaoSerializer daoSerializer) {
         this.repository = repository;
         this.classificatorDao = classificatorDao;
+        this.daoSerializer = daoSerializer;
+    }
+
+    @PostConstruct
+    private void init() {
+        List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
+        List<Classificator> classificators = daoSerializer.deserializeList(classificatorDaoAll);
+        classificators.forEach(repository::putClassificator);
+
     }
 
     @Override
@@ -33,19 +47,18 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     }
 
     @Override
-    public List<ClassificatorItem> getClassificatorFirstLevel(String classificatorId) {
-        return repository.getClassificatorContentsById(classificatorId).getFirstLevel();
+    public List<ClassificatorItem> getClassificatorFirstLevel(String classificatorCode) {
+        return repository.getClassificatorByCode(classificatorCode).getContents().getFirstLevel();
     }
 
     @Override
     public void commitClassificators() {
-        val classificators = getClassificatorTypes();
+        val classificators = repository.getClassificators();
 
-        //TODO: move this to another place
-        //val daoDtos = serializer.serializeList(classificators);
-       /* for(ClassificatorDaoDto daoDto : daoDtos){
+        val daoDtos = daoSerializer.serializeList(classificators);
+        for (ClassificatorDaoDto daoDto : daoDtos) {
             classificatorDao.save(daoDto);
-        }*/
+        }
     }
 
     @Override
@@ -57,6 +70,6 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
     @Override
     public ClassificatorItem getItem(String classificatorId, String itemCode) {
-        return repository.getClassificatorContentsById(classificatorId).getItemByCode(itemCode);
+        return repository.getClassificatorByCode(classificatorId).getContents().getItemByCode(itemCode);
     }
 }

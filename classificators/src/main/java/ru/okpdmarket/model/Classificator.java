@@ -12,7 +12,6 @@ import ru.okpdmarket.repository.impl.ClassificatorContents;
 @Data
 public class Classificator {
 
-    private String id;
     private String code;
     private String name;
     private String description;

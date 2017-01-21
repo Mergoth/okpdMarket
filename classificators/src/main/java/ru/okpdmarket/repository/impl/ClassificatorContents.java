@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +63,12 @@ public class ClassificatorContents {
     }
 
     public List<ClassificatorItem> getFirstLevel() {
-        return elements.get(TOP_CODE).getRelations().getChildren();
+        if (elements.size() > 0) {
+            if (elements.get(TOP_CODE) == null)
+                throw new RuntimeException("Incorrect classificator contents state. No top coded item!");
+            return elements.get(TOP_CODE).getRelations().getChildren();
+        }
+        return Collections.emptyList();
     }
 
     public int size() {

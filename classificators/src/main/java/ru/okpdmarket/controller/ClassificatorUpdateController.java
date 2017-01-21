@@ -36,22 +36,22 @@ public class ClassificatorUpdateController {
         return new ResponseEntity<>(classificatorService.put(model), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/items", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{code}/items", method = RequestMethod.PUT)
     public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item,
-                                                                        @PathVariable(value = "id") String classificatorId) {
+                                                                        @PathVariable(value = "code") String classificatorCode) {
         try {
-            return new ResponseEntity<>(classificatorItemService.addItem(classificatorId, item), HttpStatus.OK);
+            return new ResponseEntity<>(classificatorItemService.addItem(classificatorCode, item), HttpStatus.OK);
         } catch (ClassificatorNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @RequestMapping(value = "/{id}/{itemId}/links", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{code}/{itemId}/links", method = RequestMethod.PUT)
     public ResponseEntity<ClassificatorItem> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
-                                                                  @PathVariable(value = "id") String classificatorId,
+                                                                  @PathVariable(value = "code") String classificatorCode,
                                                                   @PathVariable(value = "itemId") String itemId) {
-        val sourceItem = classificatorService.getItem(classificatorId, itemId);
-        val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorId(), linkDto.getTargetItemCode());
+        val sourceItem = classificatorService.getItem(classificatorCode, itemId);
+        val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorCode(), linkDto.getTargetItemCode());
         classificatorItemService.linkItem(sourceItem, targetItem);
         return new ResponseEntity<>(classificatorItemService.linkItem(sourceItem, targetItem), HttpStatus.OK);
     }

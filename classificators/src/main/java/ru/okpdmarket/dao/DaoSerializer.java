@@ -47,11 +47,10 @@ public class DaoSerializer {
 
     private ClassificatorDaoDto serialize(Classificator item) {
         ClassificatorDaoDto dto = new ClassificatorDaoDto();
-        dto.setId(item.getId());
         dto.setCode(item.getCode());
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
-        val daoDtoChilderList = serializeList(service.getClassificatorFirstLevel(item.getCode()));
+        val daoDtoChilderList = serializeList(item.getContents().getFirstLevel());
         dto.setTree(daoDtoChilderList);
         return dto;
     }
@@ -64,7 +63,6 @@ public class DaoSerializer {
         Classificator classificator = new Classificator();
         classificator.setCode(dto.getCode());
         classificator.setName(dto.getName());
-        classificator.setId(dto.getId());
         classificator.setDescription(dto.getDescription());
         service.put(classificator);
         loadChildren(null, dto.getTree(), classificator);
@@ -75,7 +73,7 @@ public class DaoSerializer {
         for (ClassificatorItemDaoDto childDto : fromDtoList) {
             val item = new ClassificatorItem(childDto.getCode(), childDto.getName(), childDto.getNotes());
             item.setParentCode(parentCode);
-            itemService.addItem(targetClassificator.getId(), item);
+            itemService.addItem(targetClassificator.getCode(), item);
 
             if (!childDto.getChildren().isEmpty()) {
                 loadChildren(childDto.getCode(), childDto.getChildren(), targetClassificator);

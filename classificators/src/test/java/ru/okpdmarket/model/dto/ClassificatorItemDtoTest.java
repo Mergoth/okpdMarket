@@ -32,7 +32,7 @@ public class ClassificatorItemDtoTest {
         }*/
 
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
-        testLinks.setTargetClassificatorId("2");
+        testLinks.setTargetClassificatorCode("2");
         testLinks.setTargetItemCode("22");
         try {
             String json = objectMapper.writeValueAsString(testLinks);
