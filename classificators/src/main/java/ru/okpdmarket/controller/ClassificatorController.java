@@ -50,6 +50,6 @@ public class ClassificatorController {
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
     public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorCode, @RequestParam String query) {
-        return searchService.search(classificatorCode, query);
+        return searchService.searchByClassificator(classificatorCode, query);
     }
 }

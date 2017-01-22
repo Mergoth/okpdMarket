@@ -29,7 +29,8 @@ public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
     @Override
     public Classificator putClassificator(Classificator classificator) {
-        classificator.setContents(new ClassificatorContents(classificator));
+        if (classificator.getContents() == null)
+            classificator.setContents(new ClassificatorContents(classificator));
         Classificator result = classificatorsMap.putIfAbsent(classificator.getCode(), classificator);
         if (result != null) return result;
         return classificator;
