@@ -38,7 +38,6 @@ public class ClassificatorServiceImpl implements ClassificatorService {
         List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
         List<Classificator> classificators = daoSerializer.deserializeList(classificatorDaoAll);
         classificators.forEach(repository::putClassificator);
-
     }
 
     @Override
@@ -69,7 +68,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
 
     @Override
-    public ClassificatorItem getItem(String classificatorId, String itemCode) {
-        return repository.getClassificatorByCode(classificatorId).getContents().getItemByCode(itemCode);
+    public ClassificatorItem getItem(String classificatorCode, String itemCode) {
+        return repository.getClassificatorByCode(classificatorCode).getContents().getItemByCode(itemCode);
     }
 }
