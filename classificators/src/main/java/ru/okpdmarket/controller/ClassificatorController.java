@@ -48,8 +48,8 @@ public class ClassificatorController {
         return classificatorService.getItem(classificatorCode, itemCode);
     }
 
-    @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorCode, @RequestParam String query) {
+    @RequestMapping(value = "/{code}/search", method = RequestMethod.GET)
+    public List<ClassificatorItem> search(@PathVariable(value = "code") String classificatorCode, @RequestParam String query) {
         return searchService.searchByClassificator(classificatorCode, query);
     }
 }

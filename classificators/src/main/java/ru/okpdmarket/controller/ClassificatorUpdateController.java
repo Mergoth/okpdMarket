@@ -52,7 +52,6 @@ public class ClassificatorUpdateController {
                                                                   @PathVariable(value = "itemId") String itemId) {
         val sourceItem = classificatorService.getItem(classificatorCode, itemId);
         val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorCode(), linkDto.getTargetItemCode());
-        classificatorItemService.linkItem(sourceItem, targetItem);
         return new ResponseEntity<>(classificatorItemService.linkItem(sourceItem, targetItem), HttpStatus.OK);
     }
 
