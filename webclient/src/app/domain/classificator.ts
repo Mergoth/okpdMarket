@@ -1,5 +1,5 @@
 export interface Classificator {
-    id: string;
+    code: string;
     name: string;
 }
 

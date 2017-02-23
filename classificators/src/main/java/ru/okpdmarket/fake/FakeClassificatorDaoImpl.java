@@ -22,7 +22,6 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         return null;
     }
 
-
     @Override
     public <S extends ClassificatorDaoDto> Iterable<S> save(Iterable<S> entities) {
         return null;
@@ -44,7 +43,6 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         classificator.setCode("code");
         classificator.setName("test");
         classificator.setDescription("Test descr");
-        classificator.setId("1234324");
         classificator.setTree(new ArrayList<>());
 
         ClassificatorItemDaoDto item1 = new ClassificatorItemDaoDto();
@@ -66,7 +64,6 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         item12.setNotes("Test12 notes");
         item12.setChildren(new ArrayList<>());
         item1.getChildren().add(item12);
-
 
         ClassificatorItemDaoDto item121 = new ClassificatorItemDaoDto();
         item121.setCode("121");

@@ -1,7 +1,7 @@
 package ru.okpdmarket.service;
 
-import ru.okpdmarket.dto.ClassificatorTypeDto;
 import ru.okpdmarket.model.Classificator;
+import ru.okpdmarket.model.ClassificatorItem;
 
 import java.util.List;
 
@@ -10,10 +10,13 @@ import java.util.List;
  */
 public interface ClassificatorService {
 
-    List<ClassificatorTypeDto> getClassificatorTypes();
+    List<Classificator> getClassificatorTypes();
 
-    Classificator getClassifiactor(String classificatorCode);
+    List<ClassificatorItem> getClassificatorFirstLevel(String classificatorCode);
 
-    void commitClassificators(List<Classificator> classificators);
+    void commitClassificators();
 
+    List<Classificator> put(Classificator classificator);
+
+    ClassificatorItem getItem(String classificatorId, String itemCode);
 }

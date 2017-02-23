@@ -1,15 +1,17 @@
 package ru.okpdmarket.controller;
 
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
-import ru.okpdmarket.service.ClassificatorUpdateService;
+import ru.okpdmarket.model.dto.ClassificatorLinkDto;
+import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.exception.ClassificatorNotFoundException;
+import ru.okpdmarket.service.impl.ClassificatorItemService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -19,26 +21,44 @@ import java.util.List;
 @RequestMapping("/update")
 public class ClassificatorUpdateController {
 
-
-    private final ClassificatorUpdateService classificatorUpdateService;
-
+    private final ClassificatorService classificatorService;
+    private final ClassificatorItemService classificatorItemService;
 
     @Autowired
-    public ClassificatorUpdateController(ClassificatorUpdateService classificatorUpdateService) {
-        this.classificatorUpdateService = classificatorUpdateService;
+    public ClassificatorUpdateController(ClassificatorService classificatorService,
+                                         ClassificatorItemService classificatorItemService) {
+        this.classificatorService = classificatorService;
+        this.classificatorItemService = classificatorItemService;
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<List<Classificator>> putClassificator(@RequestBody final Classificator model,
-                                                                HttpServletRequest request, HttpServletResponse response) {
-
-        return new ResponseEntity<List<Classificator>>(classificatorUpdateService.put(model), HttpStatus.CREATED);
+    public ResponseEntity<List<Classificator>> putClassificator(@RequestBody final Classificator model) {
+        return new ResponseEntity<>(classificatorService.put(model), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/item", method = RequestMethod.PUT)
-    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item, @PathVariable(value = "id") String parentCode, String previousCode,
-                                                                        HttpServletResponse response) {
+    @RequestMapping(value = "/{code}/items", method = RequestMethod.PUT)
+    public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item,
+                                                                        @PathVariable(value = "code") String classificatorCode) {
+        try {
+            return new ResponseEntity<>(classificatorItemService.addItem(classificatorCode, item), HttpStatus.OK);
+        } catch (ClassificatorNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-        return new ResponseEntity<List<ClassificatorItem>>(classificatorUpdateService.putItem(item), HttpStatus.CREATED);
+    @RequestMapping(value = "/{code}/{itemId}/links", method = RequestMethod.PUT)
+    public ResponseEntity<ClassificatorItem> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
+                                                                  @PathVariable(value = "code") String classificatorCode,
+                                                                  @PathVariable(value = "itemId") String itemId) {
+        val sourceItem = classificatorService.getItem(classificatorCode, itemId);
+        val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorCode(), linkDto.getTargetItemCode());
+        classificatorItemService.linkItem(sourceItem, targetItem);
+        return new ResponseEntity<>(classificatorItemService.linkItem(sourceItem, targetItem), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/commit", method = RequestMethod.POST)
+    public ResponseEntity<Object> commit() {
+        classificatorService.commitClassificators();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

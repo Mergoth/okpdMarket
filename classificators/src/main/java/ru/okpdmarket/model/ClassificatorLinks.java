@@ -9,7 +9,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 @Data
 public class ClassificatorLinks {
-
+    /* private Classificator targetClassificator;
+     private ClassificatorItem sourceItem;
+ */
     private CopyOnWriteArrayList<ClassificatorItem> linkedItems = new CopyOnWriteArrayList<>();
 
     public boolean add(ClassificatorItem targetItem) {
