@@ -1,13 +1,11 @@
 <md-tab-group class="demo-tab-group" (selectChange)="onSelectChange($event)">
   <md-tab *ngFor="let tab of tabModel.tabs">
     <template md-tab-label>{{tab.title}}</template>
-    <template md-tab-content>
       <classificator-tree [model]="classificatorTree"
                           (pathClick)="onPathClick($event)"
                           (nodeClick)="onNodeClick($event)" *ngIf="classificatorTree && tabModel.selectedType == tab.type"
                           [type]="tab.type"></classificator-tree>
       <div class="loading" *ngIf="!classificatorTree"></div>
       <div>&nbsp;</div>
-    </template>
   </md-tab>
 </md-tab-group>

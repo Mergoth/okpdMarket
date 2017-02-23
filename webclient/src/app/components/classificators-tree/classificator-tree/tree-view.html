@@ -1,5 +1,5 @@
-<div *ngIf="model != null" class="list-group" >
-  <div *ngFor="let node of model.nodes" class="list-group-item" >
+<div *ngIf="model != null">
+  <div *ngFor="let node of model.nodes" >
     <div *ngIf="node.hasNodes" (click)="expand(node)" class="list-item">
       <span [style.margin-left.px]="model.level*20"></span>
       <md-icon *ngIf="!node.expanded">keyboard_arrow_down</md-icon>
@@ -9,6 +9,12 @@
     <div *ngIf="node.expanded">
       <tree-view (nodeClick)="onNodeClick($event)" [model]="node"></tree-view>
     </div>
+    <div *ngIf="!node.hasNodes" class="list-item">
+      <span [style.margin-left.px]="model.level*20"></span>
+      <span class="no-icon"></span>
+      <span class="code">{{ node.id }}</span> {{node.name}}
+    </div>
+
   </div>
 </div>
 <div class="loading" style="float: right; position: relative; top: -25px" *ngIf="model == null || model.nodes == null"></div>

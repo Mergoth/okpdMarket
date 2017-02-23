@@ -5,12 +5,13 @@
   border-bottom: 1px solid #ddd;
 }
 
-.list-group {
-
-}
-
 .list-item:hover {
   background-color: #F5F5F5;
+}
+
+.no-icon {
+  display: inline;
+  width: 24px;
 }
 
 md-icon {
