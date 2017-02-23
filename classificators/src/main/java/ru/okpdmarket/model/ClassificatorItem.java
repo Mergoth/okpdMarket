@@ -95,6 +95,7 @@ public class ClassificatorItem implements Serializable {
 
     public ClassificatorItem clone(boolean extended) {
         ClassificatorItem clone = (ClassificatorItem) this.clone();
+        clone.setProp("hasChildren", hasChildren());
         if (extended) {
             clone.setRelations(relations);
             clone.setProperties(properties);
@@ -102,10 +103,14 @@ public class ClassificatorItem implements Serializable {
         return clone;
     }
 
+    private boolean hasChildren() {
+        return !getRelations().getChildren().isEmpty();
+    }
+
     public ClassificatorItem recalculate() {
         setProp("path", calcPath());
         setProp("level", calcLevel());
-        setProp("hasChildren", !getRelations().getChildren().isEmpty());
+        setProp("hasChildren", hasChildren());
         setProp("children", calcChildren());
         setProp("links", calcLinks());
         return this;

@@ -16,8 +16,11 @@
           <td class="code">{{item.code}}</td>
           <td class="name"><span [innerHTML]="highlight(item.name)"></span></td>
           <td class="">
-            <span *ngFor="let match of item.matched">
-            {{match.type}}:  {{match.name}}<span class="href" (click)="toTree(match.type, match.code)">{{match.code}}</span>
+            <span *ngFor="let links of item.links | mapIterable">
+               <span *ngFor="let link of links.val">
+                 {{links.key}}:  {{link.name}}
+                  <span class="href" (click)="toTree(links.key, link.code)">{{link.code}}</span>
+               </span>
               <br><br>
             </span>
           </td>

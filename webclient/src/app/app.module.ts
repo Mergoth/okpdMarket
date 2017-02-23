@@ -11,6 +11,7 @@ import {ClassificatorService} from "./service/classificator.service";
 import {BackAPI} from "./service/back-api.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {TreeViewComponent} from "./components/classificators-tree/classificator-tree/tree-veiw.component";
+import {MapIterable} from "./components/map-iterable.pipe";
 
 
 // Imports for loading & configuring the in-memory web api
@@ -32,7 +33,8 @@ import {TreeViewComponent} from "./components/classificators-tree/classificator-
     ClassificatorSearchComponent,
     ClassificatorsTreeComponent,
     ClassificatorTreeComponent,
-    TreeViewComponent
+    TreeViewComponent,
+    MapIterable
   ],
   bootstrap: [AppComponent],
   providers: [

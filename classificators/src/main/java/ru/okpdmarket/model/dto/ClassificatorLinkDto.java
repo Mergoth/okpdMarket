@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class ClassificatorLinkDto {
 
-    private String targetClassificatorId;
+    private String targetClassificatorCode;
     private String targetItemCode;
 }

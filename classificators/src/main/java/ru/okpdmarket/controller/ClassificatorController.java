@@ -32,24 +32,24 @@ public class ClassificatorController {
     }
 
 
-    @RequestMapping(value = "/{classificatorId}", method = RequestMethod.GET)
-    public List<ClassificatorItem> getTopItems(@PathVariable(value = "classificatorId") String classificatorId) {
-        return classificatorService.getClassificatorFirstLevel(classificatorId);
+    @RequestMapping(value = "/{classificatorCode}", method = RequestMethod.GET)
+    public List<ClassificatorItem> getTopItems(@PathVariable(value = "classificatorCode") String classificatorCode) {
+        return classificatorService.getClassificatorFirstLevel(classificatorCode);
     }
 
     /**
-     * @param classificatorId - id of the classificator
+     * @param classificatorCode - id of the classificator
      * @param itemCode - code of the ClassificatorItem to get
      * @return ClassificatorItem -
      */
-    @RequestMapping(value = "/{classificatorId}/{itemCode}", method = RequestMethod.GET)
-    public ClassificatorItem getItem(@PathVariable(value = "classificatorId") String classificatorId,
+    @RequestMapping(value = "/{classificatorCode}/{itemCode}", method = RequestMethod.GET)
+    public ClassificatorItem getItem(@PathVariable(value = "classificatorCode") String classificatorCode,
                                      @PathVariable(value = "itemCode") String itemCode) {
-        return classificatorService.getItem(classificatorId, itemCode);
+        return classificatorService.getItem(classificatorCode, itemCode);
     }
 
     @RequestMapping(value = "/{id}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorId, @RequestParam String query) {
-        return searchService.search(classificatorId, query);
+    public List<ClassificatorItem> search(@PathVariable(value = "id") String classificatorCode, @RequestParam String query) {
+        return searchService.searchByClassificator(classificatorCode, query);
     }
 }

@@ -9,7 +9,7 @@ import {TabsModel} from "../../tab-model";
 
 @Component({
   selector: 'classificators-tree',
-  templateUrl: 'classificators-tree.html'
+  templateUrl: './classificators-tree.html'
 })
 export class ClassificatorsTreeComponent implements OnInit {
 
@@ -21,7 +21,7 @@ export class ClassificatorsTreeComponent implements OnInit {
 
   classificatorTree: ClassificatorTreeModel;
 
-  routeParams: RouteParams;
+  private routeParams: RouteParams;
 
   constructor(private route: ActivatedRoute, private router: Router, private classificatorService: ClassificatorService) {
     this.route.params.subscribe(params => {
@@ -51,12 +51,12 @@ export class ClassificatorsTreeComponent implements OnInit {
       this.classificatorTypes = res;
       this.tabModel.clear();
       this.classificatorTypes.forEach(clsfType => this.tabModel.push({
-        type: clsfType.id,
+          type: clsfType.code,
         title: clsfType.name,
         selected: false
       }));
     }).then(_ => {
-      this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].id;
+        this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].code;
       this.updateTree();
     });
   }
@@ -88,12 +88,10 @@ export class ClassificatorsTreeComponent implements OnInit {
     }
   }
 
-
   treeClassificatorBy(rootId: string, params: Object = {}): Promise<ClassificatorItem> {
     const nodeId = (this.tabModel.selectedType == rootId) ? null : rootId;
     return this.classificatorService.classificatorTree(this.tabModel.selectedType, nodeId, params);
   }
-
 }
 
 function fillTree(model: Tree, classificator: ClassificatorItem) {

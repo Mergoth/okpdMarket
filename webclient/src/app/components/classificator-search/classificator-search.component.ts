@@ -6,8 +6,8 @@ import {TabsModel} from "../../tab-model";
 
 @Component({
   selector: 'classificator-search',
-  styleUrls: ['classificator-search.css'],
-  templateUrl: 'classificator-search.html',
+  styleUrls: ['./classificator-search.css'],
+  templateUrl: './classificator-search.html',
   providers: [ClassificatorService]
 })
 export class ClassificatorSearchComponent extends OnInit {
@@ -31,12 +31,12 @@ export class ClassificatorSearchComponent extends OnInit {
       this.classificatorTypes = res;
       this.tabModel.clear();
       this.classificatorTypes.forEach(clsfType => this.tabModel.push({
-          type: clsfType.id,
+        type: clsfType.code,
         title: clsfType.name,
         selected: false
       }));
     }).then(_ => {
-        this.tabModel.selectedType = this.classificatorTypes[0].id;
+      this.tabModel.selectedType = this.classificatorTypes[0].code;
     });
   }
 

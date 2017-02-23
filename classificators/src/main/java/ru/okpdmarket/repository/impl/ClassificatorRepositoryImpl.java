@@ -7,7 +7,6 @@ import ru.okpdmarket.repository.ClassificatorRepository;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by vlad on 10/9/2016.
@@ -15,24 +14,25 @@ import java.util.Optional;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-    private LinkedHashMap<Classificator, ClassificatorContents> classificatorsMap = new LinkedHashMap<>();
 
+    private LinkedHashMap<String, Classificator> classificatorsMap = new LinkedHashMap<>();
 
     @Override
     public List<Classificator> getClassificators() {
-        return new ArrayList<>(classificatorsMap.keySet());
+        return new ArrayList<>(classificatorsMap.values());
     }
 
     @Override
-    public ClassificatorContents getClassificatorContentsById(String id) {
-        Optional<Classificator> classificatorOptional = classificatorsMap.keySet().stream().filter(c -> c.getId().equals(id)).findFirst();
-        return classificatorsMap.get(classificatorOptional.orElse(null));
+    public Classificator getClassificatorByCode(String code) {
+        return classificatorsMap.get(code);
     }
 
     @Override
-    public ClassificatorContents putClassificator(Classificator classificator) {
-        ClassificatorContents result = classificatorsMap.putIfAbsent(classificator, new ClassificatorContents(classificator));
+    public Classificator putClassificator(Classificator classificator) {
+        if (classificator.getContents() == null)
+            classificator.setContents(new ClassificatorContents(classificator));
+        Classificator result = classificatorsMap.putIfAbsent(classificator.getCode(), classificator);
         if (result != null) return result;
-        return classificatorsMap.get(classificator);
+        return classificator;
     }
 }

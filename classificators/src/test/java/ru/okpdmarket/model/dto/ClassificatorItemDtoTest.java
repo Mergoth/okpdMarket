@@ -1,10 +1,13 @@
 package ru.okpdmarket.model.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.val;
 import org.junit.Assert;
 import org.junit.Test;
+import ru.okpdmarket.model.ClassificatorItem;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by vladislav on 12/01/2017.
@@ -12,11 +15,12 @@ import java.io.IOException;
 public class ClassificatorItemDtoTest {
 
     @Test
-    public void shouldDeserialize() {
+    public void shouldDeserializeItem() {
         ObjectMapper objectMapper = new ObjectMapper();
-        /* val item = new ClassificatorItem();
-        item.setCode("code");
+        val item = new ClassificatorItem();
+        item.setCode("12");
         item.setName("name");
+        item.setParentCode("1");
         item.getProperties().put("integer", 1);
         item.getProperties().put("children", new ArrayList<ClassificatorItem>() {{
             ClassificatorItem child = new ClassificatorItem("c1", "childName");
@@ -29,10 +33,14 @@ public class ClassificatorItemDtoTest {
             Assert.assertEquals(item, itemWithOwner);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+    }
 
+    @Test
+    public void shouldDeserializeLink() {
+        ObjectMapper objectMapper = new ObjectMapper();
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
-        testLinks.setTargetClassificatorId("2");
+        testLinks.setTargetClassificatorCode("2");
         testLinks.setTargetItemCode("22");
         try {
             String json = objectMapper.writeValueAsString(testLinks);

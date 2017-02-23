@@ -12,10 +12,8 @@ import java.util.List;
 @Data
 public class ClassificatorDaoDto {
 
-    @Id
-    private String id;
-
     // Unique classificator code in english
+    @Id
     private String code;
     // Classificator name in Russian
     private String name;

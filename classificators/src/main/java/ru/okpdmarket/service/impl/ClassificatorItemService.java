@@ -27,7 +27,7 @@ public class ClassificatorItemService {
     }
 
     public List<ClassificatorItem> addItem(String classificatorId, ClassificatorItem newItem) throws ClassificatorNotFoundException {
-        ClassificatorContents contents = repository.getClassificatorContentsById(classificatorId);
+        ClassificatorContents contents = repository.getClassificatorByCode(classificatorId).getContents();
         if (contents == null)
             throw new ClassificatorNotFoundException(String.format("Classificator %s not found!", classificatorId));
         ClassificatorItem existingItem = contents.getItemByCode(newItem.getCode());

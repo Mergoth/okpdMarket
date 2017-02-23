@@ -9,7 +9,8 @@ export class ClassificatorService {
   }
 
   classificatorTypes(): Promise<Classificator[]> {
-    return this.backApi.classificatorTypes().then(response => response as Classificator[]);;
+    return this.backApi.classificatorTypes().then(response => response as Classificator[]);
+    ;
   }
 
   getList(query: string, type: string): Promise<ClassificatorItem[]> {
@@ -17,7 +18,14 @@ export class ClassificatorService {
   }
 
   classificatorTree(classificator: string, code: string, params: Object): Promise<ClassificatorItem> {
-    return this.backApi.classificatorTree(classificator, prepareCode(code), params).then(response => response as ClassificatorItem);
+    return code ?
+        this.backApi.classificatorItem(classificator, prepareCode(code), params)
+        :
+        (this.backApi.classificatorTopItems(classificator).then(response => {
+          const items = response as ClassificatorItem[];
+          items.forEach(item => item.parentCode = classificator);
+          return {code: classificator, hasChildren: true, children: items, path: []};
+        }));
   }
 
 }

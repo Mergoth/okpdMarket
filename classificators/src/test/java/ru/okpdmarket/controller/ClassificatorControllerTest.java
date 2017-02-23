@@ -59,24 +59,22 @@ public class ClassificatorControllerTest {
         Classificator classificator1 = new Classificator();
         classificator1.setCode("OKPD");
         classificator1.setName("ОКПД");
-        classificator1.setId("1");
         classificatorService.put(classificator1);
-        val item11 = add("1", "1", "Test", "");
-        add("1", "11", "TestLevel11", "1");
-        add("1", "12", "TestLevel12", "1");
-        add("1", "13", "TestLevel13", "1");
-        add("1", "121", "TestLevel121", "12");
-        val item12 = add("1", "2", "Test2", "");
+        val item11 = add("OKPD", "1", "Test", "");
+        add("OKPD", "11", "TestLevel11", "1");
+        add("OKPD", "12", "TestLevel12", "1");
+        add("OKPD", "13", "TestLevel13", "1");
+        add("OKPD", "121", "TestLevel121", "12");
+        val item12 = add("OKPD", "2", "Test2", "");
 
         Classificator classificator2 = new Classificator();
         classificator2.setCode("tnvd");
         classificator2.setName("ТНВД");
-        classificator2.setId("2");
         classificatorService.put(classificator2);
 
-        val item21 = add("2", "1", "TestTnvd", "");
-        /*item21.getRelations().linkItem(item11);
-        item21.getRelations().linkItem(item12);*/
+        val item21 = add("tnvd", "1", "TestTnvd", "");
+        itemService.linkItem(item11, item21);
+        itemService.linkItem(item21, item12);
 
     }
 
@@ -89,7 +87,6 @@ public class ClassificatorControllerTest {
         this.mockMvc.perform(get("").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificators", preprocessResponse(prettyPrint()), responseFields(
-                        fieldWithPath("[].id").description("Id of classificator type"),
                         fieldWithPath("[].code").description("English name of classificator type. To use in URL"),
                         fieldWithPath("[].name").description("Localized name of Classificator type"),
                         fieldWithPath("[].description").description("Description"))));
@@ -98,21 +95,21 @@ public class ClassificatorControllerTest {
 
     @Test
     public void getTopItems() throws Exception {
-        this.mockMvc.perform(get("/1").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/OKPD").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-top-items", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void getItem() throws Exception {
-        this.mockMvc.perform(get("/1/12").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/OKPD/12").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void search() throws Exception {
-        this.mockMvc.perform(get("/1/search?query=Test query").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/OKPD/search?query=Test query").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
     }
