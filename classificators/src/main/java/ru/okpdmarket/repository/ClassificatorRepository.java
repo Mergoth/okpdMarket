@@ -3,13 +3,15 @@ package ru.okpdmarket.repository;
 import ru.okpdmarket.model.Classificator;
 
 import java.util.List;
-import java.util.Map;
 
 
 public interface ClassificatorRepository {
 
-    Map<String, Classificator> getClassificators();
+    List<Classificator> getClassificators();
 
-    void updateClassificators(List<Classificator> classificators);
+    Classificator getClassificatorByCode(String id);
+
+    Classificator putClassificator(Classificator classificator);
 
 }
+

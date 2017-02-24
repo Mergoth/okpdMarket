@@ -13,6 +13,6 @@ eureka:
 
 
 server:
-  context-path: /
+  context-path: /classificators
   port: 8080
 

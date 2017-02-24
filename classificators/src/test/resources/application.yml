@@ -3,3 +3,5 @@ spring:
     mongodb:
       database: okpd
       port: 0
+  profiles:
+      active: debug

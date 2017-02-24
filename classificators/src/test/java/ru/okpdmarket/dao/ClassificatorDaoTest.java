@@ -1,13 +1,10 @@
 package ru.okpdmarket.dao;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.dao.dto.ClassificatorItemDaoDto;
 import ru.okpdmarket.model.Classificator;
@@ -22,17 +19,9 @@ import static org.junit.Assert.assertTrue;
 @SpringBootTest
 public class ClassificatorDaoTest {
 
-    @Rule
-    public JUnitRestDocumentation restDocumentation =
-            new JUnitRestDocumentation("build/generated-snippets");
     @Autowired
     ClassificatorDao classificatorDao;
 
-    @Autowired
-    ClassificatorItemDao classificatorItemDao;
-
-    @Autowired
-    private WebApplicationContext context;
 
     @Test
     public void addClassificator(){
@@ -78,8 +67,9 @@ public class ClassificatorDaoTest {
 
     @Test
     public void findById(){
-        Classificator classificator = new Classificator("code", "test");
-        classificator.setId("test");
+        Classificator classificator = new Classificator();
+        //"code", "test"
+        classificator.setCode("test");
         // TODO: fix test
         // classificatorDao.save(classificator);
         //Classificator classificator1 = classificatorDao.findOne("test");
