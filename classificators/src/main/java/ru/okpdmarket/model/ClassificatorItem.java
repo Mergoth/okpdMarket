@@ -108,6 +108,10 @@ public class ClassificatorItem implements Serializable {
     }
 
     public ClassificatorItem recalculate() {
+        ClassificatorItem parent = this.getRelations().getParent();
+        if (parent != null) {
+            parent.recalculate();
+        }
         setProp("path", calcPath());
         setProp("level", calcLevel());
         setProp("hasChildren", hasChildren());

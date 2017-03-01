@@ -38,7 +38,7 @@ public class ClassificatorContents {
         item.getRelations().setParent(parentItem);
         item.getRelations().setClassificator(classificator);
         parentItem.getRelations().getChildren().add(item);
-        parentItem.recalculate();
+        //parentItem.recalculate();
         return parentItem.getRelations().getChildren();
 
     }
