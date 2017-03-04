@@ -14,11 +14,19 @@ public class ClassificatorLinkDaoDto {
     private String dstItemCode;
 
     public ClassificatorLinkDaoDto(ClassificatorItem src, ClassificatorItem dst) {
+        this(src.getRelations().getClassificator().getCode(),
+                src.getCode(),
+                dst.getRelations().getClassificator().getCode(),
+                dst.getCode()
+        );
+    }
 
-        srcClsCode = src.getRelations().getClassificator().getCode();
-        dstClsCode = dst.getRelations().getClassificator().getCode();
+    public ClassificatorLinkDaoDto(String srcClsCode, String srcItemCode, String dstClsCode, String dstItemCode) {
 
-        srcItemCode = src.getCode();
-        dstItemCode = dst.getCode();
+        this.srcClsCode = srcClsCode;
+        this.srcItemCode = srcItemCode;
+
+        this.dstClsCode = dstClsCode;
+        this.dstItemCode = dstItemCode;
     }
 }

@@ -22,6 +22,6 @@ public class ClassificatorDaoDto {
     private String description;
 
     private List<ClassificatorItemDaoDto> tree = new ArrayList<>();
-
+    private List<ClassificatorLinkDaoDto> links;
 
 }

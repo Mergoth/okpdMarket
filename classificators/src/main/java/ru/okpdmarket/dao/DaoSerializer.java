@@ -52,6 +52,7 @@ public class DaoSerializer {
         dto.setDescription(item.getDescription());
         val daoDtoChilderList = serializeList(item.getContents().getFirstLevel());
         dto.setTree(daoDtoChilderList);
+        dto.setLinks(serializeLinks(item));
         return dto;
     }
 
@@ -96,7 +97,9 @@ public class DaoSerializer {
 
         return item.getRelations().getLinks().entrySet().stream()
                 .filter(e -> isSourceLink(e.getKey(), item.getRelations().getClassificator()))
-                .flatMap(e -> e.getValue().getLinkedItems().stream().map(i -> new ClassificatorLinkDaoDto(item, i)));
+                .flatMap(e -> e.getValue().getLinkedItems().stream().map(
+                        i -> new ClassificatorLinkDaoDto(item.getRelations().getClassificator().getCode(),
+                                item.getCode(), e.getKey().getCode(), i.getCode())));
     }
 
     private boolean isSourceLink(Classificator src, Classificator dst) {
@@ -105,7 +108,8 @@ public class DaoSerializer {
     }
 
     public void loadLinks(List<ClassificatorLinkDaoDto> links) {
-
+        if (links != null)
+            links.forEach(this::loadLink);
 
     }
 
