@@ -18,5 +18,5 @@ public interface ClassificatorService {
 
     List<Classificator> put(Classificator classificator);
 
-    ClassificatorItem getItem(String classificatorId, String itemCode);
+    ClassificatorItem getItem(String classificatorCode, String itemCode);
 }

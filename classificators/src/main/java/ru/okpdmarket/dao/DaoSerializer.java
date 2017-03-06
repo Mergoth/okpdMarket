@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.dao.dto.ClassificatorItemDaoDto;
+import ru.okpdmarket.dao.dto.ClassificatorLinkDaoDto;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
@@ -13,6 +14,7 @@ import ru.okpdmarket.service.impl.ClassificatorItemService;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by vladislav on 09/01/2017.
@@ -36,10 +38,8 @@ public class DaoSerializer {
         val childrenItems = item.getRelations().getChildren();
         val fullChildrenList = childrenItems.stream().map(this::serialize).collect(Collectors.toList());
         dto.setChildren(fullChildrenList);
-
         return dto;
     }
-
 
     public List<ClassificatorItemDaoDto> serializeList(Collection<ClassificatorItem> items) {
         return items.stream().map(this::serialize).collect(Collectors.toList());
@@ -52,6 +52,7 @@ public class DaoSerializer {
         dto.setDescription(item.getDescription());
         val daoDtoChilderList = serializeList(item.getContents().getFirstLevel());
         dto.setTree(daoDtoChilderList);
+        dto.setLinks(serializeLinks(item));
         return dto;
     }
 
@@ -83,5 +84,38 @@ public class DaoSerializer {
 
     public List<Classificator> deserializeList(List<ClassificatorDaoDto> dtos) {
         return dtos.stream().map(this::deserialize).collect(Collectors.toList());
+    }
+
+
+    public List<ClassificatorLinkDaoDto> serializeLinks(Classificator classificator) {
+        return classificator.getContents().getElements().values().stream()
+                .flatMap(this::extractItemLinks)
+                .collect(Collectors.toList());
+    }
+
+    private Stream<ClassificatorLinkDaoDto> extractItemLinks(ClassificatorItem item) {
+
+        return item.getRelations().getLinks().entrySet().stream()
+                .filter(e -> isSourceLink(e.getKey(), item.getRelations().getClassificator()))
+                .flatMap(e -> e.getValue().getLinkedItems().stream().map(
+                        i -> new ClassificatorLinkDaoDto(item.getRelations().getClassificator().getCode(),
+                                item.getCode(), e.getKey().getCode(), i.getCode())));
+    }
+
+    private boolean isSourceLink(Classificator src, Classificator dst) {
+        // filter out all links from a "smaller" classificator to "bigger", comparing by code
+        return src.getCode().compareTo(dst.getCode()) > 0;
+    }
+
+    public void loadLinks(List<ClassificatorLinkDaoDto> links) {
+        if (links != null)
+            links.forEach(this::loadLink);
+
+    }
+
+    private void loadLink(ClassificatorLinkDaoDto link) {
+        val sourceItem = service.getItem(link.getSrcClsCode(), link.getSrcItemCode());
+        val targetItem = service.getItem(link.getDstClsCode(), link.getDstItemCode());
+        itemService.linkItem(sourceItem, targetItem);
     }
 }

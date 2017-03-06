@@ -37,7 +37,7 @@ subprojects {
                 compile 'org.springframework.boot:spring-boot-starter-web'
                 compile 'org.springframework.boot:spring-boot-starter-actuator'
                 testCompile 'org.springframework.boot:spring-boot-starter-test'
-                testCompile 'org.codehaus.groovy:groovy-all:2.2.1'
+                testCompile "org.codehaus.groovy:groovy-all:2.4.9"
 
             }
             repositories {

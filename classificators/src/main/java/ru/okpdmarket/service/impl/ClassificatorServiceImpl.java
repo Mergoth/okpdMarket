@@ -38,7 +38,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
         List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
         List<Classificator> classificators = daoSerializer.deserializeList(classificatorDaoAll);
         classificators.forEach(repository::putClassificator);
-
+        classificatorDaoAll.forEach(d -> daoSerializer.loadLinks(d.getLinks()));
     }
 
     @Override
@@ -56,9 +56,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
         val classificators = repository.getClassificators();
 
         val daoDtos = daoSerializer.serializeList(classificators);
-        for (ClassificatorDaoDto daoDto : daoDtos) {
-            classificatorDao.save(daoDto);
-        }
+        classificatorDao.save(daoDtos);
     }
 
     @Override
@@ -69,7 +67,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
 
     @Override
-    public ClassificatorItem getItem(String classificatorId, String itemCode) {
-        return repository.getClassificatorByCode(classificatorId).getContents().getItemByCode(itemCode);
+    public ClassificatorItem getItem(String classificatorCode, String itemCode) {
+        return repository.getClassificatorByCode(classificatorCode).getContents().getItemByCode(itemCode);
     }
 }
