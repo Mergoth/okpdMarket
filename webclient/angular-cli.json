@@ -18,8 +18,7 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "../static/styles.css",
-        "../static/material.indigo-pink.min.css"
+        "assets/styles.css"
       ],
       "scripts": [],
       "environments": {
