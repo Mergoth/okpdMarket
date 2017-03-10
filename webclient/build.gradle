@@ -2,7 +2,7 @@
 // Deatils read here: https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
 
 plugins {
-    id "com.moowork.node" version "1.0.1"
+    id "com.moowork.node" version "1.1.1"
 }
 
 //def generatedWebResources = "${buildDir}/generated-web-resources"
@@ -13,3 +13,50 @@ plugins {
 	}
 }*/
 
+
+final def webclientDir = "${rootDir}/webclient"
+final def gatewayStaticDir  = "${rootDir}/gateway/src/main/resources/static"
+final def distDir  = "${project.buildDir}/dist"
+// configure gradle-node-plugin
+node {
+    // Version of node to use.
+    version = '6.9.5'
+    // Version of npm to use.
+    npmVersion = '3.10.10'
+    // If true, it will download node using above parameters.
+    // If false, it will try to use globally installed node.
+    download = true
+    // Set the work directory for unpacking node
+    workDir = file("${project.buildDir}/nodejs")
+    // Set the work directory for NPM
+    npmWorkDir = file("${project.buildDir}/npm")
+    // Set the work directory where node_modules should be located
+    nodeModulesDir = file("${webclientDir}")
+}
+
+// clean node/node_modules/dist
+task clean(type: Delete) {
+    delete "${webclientDir}/node_modules"
+    delete "${project.buildDir}"
+}
+
+task ngBuildProd(type: Exec, dependsOn: ['clean', 'npmInstall']) {
+    commandLine "${webclientDir}/node_modules/@angular/cli/bin/ng", 'build', '--prod'
+}
+
+task moveToGateway {
+    if (file (gatewayStaticDir).exists()) {
+        println "Copy from ${distDir} into ${gatewayStaticDir}"
+        copy {
+            from "${distDir}"
+            into "${gatewayStaticDir}"
+            include '*'
+        }
+    } else {
+        println "ERROR: Dir ${gatewayStaticDir} not found"
+    }
+}
+
+task buildProd(dependsOn: ['clean', 'npmInstall', 'ngBuildProd', 'moveToGateway']) {
+    println "OK"
+}

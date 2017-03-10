@@ -86,3 +86,4 @@ typings/
 *.iml
 
 !/mongodb/dump/*-dump.js
+/gateway/src/main/resources/static/
