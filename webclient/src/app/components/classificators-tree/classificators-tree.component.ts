@@ -78,7 +78,7 @@ export class ClassificatorsTreeComponent implements OnInit {
     if (subTree.nodes == null) {
       if ((subTree.level % this.maxLevel) == 0) {
         //todo
-        let code = subTree.id.replace(/\./g, '')
+        const code = subTree.id.replace(/\./g, '');
         this.router.navigate([`/tree/${this.tabModel.selectedType}/${code}`]);
       } else {
         this.treeClassificatorBy(subTree.id).then(classificators => {
