@@ -101,7 +101,7 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         itemT1.setChildren(new ArrayList<>());
         classificator2.getTree().add(itemT1);
 
-        val link1 = new ClassificatorLinkDaoDto(classificator.getCode(), item11.getCode(), classificator2.getCode(), itemT1.getCode());
+        val link1 = new ClassificatorLinkDaoDto(classificator.getCode(), item1.getCode(), classificator2.getCode(), itemT1.getCode());
         val link2 = new ClassificatorLinkDaoDto(classificator.getCode(), item12.getCode(), classificator2.getCode(), itemT1.getCode());
         val linksList = Arrays.asList(link1, link2);
         classificator.setLinks(linksList);
