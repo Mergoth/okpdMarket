@@ -85,6 +85,20 @@ public class ClassificatorItem implements Serializable {
         properties.put(name, value);
     }
 
+    @JsonIgnore
+    public String getClassificatorCode() {
+        Classificator classificator = this.getClassificator();
+        if (classificator != null)
+            return classificator.getCode();
+        else
+            return null;
+    }
+
+    @JsonIgnore
+    public Classificator getClassificator() {
+        return this.getRelations().getClassificator();
+    }
+
     @Override
     public Object clone() {
         ClassificatorItem clone = new ClassificatorItem(this.getCode(), this.getName());

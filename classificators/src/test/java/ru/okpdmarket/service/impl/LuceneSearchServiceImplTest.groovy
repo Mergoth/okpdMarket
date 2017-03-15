@@ -26,18 +26,16 @@ class LuceneSearchServiceImplTest extends Specification {
         classificator.getContents().putItem(item2)
     }
 
-    def "IndexClassificator"() {
+    def "Index Classificator"() {
 
         expect:
         service.idx.listAll().length == 0
-
         service.indexClassificator(classificator)
-
         service.idx.listAll().length > 0
 
     }
 
-    def "SearchByClassificator"() {
+    def "Search By Classificator"() {
         service.indexClassificator(classificator)
 
         when:
