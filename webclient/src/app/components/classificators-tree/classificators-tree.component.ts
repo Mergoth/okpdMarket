@@ -40,7 +40,6 @@ export class ClassificatorsTreeComponent implements OnInit {
       this.classificatorTree = new ClassificatorTreeModel();
       this.classificatorTree.detailed = detailed;
       this.classificatorTree.tree = new Tree();
-      this.classificatorTree.tree.id = nodeId;
       fillTree(this.classificatorTree.tree, classificator);
 
     });
@@ -78,8 +77,7 @@ export class ClassificatorsTreeComponent implements OnInit {
     if (subTree.nodes == null) {
       if ((subTree.level % this.maxLevel) == 0) {
         //todo
-        let code = subTree.id.replace(/\./g, '')
-        this.router.navigate([`/tree/${this.tabModel.selectedType}/${code}`]);
+        this.router.navigate([`/tree/${this.tabModel.selectedType}/${subTree.id}`]);
       } else {
         this.treeClassificatorBy(subTree.id).then(classificators => {
           fillTree(subTree, classificators);
@@ -97,8 +95,8 @@ export class ClassificatorsTreeComponent implements OnInit {
 function fillTree(model: Tree, classificator: ClassificatorItem) {
   if (classificator == null) return new Tree();
   model = model ? model : new Tree();
+  model.classificator = classificator;
   model.name = classificator.name;
-  model.id = classificator.code;
   model.parentId = classificator.parentCode;
   model.nodes = [];
   model.path = classificator.path;
@@ -106,10 +104,9 @@ function fillTree(model: Tree, classificator: ClassificatorItem) {
     for (let child of classificator.children) {
       const node = new Tree();
       node.name = child.name;
-      node.id = child.code;
+      node.classificator = child;
       node.parentId = child.parentCode;
       node.notes = child.notes;
-      node.hasNodes = child.hasChildren;
       model.nodes.push(node);
     }
   }
