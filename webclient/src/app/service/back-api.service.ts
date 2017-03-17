@@ -43,10 +43,10 @@ export class BackAPI {
   }
 
   private buildQueryParams(params: Object) {
-    var pairs: string[] = [];
-    var keys: string[] = Object.keys(params || {}).sort();
-    var encode = encodeURIComponent;
-    var encodeKey = function encodeKey(k: string) {
+    const pairs: string[] = [];
+    const keys: string[] = Object.keys(params || {}).sort();
+    const encode = encodeURIComponent;
+    const encodeKey = function encodeKey(k: string) {
       return encode(k).replace('%24', '$');
     };
 

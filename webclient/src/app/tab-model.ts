@@ -11,6 +11,14 @@ export class TabsModel {
     this.tabs.push(tab);
   }
 
+  disableAllExcept(type: string) {
+    this.tabs.forEach(t => t.disabled = t.type != type);
+  }
+
+  enableAll() {
+    this.tabs.forEach(t => t.disabled = false);
+  }
+
   get selectedIndex(): number {
     return this.tabs.findIndex(t => t.selected);
   }
@@ -45,4 +53,5 @@ export class TabModel {
   type: string;
   title: string;
   selected: boolean;
+  disabled?: boolean;
 }
