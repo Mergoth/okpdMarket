@@ -109,7 +109,7 @@ public class ClassificatorControllerTest {
 
     @Test
     public void search() throws Exception {
-        this.mockMvc.perform(get("/OKPD/search?query=Test query").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/OKPD/search?query=Test").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
     }

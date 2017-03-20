@@ -75,11 +75,11 @@ public class FakeClassificatorDaoImpl implements ClassificatorDao {
         item12.getChildren().add(item121);
 
         ClassificatorItemDaoDto item1211 = new ClassificatorItemDaoDto();
-        item121.setCode("1211");
-        item121.setName("Голубоглазые ");
-        item121.setNotes("Голубоглазые сиамские кошки");
-        item121.setChildren(new ArrayList<>());
-        item121.getChildren().add(item1211);
+        item1211.setCode("1211");
+        item1211.setName("Голубоглазые ");
+        item1211.setNotes("Голубоглазые сиамские кошки");
+        item1211.setChildren(new ArrayList<>());
+        item1211.getChildren().add(item1211);
 
         ClassificatorItemDaoDto item2 = new ClassificatorItemDaoDto();
         item2.setCode("2");

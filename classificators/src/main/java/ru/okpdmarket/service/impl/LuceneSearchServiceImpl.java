@@ -1,15 +1,19 @@
 package ru.okpdmarket.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
@@ -18,12 +22,16 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.RAMDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.SearchService;
+import ru.okpdmarket.service.exception.SearchServiceException;
 
-import java.io.StringReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,26 +39,28 @@ import java.util.List;
  */
 @Service
 public class LuceneSearchServiceImpl implements SearchService {
-
     public static final String CONTENT_FIELD = "content";
     public static final String CLS_ID = "classificator_code";
     public static final String ITEM_ID = "item_code";
+    private static final Logger log = LoggerFactory.getLogger(SearchService.class);
+    private static final String ITEM = "item";
     RAMDirectory idx = new RAMDirectory();
+    ObjectMapper objectMapper = new ObjectMapper();
 
-    private static Document createDocument(ClassificatorItem item) {
+    private Document createDocument(ClassificatorItem item) {
         Document doc = new Document();
-        // Add the title as an unindexed fieldâ€¦
+
         doc.add(new TextField(CLS_ID, item.getClassificatorCode(), Field.Store.YES));
         doc.add(new TextField(ITEM_ID, item.getCode(), Field.Store.YES));
 
-        // â€¦and the content as an indexed field. Note that indexed
-        // Text fields are constructed using a Reader. Lucene can read
-        // and index very large chunks of text, without storing the
-        // entire content verbatim in the index. In this example we
-        // can just wrap the content string in a StringReader.
-        doc.add(new TextField(CONTENT_FIELD, new StringReader(item.getCode())));
-        doc.add(new TextField(CONTENT_FIELD, new StringReader(item.getName())));
-        doc.add(new TextField(CONTENT_FIELD, new StringReader(item.getNotes())));
+        doc.add(new TextField(CONTENT_FIELD, item.getCode(), Field.Store.NO));
+        doc.add(new TextField(CONTENT_FIELD, item.getName(), Field.Store.NO));
+        doc.add(new TextField(CONTENT_FIELD, item.getNotes(), Field.Store.NO));
+        try {
+            doc.add(new StoredField(ITEM, objectMapper.writeValueAsBytes(item)));
+        } catch (JsonProcessingException e) {
+            log.error("Error serializing item: " + item.getClassificatorCode() + "/" + item.getCode(), e);
+        }
         return doc;
     }
 
@@ -58,19 +68,20 @@ public class LuceneSearchServiceImpl implements SearchService {
     public void indexClassificator(Classificator classificator) {
         try {
             //indexing directory
-
+            List<Document> docs = new ArrayList<>();
             IndexWriterConfig config = new IndexWriterConfig(new SimpleAnalyzer());
             IndexWriter indexWriter = new IndexWriter(idx, config);
-            classificator.getContents().traverseItems(LuceneSearchServiceImpl::createDocument);
+            classificator.getContents().traverseItems((i) -> docs.add(createDocument(i)));
+            indexWriter.addDocuments(docs);
             indexWriter.close();
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("Error indexing classificator " + classificator.getCode(), e);
         }
     }
 
     @Override
     public List<ClassificatorItem> searchByClassificator(String classificatorId, String queryString) {
+        List<ClassificatorItem> results = new ArrayList<>();
         try {
             IndexReader indexReader = DirectoryReader.open(idx);
             IndexSearcher indexSearcher = new IndexSearcher(indexReader);
@@ -91,28 +102,28 @@ public class LuceneSearchServiceImpl implements SearchService {
             TopDocs topDocs = indexSearcher.search(finalQuery, 100);
             // Examine the Hits object to see if there were any matches
             int hitCount = topDocs.totalHits;
-            if (hitCount == 0) {
-                System.out.println("No matches were found for \"" + queryString + "\"");
-            } else {
-                System.out.println("Hits for \"" + queryString
+            if (hitCount > 0) {
+                log.debug("Hits for \"" + queryString
                         + "\" were found in quotes by:");
                 // Iterate over the Documents in the Hits object
                 for (int i = 0; i < hitCount; i++) {
-                    ScoreDoc doc = topDocs.scoreDocs[i];
-                    // Print the value that we stored in the "title" field. Note
-                    // that this Field was not indexed, but (unlike the
-                    // "contents" field) was stored verbatim and can be
-                    // retrieved.
-                    System.out.println(" " + (i + 1) + ". " + doc.toString());
+                    ScoreDoc scoreDoc = topDocs.scoreDocs[i];
+                    Document doc = indexSearcher.doc(scoreDoc.doc);
+                    results.add(getClassificatorItem(doc));
                 }
             }
-            System.out.println();
-
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
+        } catch (IOException | ParseException ie) {
+            throw new SearchServiceException(ie);
         }
-        return null;
+        return results;
+    }
+
+    private ClassificatorItem getClassificatorItem(Document doc) {
+        try {
+            return objectMapper.readValue(doc.getBinaryValue(ITEM).bytes, ClassificatorItem.class);
+        } catch (IOException e) {
+            throw new SearchServiceException("Error deserializing item: " + doc.get(ITEM_ID), e);
+        }
     }
 
 

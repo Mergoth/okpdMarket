@@ -39,8 +39,9 @@ class LuceneSearchServiceImplTest extends Specification {
         service.indexClassificator(classificator)
 
         when:
-        service.searchByClassificator("OKPD", "test")
+        def res = service.searchByClassificator("OKPD", "кошки")
         then:
-        true
+        1.equals(res.size())
+        "2".equals(res.get(0).getCode())
     }
 }

@@ -73,7 +73,7 @@ public class ClassificatorContents {
     }
 
     public void traverseItems(Consumer<ClassificatorItem> itemConsumer) {
-        elements.forEach((c, i) -> itemConsumer.accept(i));
+        elements.entrySet().stream().filter(e -> !Objects.equals(e.getKey(), TOP_CODE)).forEach((e) -> itemConsumer.accept(e.getValue()));
     }
 
     public int size() {
