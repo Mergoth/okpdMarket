@@ -151,7 +151,7 @@ public class ClassificatorItem implements Serializable {
         } else {
             res = new LinkedList<>();
         }
-        res.add(new PathElement(getCode(), getName()));
+        res.add(new PathElement(getName(), getCode()));
         return res;
     }
 

@@ -32,8 +32,13 @@ export class ClassificatorsTreeComponent implements OnInit {
   updateTree(nodeId: string = null) {
     this.classificatorTree = null;
     const rootId = this.tabModel.selectedType;
-    nodeId =  nodeId ? nodeId : (this.routeParams.code ? this.routeParams.code : rootId);
+    nodeId = nodeId ? nodeId : (this.routeParams.code ? this.routeParams.code : rootId);
     const detailed = rootId != nodeId;
+    if(detailed) {
+      this.tabModel.disableAllExcept(rootId);
+    } else {
+      this.tabModel.enableAll();
+    }
     const params = detailed ? {path: true} : {};
     this.treeClassificatorBy(nodeId, params).then(classificator => {
       //console.log('>>parentId:', parentId);
@@ -57,7 +62,6 @@ export class ClassificatorsTreeComponent implements OnInit {
       }));
     }).then(_ => {
         this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].code;
-      this.updateTree();
     });
   }
 
@@ -78,7 +82,7 @@ export class ClassificatorsTreeComponent implements OnInit {
     if (subTree.nodes == null) {
       if ((subTree.level % this.maxLevel) == 0) {
         //todo
-        let code = subTree.id.replace(/\./g, '')
+        const code = subTree.id.replace(/\./g, '');
         this.router.navigate([`/tree/${this.tabModel.selectedType}/${code}`]);
       } else {
         this.treeClassificatorBy(subTree.id).then(classificators => {

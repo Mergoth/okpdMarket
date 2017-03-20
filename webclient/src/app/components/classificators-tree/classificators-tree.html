@@ -1,5 +1,5 @@
 <md-tab-group class="demo-tab-group" (selectChange)="onSelectChange($event)">
-  <md-tab *ngFor="let tab of tabModel.tabs">
+  <md-tab *ngFor="let tab of tabModel.tabs" [disabled]="tab.disabled">
     <template md-tab-label>{{tab.title}}</template>
       <classificator-tree [model]="classificatorTree"
                           (pathClick)="onPathClick($event)"
