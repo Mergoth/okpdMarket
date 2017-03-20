@@ -12,6 +12,8 @@ export class TreeViewComponent {
 
   @Output() nodeClick: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output() nodeDetail: EventEmitter<string> = new EventEmitter<string>();
+
   onNodeClick(nodeId: string) {
     console.log('onNodeClick:' + nodeId);
     this.nodeClick.emit(nodeId);
@@ -22,6 +24,11 @@ export class TreeViewComponent {
       treeNode.expanded = !treeNode.expanded;
       this.onNodeClick(treeNode.id);
     }
+  }
+
+  onNodeDetail(nodeId: string) {
+    console.log('tree-view:onDetailNode:', nodeId);
+    this.nodeDetail.emit(nodeId);
   }
 
 }

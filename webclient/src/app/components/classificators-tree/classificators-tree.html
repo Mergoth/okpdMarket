@@ -3,6 +3,7 @@
     <template md-tab-label>{{tab.title}}</template>
       <classificator-tree [model]="classificatorTree"
                           (pathClick)="onPathClick($event)"
+                          (nodeDetail)="detailNode($event)"
                           (nodeClick)="onNodeClick($event)" *ngIf="classificatorTree && tabModel.selectedType == tab.type"
                           [type]="tab.type"></classificator-tree>
       <div class="loading" *ngIf="!classificatorTree"></div>

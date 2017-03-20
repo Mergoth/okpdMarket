@@ -10,7 +10,7 @@
   {{model.tree.classificator.notes}}
 
   <h3>Связи</h3>
-  <div *ngIf="model.tree.classificator.links" class="links">
+  <div *ngIf="model.tree.classificator.links && model.tree.classificator.links.length > 0" class="links">
     <div *ngFor="let links of model.tree.classificator.links | mapIterable">
       <div class="section">{{links.key}}</div>
       <span *ngFor="let link of links.val">
@@ -21,4 +21,6 @@
   </div>
 
 </div>
-<tree-view *ngIf="!model.detailed" (nodeClick)="onNodeClick($event)" [model]="model.tree"></tree-view>
+
+<tree-view *ngIf="!model.detailed" (nodeClick)="onNodeClick($event)" (nodeDetail)="onNodeDetail($event)"  [model]="model.tree"></tree-view>
+

@@ -76,14 +76,17 @@ export class ClassificatorsTreeComponent implements OnInit {
     //console.log('subTree:onNodeClick:', subTree);
     if (subTree.nodes == null) {
       if ((subTree.level % this.maxLevel) == 0) {
-        //todo
-        this.router.navigate([`/tree/${this.tabModel.selectedType}/${subTree.id}`]);
+       this.detailNode(subTree.id);
       } else {
         this.treeClassificatorBy(subTree.id).then(classificators => {
           fillTree(subTree, classificators);
         })
       }
     }
+  }
+
+  detailNode(nodeId: string) {
+    this.router.navigate([`/tree/${this.tabModel.selectedType}/${nodeId}`]);
   }
 
   treeClassificatorBy(rootId: string, params: Object = {}): Promise<ClassificatorItem> {

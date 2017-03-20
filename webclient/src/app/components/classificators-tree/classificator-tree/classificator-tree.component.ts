@@ -14,6 +14,8 @@ export class ClassificatorTreeComponent {
 
   @Output() nodeClick: EventEmitter<string> = new EventEmitter<string>();
 
+  @Output() nodeDetail: EventEmitter<string> = new EventEmitter<string>();
+
   @Output() pathClick: EventEmitter<string> = new EventEmitter<string>();
 
   @Input() model: ClassificatorTreeModel;
@@ -26,10 +28,13 @@ export class ClassificatorTreeComponent {
     this.nodeClick.emit(nodeId);
   }
 
+  onNodeDetail(nodeId) {
+    console.log('cls_tree:detailNode:', nodeId);
+    this.nodeDetail.emit(nodeId);
+  }
+
   onPathClick(nodeId: string) {
    // console.log('onPathClick', nodeId);
-    //todo
-    nodeId = nodeId.replace(/\./g, '');
     this.pathClick.emit(nodeId);
     this.router.navigateByUrl(`/tree/okpd/${encodeURIComponent(nodeId)}`);
   }

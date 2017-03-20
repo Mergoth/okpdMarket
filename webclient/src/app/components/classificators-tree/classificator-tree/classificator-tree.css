@@ -32,3 +32,7 @@
 .path .code {
   font-weight: bold
 }
+
+.tree {
+  position:  relative;
+}
