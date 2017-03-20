@@ -36,7 +36,6 @@ export class ClassificatorTreeComponent {
   onPathClick(nodeId: string) {
    // console.log('onPathClick', nodeId);
     this.pathClick.emit(nodeId);
-    this.router.navigateByUrl(`/tree/okpd/${encodeURIComponent(nodeId)}`);
   }
 
 }

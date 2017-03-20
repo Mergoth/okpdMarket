@@ -2,7 +2,7 @@
 @import '~@angular/material/core/theming/prebuilt/deeppurple-amber.css';
 
 h1 {
-  color: red;
+  color: #369;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 250%;
 }
@@ -170,4 +170,16 @@ nav a.router-link-active {
   width: 24px;
   height: 24px;
   background-image: url('/assets/img/loading.gif');
+}
+
+
+/* md-tab */
+
+md-ink-bar {
+  background-color: #369;
+}
+
+.md-input-placeholder.md-focused {
+  color: #369;
+  background-color: #369;
 }
