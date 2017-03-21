@@ -1,5 +1,7 @@
-import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {Tree} from "../tree";
+import {Component, Input} from "@angular/core";
+import {Tree} from "../tree.model";
+import {EventService} from "../../../service/event.service";
+import {EVENT_NODE_DETAIL} from '../consts';
 
 @Component({
     selector: 'tree-node',
@@ -12,10 +14,11 @@ export class TreeNodeComponent {
 
     @Input() level: number;
 
-    @Output() nodeDetail: EventEmitter<string> = new EventEmitter<string>();
+    constructor(private eventService: EventService) {
+    }
 
-    onNodeDetail(nodeId: string) {
-        this.nodeDetail.emit(nodeId);
+    detailNode(nodeId: string) {
+        this.eventService.publish(EVENT_NODE_DETAIL, nodeId);
     }
 
 }

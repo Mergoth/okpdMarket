@@ -1,6 +1,9 @@
-import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {Component, Input} from "@angular/core";
 import {Router} from "@angular/router";
-import {ClassificatorTreeModel} from "./classificator-tree";
+import {ClassificatorTreeModel} from "../classificator-tree.model";
+import {EventService} from "../../../service/event.service";
+import {EVENT_PATH_CLICK} from '../consts';
+
 
 @Component({
   selector: 'classificator-tree',
@@ -12,30 +15,13 @@ export class ClassificatorTreeComponent {
 
   @Input() type: string;
 
-  @Output() nodeClick: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output() nodeDetail: EventEmitter<string> = new EventEmitter<string>();
-
-  @Output() pathClick: EventEmitter<string> = new EventEmitter<string>();
-
   @Input() model: ClassificatorTreeModel;
 
-  constructor(private router: Router) {
+  constructor(private eventService: EventService) {
   }
 
-  onNodeClick(nodeId: string) {
-   // console.log('onNodeClick', nodeId);
-    this.nodeClick.emit(nodeId);
-  }
-
-  onNodeDetail(nodeId) {
-    console.log('cls_tree:detailNode:', nodeId);
-    this.nodeDetail.emit(nodeId);
-  }
-
-  onPathClick(nodeId: string) {
-   // console.log('onPathClick', nodeId);
-    this.pathClick.emit(nodeId);
+  onPathClick(nodeId) {
+    this.eventService.publish(EVENT_PATH_CLICK, nodeId);
   }
 
 }

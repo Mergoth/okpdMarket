@@ -1,6 +1,6 @@
 <nav class="path" *ngIf="model.detailed && model.tree.path">
   <div *ngFor="let item of model.tree.path;let i=index">
-    <a *ngIf="item.code != model.tree.classificator.id" class="node" [style.margin-left.px]="i*10"  (click)="onPathClick(item.code)">
+    <a *ngIf="item.code != model.tree.classificator.code" class="node" [style.margin-left.px]="i*10"  (click)="onPathClick(item.code)">
       <md-icon>keyboard_arrow_right</md-icon>&nbsp;<span class="code">{{item.code}}</span> {{item.name}}
     </a>
   </div>
@@ -22,5 +22,5 @@
 
 </div>
 
-<tree-view *ngIf="!model.detailed" (nodeClick)="onNodeClick($event)" (nodeDetail)="onNodeDetail($event)"  [model]="model.tree"></tree-view>
+<tree-view *ngIf="!model.detailed" [model]="model.tree"></tree-view>
 

@@ -1,8 +1,8 @@
 <div *ngIf="model != null">
   <div *ngFor="let node of model.nodes" >
-    <tree-node (click)="expand(node)" (nodeDetail)="onNodeDetail($event)" [model]="node" [level]="model.level"></tree-node>
+    <tree-node (click)="expand(node)" [model]="node" [level]="model.level"></tree-node>
     <div *ngIf="node.expanded">
-      <tree-view (nodeClick)="onNodeClick($event)" (nodeDetail)="onNodeDetail($event)" [model]="node"></tree-view>
+      <tree-view [model]="node"></tree-view>
     </div>
   </div>
 </div>
