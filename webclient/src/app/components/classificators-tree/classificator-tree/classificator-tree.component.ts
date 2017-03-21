@@ -6,23 +6,23 @@ import {EVENT_PATH_CLICK} from '../consts';
 
 
 @Component({
-  selector: 'classificator-tree',
-  templateUrl: './classificator-tree.html',
-  styleUrls: ['./classificator-tree.css']
+    selector: 'classificator-tree',
+    templateUrl: './classificator-tree.html',
+    styleUrls: ['./classificator-tree.css']
 
 })
 export class ClassificatorTreeComponent {
 
-  @Input() type: string;
+    @Input() type:string;
 
-  @Input() model: ClassificatorTreeModel;
+    @Input() model:ClassificatorTreeModel;
 
-  constructor(private eventService: EventService) {
-  }
+    constructor(private eventService:EventService) {
+    }
 
-  onPathClick(nodeId) {
-    this.eventService.publish(EVENT_PATH_CLICK, nodeId);
-  }
+    onPathClick(nodeId:string) {
+        this.eventService.publish(EVENT_PATH_CLICK, nodeId);
+    }
 
 }
 

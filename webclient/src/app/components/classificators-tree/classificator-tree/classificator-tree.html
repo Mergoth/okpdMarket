@@ -10,12 +10,12 @@
   {{model.tree.classificator.notes}}
 
   <h3>Связи</h3>
-  <div *ngIf="model.tree.classificator.links && model.tree.classificator.links.length > 0" class="links">
-    <div *ngFor="let links of model.tree.classificator.links | mapIterable">
-      <div class="section">{{links.key}}</div>
-      <span *ngFor="let link of links.val">
+  <div *ngIf="model.tree.classificator.links" class="links">
+    <div *ngFor="let links of model.tree.classificator.links | mapIterable" class="section">
+      <div class="title">{{links.key}}:</div>
+      <span *ngFor="let link of links.val" class="link">
+         <a [routerLink]="['/tree', links.key, link.code]">{{link.code}}</a>
         <span class="name">{{link.name}}</span>
-        <span class="href code" (click)="toTree(links.key, link.code)">{{link.code}}</span>
       </span>
     </div>
   </div>

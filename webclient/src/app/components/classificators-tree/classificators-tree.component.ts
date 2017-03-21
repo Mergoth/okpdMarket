@@ -44,7 +44,8 @@ export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
     eventService.subscribeFor(COMPONENT_NAME, EVENT_PATH_CLICK, (nodeId) => {
       console.debug('EVENT_PATH_CLICK:', nodeId);
       this.onPathClick(nodeId);
-    })
+    });
+
   }
 
   updateTree(nodeId: string = null) {
@@ -87,20 +88,21 @@ export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
 
   onPathClick(nodeId: string) {
     // console.log('onPathClick', nodeId);
+    this.router.navigate([`/tree/${this.tabModel.selectedType}/${nodeId}`]);
     this.updateTree(nodeId);
   }
 
   onSelectChange(tab: any) {
+    console.log('onSelectChange:', tab)
     this.tabModel.selectedIndex = tab.index;
     this.updateTree();
   }
 
   onNodeExpand(rootId: string) {
-    console.log('ROOT:onNodeExpand:' + rootId);
     let subTree = this.classificatorTree.treeBy(rootId);
     //console.log('subTree:onNodeClick:', subTree);
     if (subTree.nodes == null) {
-      if ((subTree.level % this.maxLevel) == 0) {
+      if (this.needDetail()) {
        this.detailNode(subTree.id);
       } else {
         this.treeClassificatorBy(subTree.id).then(classificators => {
@@ -108,6 +110,11 @@ export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
         })
       }
     }
+  }
+
+  //todo: оставить?
+  needDetail() {
+    return false; // (subTree.level % this.maxLevel) == 0
   }
 
   detailNode(nodeId: string) {
