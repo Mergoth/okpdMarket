@@ -1,4 +1,4 @@
-import {Tree} from "./tree";
+import {Tree} from "./tree.model";
 
 export class ClassificatorTreeModel {
 

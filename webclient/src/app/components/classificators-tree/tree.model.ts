@@ -5,8 +5,6 @@ export class Tree {
   expanded: boolean;
   parentId: string;
   parent: Tree;
-  name: string;
-  notes: string;
   path?: [string, string][];
   nodes: Tree[];
   classificator: ClassificatorItem;

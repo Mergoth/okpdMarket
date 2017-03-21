@@ -124,17 +124,14 @@ function fillTree(model: Tree, classificator: ClassificatorItem) {
   if (classificator == null) return new Tree();
   model = model ? model : new Tree();
   model.classificator = classificator;
-  model.name = classificator.name;
   model.parentId = classificator.parentCode;
   model.nodes = [];
   model.path = classificator.path;
   if (classificator.hasChildren) {
     for (let child of classificator.children) {
       const node = new Tree();
-      node.name = child.name;
       node.classificator = child;
       node.parentId = child.parentCode;
-      node.notes = child.notes;
       model.nodes.push(node);
     }
   }
