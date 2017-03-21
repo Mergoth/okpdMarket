@@ -49,9 +49,9 @@ public class ClassificatorItemService {
     }
 
     public ClassificatorItem linkItem(ClassificatorItem sourceItem, ClassificatorItem targetItem) {
-        val targetClassificator = targetItem.getRelations().getClassificator();
+        val targetClassificator = targetItem.getClassificator();
         if (addLink(sourceItem, targetClassificator, targetItem)) {
-            addLink(targetItem, sourceItem.getRelations().getClassificator(), sourceItem);
+            addLink(targetItem, sourceItem.getClassificator(), sourceItem);
         }
         sourceItem.recalculate();
         targetItem.recalculate();

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Created by vladislav on 03/01/2017.
@@ -69,6 +70,10 @@ public class ClassificatorContents {
             return elements.get(TOP_CODE).getRelations().getChildren();
         }
         return Collections.emptyList();
+    }
+
+    public void traverseItems(Consumer<ClassificatorItem> itemConsumer) {
+        elements.entrySet().stream().filter(e -> !Objects.equals(e.getKey(), TOP_CODE)).forEach((e) -> itemConsumer.accept(e.getValue()));
     }
 
     public int size() {

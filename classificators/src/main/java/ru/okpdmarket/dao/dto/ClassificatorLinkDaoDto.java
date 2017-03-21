@@ -14,9 +14,9 @@ public class ClassificatorLinkDaoDto {
     private String dstItemCode;
 
     public ClassificatorLinkDaoDto(ClassificatorItem src, ClassificatorItem dst) {
-        this(src.getRelations().getClassificator().getCode(),
+        this(src.getClassificatorCode(),
                 src.getCode(),
-                dst.getRelations().getClassificator().getCode(),
+                dst.getClassificatorCode(),
                 dst.getCode()
         );
     }

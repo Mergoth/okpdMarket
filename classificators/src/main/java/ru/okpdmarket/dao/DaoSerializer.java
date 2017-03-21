@@ -96,9 +96,9 @@ public class DaoSerializer {
     private Stream<ClassificatorLinkDaoDto> extractItemLinks(ClassificatorItem item) {
 
         return item.getRelations().getLinks().entrySet().stream()
-                .filter(e -> isSourceLink(e.getKey(), item.getRelations().getClassificator()))
+                .filter(e -> isSourceLink(e.getKey(), item.getClassificator()))
                 .flatMap(e -> e.getValue().stream().map(
-                        i -> new ClassificatorLinkDaoDto(item.getRelations().getClassificator().getCode(),
+                        i -> new ClassificatorLinkDaoDto(item.getClassificatorCode(),
                                 item.getCode(), e.getKey().getCode(), i.getCode())));
     }
 

@@ -125,10 +125,7 @@ public class ClassificatorUpdateControllerTest {
     }
 
     private ClassificatorItem createClassificatorItem(String paerntCode, String code, String name, String notes) {
-        val item = new ClassificatorItem();
-        item.setCode(code);
-        item.setName(name);
-        item.setNotes(notes);
+        val item = new ClassificatorItem(code, name, notes);
         item.setParentCode(paerntCode);
         return item;
     }

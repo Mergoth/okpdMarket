@@ -1,9 +1,11 @@
 package ru.okpdmarket.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -46,7 +48,7 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(value = {"ext", "properties"}, allowGetters = true, ignoreUnknown = true)
 public class ClassificatorItem implements Serializable {
-    private String code;
+    private final String code;
     private String name;
     private String notes;
     private String parentCode;
@@ -56,15 +58,13 @@ public class ClassificatorItem implements Serializable {
 
     private Map<String, Object> properties = new HashMap<>();
 
-    public ClassificatorItem() {
-        super();
-    }
 
     public ClassificatorItem(String code, String name) {
         this(code, name, "");
     }
 
-    public ClassificatorItem(String code, String name, String notes) {
+    @JsonCreator
+    public ClassificatorItem(@JsonProperty("code") String code, @JsonProperty("name") String name, @JsonProperty("notes") String notes) {
         this.code = code;
         this.name = name;
         this.notes = notes;
@@ -85,10 +85,23 @@ public class ClassificatorItem implements Serializable {
         properties.put(name, value);
     }
 
+    @JsonIgnore
+    public String getClassificatorCode() {
+        Classificator classificator = this.getClassificator();
+        if (classificator != null)
+            return classificator.getCode();
+        else
+            return null;
+    }
+
+    @JsonIgnore
+    public Classificator getClassificator() {
+        return this.getRelations().getClassificator();
+    }
+
     @Override
     public Object clone() {
-        ClassificatorItem clone = new ClassificatorItem(this.getCode(), this.getName());
-        clone.setNotes(this.getNotes());
+        ClassificatorItem clone = new ClassificatorItem(this.getCode(), this.getName(), this.getNotes());
         clone.setParentCode(this.getParentCode());
         return clone;
     }

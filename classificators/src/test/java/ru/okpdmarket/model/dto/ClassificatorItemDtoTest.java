@@ -17,9 +17,7 @@ public class ClassificatorItemDtoTest {
     @Test
     public void shouldDeserializeItem() {
         ObjectMapper objectMapper = new ObjectMapper();
-        val item = new ClassificatorItem();
-        item.setCode("12");
-        item.setName("name");
+        val item = new ClassificatorItem("12", "name", "");
         item.setParentCode("1");
         item.getProperties().put("integer", 1);
         item.getProperties().put("children", new ArrayList<ClassificatorItem>() {{
