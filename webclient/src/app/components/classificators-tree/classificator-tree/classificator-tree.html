@@ -1,12 +1,26 @@
 <nav class="path" *ngIf="model.detailed && model.tree.path">
   <div *ngFor="let item of model.tree.path;let i=index">
-    <a *ngIf="item.code != model.tree.id" class="node" [style.margin-left.px]="i*10"  (click)="onPathClick(item.code)">
+    <a *ngIf="item.code != model.tree.classificator.code" class="node" [style.margin-left.px]="i*10"  (click)="onPathClick(item.code)">
       <md-icon>keyboard_arrow_right</md-icon>&nbsp;<span class="code">{{item.code}}</span> {{item.name}}
     </a>
   </div>
 </nav>
 <div *ngIf="model.detailed && model.tree">
-  <h2>{{model.tree.id}} {{model.tree.name}}</h2>
-  {{model.tree.notes}}
+  <h2>{{model.tree.classificator.code}} {{model.tree.classificator.name}}</h2>
+  {{model.tree.classificator.notes}}
+
+  <h3>Связи</h3>
+  <div *ngIf="model.tree.classificator.links" class="links">
+    <div *ngFor="let links of model.tree.classificator.links | mapIterable" class="section">
+      <div class="title">{{links.key}}:</div>
+      <span *ngFor="let link of links.val" class="link">
+         <a [routerLink]="['/tree', links.key, link.code]">{{link.code}}</a>
+        <span class="name">{{link.name}}</span>
+      </span>
+    </div>
+  </div>
+
 </div>
-<tree-view (nodeClick)="onNodeClick($event)" [model]="model.tree"></tree-view>
+
+<tree-view *ngIf="!model.detailed" [model]="model.tree"></tree-view>
+

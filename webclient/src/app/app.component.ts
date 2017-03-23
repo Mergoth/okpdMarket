@@ -2,7 +2,7 @@ import {Component} from "@angular/core";
 
 @Component({
   selector: 'app',
-  template: `<h1>ОКПД Маркет</h1>
+  template: `<h1></h1>
    <nav>
      <a routerLink="/tree">Дерево</a>
      <a routerLink="/search">Полнотекстовый поиск</a>

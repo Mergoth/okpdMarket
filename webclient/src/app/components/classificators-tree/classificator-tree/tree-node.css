@@ -1,4 +1,5 @@
 .list-item {
+  position: relative;
   padding: 10px 15px;
   margin-bottom: -1px;
   cursor: pointer;
@@ -10,7 +11,7 @@
 }
 
 .no-icon {
-  display: inline;
+  display: inline-block;
   width: 24px;
 }
 
@@ -21,4 +22,11 @@ md-icon {
 
 .list-item .code {
   font-weight: bold;
+}
+
+.todetail {
+  position: absolute;
+  right: 0;
+  font-size: 22px;
+  color: black;
 }

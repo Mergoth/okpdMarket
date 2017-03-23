@@ -1,26 +1,23 @@
-import {Component, Input, Output, EventEmitter} from "@angular/core";
-import {Tree} from "../tree";
+import {Component, Input} from "@angular/core";
+import {Tree} from "../tree.model";
+import {EventService} from "../../../service/event.service";
+import {EVENT_NODE_EXPAND} from '../consts';
 
 @Component({
   selector: 'tree-view',
-  templateUrl: './tree-view.html',
-  styleUrls: ['./tree-view.css']
+  templateUrl: './tree-view.html'
 })
 export class TreeViewComponent {
 
   @Input() model: Tree;
 
-  @Output() nodeClick: EventEmitter<string> = new EventEmitter<string>();
-
-  onNodeClick(nodeId: string) {
-    console.log('onNodeClick:' + nodeId);
-    this.nodeClick.emit(nodeId);
+  constructor(private eventService: EventService) {
   }
 
   expand(treeNode: Tree) {
     if(treeNode.hasNodes) {
       treeNode.expanded = !treeNode.expanded;
-      this.onNodeClick(treeNode.id);
+      this.eventService.publish(EVENT_NODE_EXPAND, treeNode.id);
     }
   }
 

@@ -1,9 +1,8 @@
 <md-tab-group class="demo-tab-group" (selectChange)="onSelectChange($event)">
-  <md-tab *ngFor="let tab of tabModel.tabs" [disabled]="tab.disabled">
+  <md-tab *ngFor="let tab of tabModel.tabs" [disabled]="tab.disabled" [routerLink]="tab.type">
     <template md-tab-label>{{tab.title}}</template>
       <classificator-tree [model]="classificatorTree"
-                          (pathClick)="onPathClick($event)"
-                          (nodeClick)="onNodeClick($event)" *ngIf="classificatorTree && tabModel.selectedType == tab.type"
+                          *ngIf="classificatorTree && tabModel.selectedType == tab.type"
                           [type]="tab.type"></classificator-tree>
       <div class="loading" *ngIf="!classificatorTree"></div>
       <div>&nbsp;</div>
