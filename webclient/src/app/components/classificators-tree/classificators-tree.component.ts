@@ -1,8 +1,7 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {ClassificatorService} from "../../service/classificator.service";
-import {ClassificatorTreeModel} from "./classificator-tree.model";
 import {Tree} from "./tree.model";
+import {ClassificatorTreeService} from "./classificator-tree.service";
 import {Classificator, ClassificatorItem} from "../../domain/classificator";
 import {TabsModel} from "../../tab-model";
 import {EventService} from "../../service/event.service";
@@ -12,101 +11,91 @@ const COMPONENT_NAME = 'ClassificatorsTreeComponent';
 
 @Component({
   selector: 'classificators-tree',
-  templateUrl: './classificators-tree.html'
+  template: `
+<classificator-tree *ngIf="tree"
+        [tree]="tree"
+        [type]="clsfType">
+</classificator-tree>
+<div class="loading" *ngIf="!classificatorTree"></div>
+`
 })
 export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
 
   private maxLevel: number = 3;
 
-  classificatorTypes: Classificator[];
+  clsfType: string;
 
-  tabModel: TabsModel = new TabsModel();
+  tree: Tree;
 
-  classificatorTree: ClassificatorTreeModel;
+  paramsSub;
 
-  private routeParams: RouteParams;
 
-  constructor(private route: ActivatedRoute, private router: Router, private classificatorService: ClassificatorService, private eventService: EventService) {
-    route.params.subscribe(params => {
-      this.routeParams = params as RouteParams;
+  constructor(private route: ActivatedRoute, private treeService: ClassificatorTreeService, private eventService: EventService) {
+    this.paramsSub = this.route.params.subscribe(params => {
+      console.log('TREE>>>>>>>>>>>>', params);
+      this.clsfType = params['type'];
+      //this.id = parseInt(params['id'], 10)
+      this.updateTree(this.clsfType);
+
     });
-
-    eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_DETAIL, (nodeId) => {
-      console.debug('EVENT_NODE_DETAIL:', nodeId);
-      this.detailNode(nodeId);
-    });
-
-    eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_EXPAND, (nodeId) => {
-      console.debug('EVENT_NODE_EXPAND:', nodeId);
-      this.onNodeExpand(nodeId);
-    });
-
-    eventService.subscribeFor(COMPONENT_NAME, EVENT_PATH_CLICK, (nodeId) => {
-      console.debug('EVENT_PATH_CLICK:', nodeId);
-      this.onPathClick(nodeId);
-    });
-
   }
 
   updateTree(nodeId: string = null) {
-    this.classificatorTree = null;
-    const rootId = this.tabModel.selectedType;
-    nodeId = nodeId ? nodeId : (this.routeParams.code ? this.routeParams.code : rootId);
-    const detailed = rootId != nodeId;
-    if(detailed) {
-      this.tabModel.disableAllExcept(rootId);
-    } else {
-      this.tabModel.enableAll();
-    }
-    const params = detailed ? {path: true} : {};
-    this.treeClassificatorBy(nodeId, params).then(classificator => {
+    console.log('updateTree nodeId', nodeId);
+    const rootId = this.clsfType;
+    console.log('rootId', rootId);
+    nodeId = nodeId ? nodeId : rootId;
+    //const detailed = rootId != nodeId;
+    //if(detailed) {
+    //  this.tabModel.disableAllExcept(rootId);
+    //} else {
+    //  this.tabModel.enableAll();
+    //}
+    this.treeService.updateTree(new Tree(), this.clsfType).then(tree => {
       //console.log('>>parentId:', parentId);
-      this.classificatorTree = new ClassificatorTreeModel();
-      this.classificatorTree.detailed = detailed;
-      this.classificatorTree.tree = new Tree();
-      fillTree(this.classificatorTree.tree, classificator);
+      this.tree = tree;
     });
   }
 
   ngOnInit() {
-    this.classificatorService.classificatorTypes().then(res => {
-      this.classificatorTypes = res;
-      this.tabModel.clear();
-      this.classificatorTypes.forEach(clsfType => this.tabModel.push({
-          type: clsfType.code,
-        title: clsfType.name,
-        selected: false
-      }));
-    }).then(_ => {
-        this.tabModel.selectedType = this.routeParams.type ? this.routeParams.type : this.classificatorTypes[0].code;
+    console.log('!!!!! ON INIT');
+
+    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_DETAIL, (nodeId) => {
+      console.debug('EVENT_NODE_DETAIL:', nodeId);
+      this.detailNode(nodeId);
+    });
+
+    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_EXPAND, (nodeId) => {
+      console.debug('EVENT_NODE_EXPAND:', nodeId);
+      this.onNodeExpand(nodeId);
+    });
+
+    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_PATH_CLICK, (nodeId) => {
+      console.debug('EVENT_PATH_CLICK:', nodeId);
+      this.onPathClick(nodeId);
     });
   }
 
   ngOnDestroy() {
     this.eventService.unsubscribeAllFor(COMPONENT_NAME);
+    this.paramsSub.unsubscribe();
   }
 
   onPathClick(nodeId: string) {
     // console.log('onPathClick', nodeId);
-    this.router.navigate([`/tree/${this.tabModel.selectedType}/${nodeId}`]);
+    //this.router.navigate([`/tree/${this.clsfType}/${nodeId}`]);
     this.updateTree(nodeId);
   }
 
-  onSelectChange(tab: any) {
-    console.log('onSelectChange:', tab)
-    this.tabModel.selectedIndex = tab.index;
-    this.updateTree();
-  }
-
   onNodeExpand(rootId: string) {
-    let subTree = this.classificatorTree.treeBy(rootId);
+    let subTree = this.tree.subTree(rootId);
     //console.log('subTree:onNodeClick:', subTree);
     if (subTree.nodes == null) {
       if (this.needDetail()) {
        this.detailNode(subTree.id);
       } else {
-        this.treeClassificatorBy(subTree.id).then(classificators => {
-          fillTree(subTree, classificators);
+        this.treeService.updateTree(subTree, this.clsfType).then(tree => {
+          subTree = tree;
         })
       }
     }
@@ -118,37 +107,14 @@ export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
   }
 
   detailNode(nodeId: string) {
-    this.router.navigate([`/tree/${this.tabModel.selectedType}/${nodeId}`]);
+    console.log('navigate to:',`/tree/${this.clsfType}/${nodeId}` );
+   // this.router.navigate([`/tree/${this.clsfType}/${nodeId}`]);
+    this.updateTree(nodeId);
   }
 
-  treeClassificatorBy(rootId: string, params: Object = {}): Promise<ClassificatorItem> {
-    const nodeId = (this.tabModel.selectedType == rootId) ? null : rootId;
-    return this.classificatorService.classificatorTree(this.tabModel.selectedType, nodeId, params);
-  }
+
 }
 
-function fillTree(model: Tree, classificator: ClassificatorItem) {
-  if (classificator == null) return new Tree();
-  model = model ? model : new Tree();
-  model.classificator = classificator;
-  model.parentId = classificator.parentCode;
-  model.nodes = [];
-  model.path = classificator.path;
-  if (classificator.hasChildren) {
-    for (let child of classificator.children) {
-      const node = new Tree();
-      node.classificator = child;
-      node.parentId = child.parentCode;
-      model.nodes.push(node);
-    }
-  }
-  // console.log('model2:', model);
-  return model;
-}
 
-class RouteParams {
-  type: string;
-  code: string;
-}
 
 

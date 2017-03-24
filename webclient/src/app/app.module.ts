@@ -14,6 +14,9 @@ import {TreeViewComponent} from "./components/classificators-tree/classificator-
 import {TreeNodeComponent} from "./components/classificators-tree/classificator-tree/tree-node.component";
 import {MapIterable} from "./components/map-iterable.pipe";
 import {EventService} from "./service/event.service";
+import {ClassificatorTreeService} from "./components/classificators-tree/classificator-tree.service";
+import {TabsComponent} from "./components/tabs.component";
+import {ClassificatorTreeDetailedComponent} from "./components/classificators-tree/classificator-tree-detailed.component";
 
 
 // Imports for loading & configuring the in-memory web api
@@ -32,9 +35,11 @@ import {EventService} from "./service/event.service";
   ],
   declarations: [
     AppComponent,
+    TabsComponent,
     ClassificatorSearchComponent,
     ClassificatorsTreeComponent,
     ClassificatorTreeComponent,
+    ClassificatorTreeDetailedComponent,
     TreeViewComponent,
     TreeNodeComponent,
     MapIterable
@@ -43,7 +48,8 @@ import {EventService} from "./service/event.service";
   providers: [
     BackAPI,
     ClassificatorService,
-    EventService
+    EventService,
+    ClassificatorTreeService
   ]
 })
 export class AppModule {

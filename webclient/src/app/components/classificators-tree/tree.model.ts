@@ -15,7 +15,7 @@ export class Tree {
 
 
   get id(): string {
-    return this.classificator.code.replace(/\./g, '');
+    return this.classificator && this.classificator.code.replace(/\./g, '');
   }
 
   subTree(nodeId: string, tree: Tree = this, level: number = 0): Tree {
