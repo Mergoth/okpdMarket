@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {Tree} from "./tree.model";
+import {Tree} from "./model/tree.model";
 
 @Component({
     selector: 'clsf-tree-view-node',

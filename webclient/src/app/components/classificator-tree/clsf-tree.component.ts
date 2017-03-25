@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {Tree} from "./tree.model";
-import {ClsfTreeService} from "./clsf-tree.service";
+import {Tree} from "./model/tree.model";
+import {ClsfTreeService} from "./service/clsf-tree.service";
 import {EventService} from "../../service/event.service";
 import {EVENT_NODE_EXPAND} from './consts';
 

@@ -1,5 +1,5 @@
 import {Component, Input} from "@angular/core";
-import {Tree} from "./tree.model";
+import {Tree} from "./model/tree.model";
 import {EventService} from "../../service/event.service";
 import {EVENT_NODE_EXPAND} from './consts';
 

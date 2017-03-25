@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
-import {ClassificatorService} from "../../service/classificator.service";
-import {ClassificatorItem} from "../../domain/classificator";
-import {Tree} from "./tree.model";
+import {ClassificatorService} from "../../../service/classificator.service";
+import {ClassificatorItem} from "../../../domain/classificator";
+import {Tree} from "../model/tree.model";
 
 
 @Injectable()

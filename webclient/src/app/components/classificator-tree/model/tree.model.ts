@@ -1,4 +1,4 @@
-import {ClassificatorItem} from '../../domain/classificator';
+import {ClassificatorItem} from '../../../domain/classificator';
 
 export class Tree {
   level: number;

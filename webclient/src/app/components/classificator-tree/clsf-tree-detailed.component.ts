@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ClsfTreeService} from "./clsf-tree.service";
-import {Tree} from "./tree.model";
+import {ClsfTreeService} from "./service/clsf-tree.service";
+import {Tree} from "./model/tree.model";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
