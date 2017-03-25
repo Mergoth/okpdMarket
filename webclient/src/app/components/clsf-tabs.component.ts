@@ -21,7 +21,7 @@ import {Subscription} from "rxjs/Subscription";
 `,
     providers: [ClassificatorService]
 })
-export class TabsComponent implements OnInit, OnDestroy {
+export class ClsfTabsComponent implements OnInit, OnDestroy {
 
 
     tabs:Tab[] = [];

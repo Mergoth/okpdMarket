@@ -5,18 +5,16 @@ import {HttpModule, JsonpModule} from "@angular/http";
 import {MaterialModule} from "@angular/material";
 import {AppComponent} from "./app.component";
 import {ClassificatorSearchComponent} from "./components/classificator-search/classificator-search.component";
-import {ClassificatorsTreeComponent} from "./components/classificators-tree/classificators-tree.component";
-import {ClassificatorTreeComponent} from "./components/classificators-tree/classificator-tree/classificator-tree.component";
+import {ClsfTreeComponent} from "./components/classificator-tree/clsf-tree.component";
 import {ClassificatorService} from "./service/classificator.service";
 import {BackAPI} from "./service/back-api.service";
 import {AppRoutingModule} from "./app-routing.module";
-import {TreeViewComponent} from "./components/classificators-tree/classificator-tree/tree-veiw.component";
-import {TreeNodeComponent} from "./components/classificators-tree/classificator-tree/tree-node.component";
+import {ClsfTreeViewComponent} from "./components/classificator-tree/clsf-tree-veiw.component";
+import {ClsfTreeViewNodeComponent} from "./components/classificator-tree/clsf-tree-view-node.component";
 import {MapIterable} from "./components/map-iterable.pipe";
 import {EventService} from "./service/event.service";
-import {ClassificatorTreeService} from "./components/classificators-tree/classificator-tree.service";
-import {TabsComponent} from "./components/tabs.component";
-import {ClassificatorTreeDetailedComponent} from "./components/classificators-tree/classificator-tree-detailed.component";
+import {ClsfTabsComponent} from "./components/clsf-tabs.component";
+import {ClsfTreeDetailedComponent} from "./components/classificator-tree/clsf-tree-detailed.component";
 
 
 // Imports for loading & configuring the in-memory web api
@@ -35,21 +33,19 @@ import {ClassificatorTreeDetailedComponent} from "./components/classificators-tr
   ],
   declarations: [
     AppComponent,
-    TabsComponent,
+    ClsfTabsComponent,
     ClassificatorSearchComponent,
-    ClassificatorsTreeComponent,
-    ClassificatorTreeComponent,
-    ClassificatorTreeDetailedComponent,
-    TreeViewComponent,
-    TreeNodeComponent,
+    ClsfTreeComponent,
+    ClsfTreeDetailedComponent,
+    ClsfTreeViewComponent,
+    ClsfTreeViewNodeComponent,
     MapIterable
   ],
   bootstrap: [AppComponent],
   providers: [
     BackAPI,
     ClassificatorService,
-    EventService,
-    ClassificatorTreeService
+    EventService
   ]
 })
 export class AppModule {

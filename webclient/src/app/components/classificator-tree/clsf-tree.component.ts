@@ -1,23 +1,23 @@
 import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Tree} from "./tree.model";
-import {ClassificatorTreeService} from "./classificator-tree.service";
+import {ClsfTreeService} from "./clsf-tree.service";
 import {EventService} from "../../service/event.service";
 import {EVENT_NODE_DETAIL, EVENT_NODE_EXPAND, EVENT_PATH_CLICK} from './consts';
 
-const COMPONENT_NAME = 'ClassificatorsTreeComponent';
+const COMPONENT_NAME = 'ClsfTreeComponent';
 
 @Component({
-  selector: 'classificators-tree',
+  selector: 'clsf-tree',
+  providers: [
+    ClsfTreeService
+  ],
   template: `
-<classificator-tree *ngIf="tree"
-        [tree]="tree"
-        [type]="clsfType">
-</classificator-tree>
-<div class="loading" *ngIf="!tree"></div>
-`
+      <clsf-tree-view *ngIf="tree" [model]="tree"></clsf-tree-view>
+      <div class="loading" *ngIf="!tree"></div>
+  `
 })
-export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
+export class ClsfTreeComponent implements OnInit, OnDestroy {
 
   clsfType: string;
 
@@ -27,7 +27,7 @@ export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private router: Router ,
-              private treeService: ClassificatorTreeService,
+              private treeService: ClsfTreeService,
               private eventService: EventService
   ) {
     console.log('');

@@ -1,9 +1,0 @@
-<div *ngIf="model != null">
-  <div *ngFor="let node of model.nodes" >
-    <tree-node (click)="expand(node)" [model]="node" [level]="model.level"></tree-node>
-    <div *ngIf="node.expanded">
-      <tree-view [model]="node"></tree-view>
-    </div>
-  </div>
-</div>
-<div class="loading" style="float: right; position: relative; top: -25px" *ngIf="model == null || model.nodes == null"></div>

@@ -1,11 +1,11 @@
 import {Injectable} from "@angular/core";
 import {ClassificatorService} from "../../service/classificator.service";
-import {ClassificatorItem, Classificator} from "../../domain/classificator";
+import {ClassificatorItem} from "../../domain/classificator";
 import {Tree} from "./tree.model";
 
 
 @Injectable()
-export class ClassificatorTreeService {
+export class ClsfTreeService {
 
     constructor(private classificatorService: ClassificatorService) {
     }

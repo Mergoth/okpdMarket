@@ -1,18 +1,18 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {TabsComponent} from "./components/tabs.component";
-import {ClassificatorsTreeComponent} from "./components/classificators-tree/classificators-tree.component";
-import {ClassificatorTreeDetailedComponent} from "./components/classificators-tree/classificator-tree-detailed.component";
+import {ClsfTabsComponent} from "./components/clsf-tabs.component";
+import {ClsfTreeComponent} from "./components/classificator-tree/clsf-tree.component";
+import {ClsfTreeDetailedComponent} from "./components/classificator-tree/clsf-tree-detailed.component";
 import {ClassificatorSearchComponent} from "./components/classificator-search/classificator-search.component";
 
 const routes:Routes = [
     { path: '', redirectTo: '/search', pathMatch: 'full'},
     { path: 'search', component: ClassificatorSearchComponent},
     {
-        path: 'tree', component: TabsComponent,
+        path: 'tree', component: ClsfTabsComponent,
         children: [
-            {path: ':type', component: ClassificatorsTreeComponent},
-            {path: ':type/:code', component: ClassificatorTreeDetailedComponent}
+            {path: ':type', component: ClsfTreeComponent},
+            {path: ':type/:code', component: ClsfTreeDetailedComponent}
         ]
     }
 ];
