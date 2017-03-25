@@ -11,9 +11,9 @@ import {ActivatedRoute} from "@angular/router";
     ],
     template: `        
         <div *ngIf="tree">
-            <nav class="path" *ngIf="tree.path">
-                <div *ngFor="let item of tree.path;let i=index">
-                    <a *ngIf="item.code != tree.classificator.code" class="node" [style.margin-left.px]="i*10"  [routerLink]="['/tree', clsfType, item.code]">
+            <nav class="path">
+                <div *ngFor="let item of treePath();let i=index">
+                    <a class="node" [style.margin-left.px]="i*10"  [routerLink]="['/tree', clsfType, item.code]">
                         <md-icon>keyboard_arrow_right</md-icon>&nbsp;<span class="code">{{item.code}}</span> {{item.name}}
                     </a>
                 </div>
@@ -65,7 +65,16 @@ export class ClsfTreeDetailedComponent implements OnInit, OnDestroy {
         this.treeService.updateTree(new Tree(this.clsfCode), this.clsfType).then(tree => this.tree = tree);
     }
 
-    onPathClick(nodeId:string) {
+    treePath() {
+        const path = [];
+        if(this.tree.path) {
+            this.tree.path.forEach(item => {
+                if(item['code'] != this.tree.classificator.code) {
+                   path.push(item);
+                }
+            })
+        }
+        return path;
     }
 
 }

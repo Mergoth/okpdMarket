@@ -6,29 +6,35 @@ import {EVENT_NODE_EXPAND} from './consts';
 @Component({
   selector: 'clsf-tree-view',
   template: `
-      <div *ngIf="model != null">
-          <div *ngFor="let node of model.nodes">
-              <clsf-tree-view-node (click)="expand(node)" [model]="node" [level]="model.level"></clsf-tree-view-node>
+      <div *ngIf="tree != null">
+          <div *ngFor="let node of tree.nodes">
+              <clsf-tree-view-node (click)="expand(node)" [tree]="node" [level]="tree.level" [clsfType]="clsfType"></clsf-tree-view-node>
               <div *ngIf="node.expanded">
-                  <clsf-tree-view [model]="node"></clsf-tree-view>
+                  <clsf-tree-view [tree]="node" [clsfType]="clsfType"></clsf-tree-view>
               </div>
           </div>
       </div>
-      <div class="loading" style="float: right; position: relative; top: -25px"  *ngIf="model == null || model.nodes == null"></div>
+      <div class="loading" style="float: right; position: relative; top: -25px"  *ngIf="isLoading()"></div>
   `
 })
 export class ClsfTreeViewComponent {
 
-  @Input() model: Tree;
+    @Input() clsfType: string;
 
-  constructor(private eventService: EventService) {
-  }
+    @Input() tree: Tree;
 
-  expand(treeNode: Tree) {
-    if(treeNode.hasNodes) {
-      treeNode.expanded = !treeNode.expanded;
-      this.eventService.publish(EVENT_NODE_EXPAND, treeNode.id);
+    constructor(private eventService: EventService) {
     }
-  }
+
+    isLoading() : boolean {
+      return this.tree == null || this.tree.nodes == null;
+    }
+
+    expand(treeNode: Tree) {
+        if(treeNode.hasNodes) {
+            treeNode.expanded = !treeNode.expanded;
+            this.eventService.publish(EVENT_NODE_EXPAND, treeNode.id);
+        }
+    }
 
 }

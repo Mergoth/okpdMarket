@@ -10,7 +10,7 @@ export class ClsfTreeService {
     constructor(private classificatorService: ClassificatorService) {
     }
 
-    updateTree(tree: Tree, clsfType:string) {
+    updateTree(tree: Tree, clsfType:string): Promise<Tree> {
         const treeId = tree ? tree.id : null;
         return this.treeClassificatorBy(treeId, clsfType).then(classificator => {
             return fillTree(tree, classificator);
@@ -25,7 +25,7 @@ export class ClsfTreeService {
 
 }
 
-function fillTree(tree: Tree, classificator: ClassificatorItem) {
+function fillTree(tree: Tree, classificator: ClassificatorItem): Tree {
     if (classificator == null) return new Tree();
     tree = tree ? tree : new Tree();
     tree.classificator = classificator;
