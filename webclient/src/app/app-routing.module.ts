@@ -6,21 +6,15 @@ import {ClassificatorTreeDetailedComponent} from "./components/classificators-tr
 import {ClassificatorSearchComponent} from "./components/classificator-search/classificator-search.component";
 
 const routes:Routes = [
+    { path: '', redirectTo: '/search', pathMatch: 'full'},
+    { path: 'search', component: ClassificatorSearchComponent},
     {
-        path: 'search',
-        component: ClassificatorSearchComponent
-    },
-    {
-        path: 'tree',
-        component: TabsComponent,
+        path: 'tree', component: TabsComponent,
         children: [
             {path: ':type', component: ClassificatorsTreeComponent},
-            {path: ':code', component: ClassificatorTreeDetailedComponent}
-
-
+            {path: ':type/:code', component: ClassificatorTreeDetailedComponent}
         ]
-    },
-    {path: '', redirectTo: '/search', pathMatch: 'full'}
+    }
 ];
 
 @NgModule({

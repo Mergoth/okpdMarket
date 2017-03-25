@@ -2,8 +2,6 @@ import {Component, OnInit, OnDestroy} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Tree} from "./tree.model";
 import {ClassificatorTreeService} from "./classificator-tree.service";
-import {Classificator, ClassificatorItem} from "../../domain/classificator";
-import {TabsModel} from "../../tab-model";
 import {EventService} from "../../service/event.service";
 import {EVENT_NODE_DETAIL, EVENT_NODE_EXPAND, EVENT_PATH_CLICK} from './consts';
 
@@ -16,102 +14,58 @@ const COMPONENT_NAME = 'ClassificatorsTreeComponent';
         [tree]="tree"
         [type]="clsfType">
 </classificator-tree>
-<div class="loading" *ngIf="!classificatorTree"></div>
+<div class="loading" *ngIf="!tree"></div>
 `
 })
 export class ClassificatorsTreeComponent implements OnInit, OnDestroy {
-
-  private maxLevel: number = 3;
 
   clsfType: string;
 
   tree: Tree;
 
-  paramsSub;
+  paramsSubscription;
 
-
-  constructor(private route: ActivatedRoute, private treeService: ClassificatorTreeService, private eventService: EventService) {
-    this.paramsSub = this.route.params.subscribe(params => {
-      console.log('TREE>>>>>>>>>>>>', params);
-      this.clsfType = params['type'];
-      //this.id = parseInt(params['id'], 10)
-      this.updateTree(this.clsfType);
-
-    });
+  constructor(private route: ActivatedRoute,
+              private router: Router ,
+              private treeService: ClassificatorTreeService,
+              private eventService: EventService
+  ) {
+    console.log('');
   }
 
-  updateTree(nodeId: string = null) {
-    console.log('updateTree nodeId', nodeId);
-    const rootId = this.clsfType;
-    console.log('rootId', rootId);
-    nodeId = nodeId ? nodeId : rootId;
-    //const detailed = rootId != nodeId;
-    //if(detailed) {
-    //  this.tabModel.disableAllExcept(rootId);
-    //} else {
-    //  this.tabModel.enableAll();
-    //}
-    this.treeService.updateTree(new Tree(), this.clsfType).then(tree => {
-      //console.log('>>parentId:', parentId);
-      this.tree = tree;
-    });
+  initTree(clsfType: string) {
+    console.debug('Init tree', clsfType);
+    this.clsfType = clsfType;
+    this.treeService.updateTree(new Tree(), this.clsfType).then(tree => this.tree = tree);
   }
 
   ngOnInit() {
-    console.log('!!!!! ON INIT');
+    this.paramsSubscription = this.route.params.subscribe(params => {
+      console.log('TREE +: route change ::', params);
+      this.initTree(params['type']);
 
-    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_DETAIL, (nodeId) => {
-      console.debug('EVENT_NODE_DETAIL:', nodeId);
-      this.detailNode(nodeId);
     });
-
-    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_EXPAND, (nodeId) => {
-      console.debug('EVENT_NODE_EXPAND:', nodeId);
-      this.onNodeExpand(nodeId);
-    });
-
-    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_PATH_CLICK, (nodeId) => {
-      console.debug('EVENT_PATH_CLICK:', nodeId);
-      this.onPathClick(nodeId);
-    });
+    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_DETAIL, this.detailNode);
+    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_EXPAND, this.expandNode);
+    this.eventService.subscribeFor(COMPONENT_NAME, EVENT_PATH_CLICK,  this.detailNode);
   }
 
   ngOnDestroy() {
     this.eventService.unsubscribeAllFor(COMPONENT_NAME);
-    this.paramsSub.unsubscribe();
+    this.paramsSubscription.unsubscribe();
   }
 
-  onPathClick(nodeId: string) {
-    // console.log('onPathClick', nodeId);
-    //this.router.navigate([`/tree/${this.clsfType}/${nodeId}`]);
-    this.updateTree(nodeId);
-  }
-
-  onNodeExpand(rootId: string) {
+  expandNode = (rootId: string) => {
     let subTree = this.tree.subTree(rootId);
-    //console.log('subTree:onNodeClick:', subTree);
     if (subTree.nodes == null) {
-      if (this.needDetail()) {
-       this.detailNode(subTree.id);
-      } else {
-        this.treeService.updateTree(subTree, this.clsfType).then(tree => {
-          subTree = tree;
-        })
-      }
+      this.treeService.updateTree(subTree, this.clsfType).then(tree =>    subTree = tree);
     }
-  }
+  };
 
-  //todo: оставить?
-  needDetail() {
-    return false; // (subTree.level % this.maxLevel) == 0
-  }
-
-  detailNode(nodeId: string) {
+  detailNode = (nodeId: string) => {
     console.log('navigate to:',`/tree/${this.clsfType}/${nodeId}` );
-   // this.router.navigate([`/tree/${this.clsfType}/${nodeId}`]);
-    this.updateTree(nodeId);
-  }
-
+   this.router.navigate([`/tree/${this.clsfType}/${nodeId}`]);
+  };
 
 }
 

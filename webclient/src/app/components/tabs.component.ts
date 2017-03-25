@@ -1,18 +1,18 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClassificatorService} from "../service/classificator.service";
 import {Classificator} from "../domain/classificator";
-import {TabsModel} from "../tab-model";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'clsfs-tabs',
     template: `
  <nav md-tab-nav-bar>
     <a md-tab-link
-       *ngFor="let tab of tabs; let i = index"
-      [active]="activeLinkIndex === i"
+       *ngFor="let tab of tabs; let i = index" 
+       [active]="activeLinkIndex === i"
        (click)="activeLinkIndex = i"
-       [routerLink]="tab.type"
+       [routerLink]="tab.link"
        >
       {{tab.title}}
     </a>
@@ -21,80 +21,75 @@ import {TabsModel} from "../tab-model";
 `,
     providers: [ClassificatorService]
 })
-export class TabsComponent implements OnInit {
+export class TabsComponent implements OnInit, OnDestroy {
 
-    tabs:TabModel[] = [];
+
+    tabs:Tab[] = [];
 
     classificatorTypes:Classificator[];
 
-    private routeParams:RouteParams;
-
     activeLinkIndex = 0;
 
-    constructor(private route:ActivatedRoute, private router:Router, private classificatorService:ClassificatorService) {
-        route.params.subscribe(params => {
-            console.log('ROUTE change:', params);
-            console.log('this:', this);
-            this.routeParams = params as RouteParams;
+    activeLink;
+
+    childSubscriptions:Subscription[];
+
+    constructor(private route:ActivatedRoute,
+                private router:Router,
+                private classificatorService:ClassificatorService) {
+        console.log('Tabs component!!', this.route);
+        console.log('router', this.router);
+
+
+        this.childSubscriptions = [];
+        this.route.children.forEach(childRoute => {
+            this.childSubscriptions.push(
+                childRoute.params.subscribe(params => {
+                    console.log('TAbs: child route change ::', params);
+                    if(params['type']) {
+                        this.selectTab(params['type']);
+                    }
+                })
+            );
         });
+
+        console.log('this.route.children:', this.route.children);
+        console.log('this.childSubscriptions:', this.childSubscriptions);
+
+    }
+
+    selectTab(link: string) {
+        console.log('selectTab:', link, this.tabs);
+        this.activeLinkIndex =  this.tabs.findIndex(tab => tab.link == link);
+        this.activeLink = link;
     }
 
     ngOnInit() {
-        console.debug('<<<ngInit', this.routeParams.type);
         this.classificatorService.classificatorTypes().then(res => {
             this.classificatorTypes = res;
             this.tabs = [];
             this.classificatorTypes.forEach(clsfType => this.tabs.push({
-                type: clsfType.code,
-                title: clsfType.name,
-                selected: false
+                link: clsfType.code,
+                title: clsfType.name
             }));
         }).then(_ => {
             const defaultType = this.classificatorTypes[0].code;
-            console.log('navigate:', `/tree/${defaultType}`);
-            this.router.navigate(['tree', defaultType]);
+            console.log('defaultType navigate:', `../${defaultType}`);
+            if(!this.activeLink) {
+                this.router.navigate(['./', defaultType], { relativeTo: this.route });
+            } else {
+                this.activeLinkIndex =  this.tabs.findIndex(tab => tab.link == this.activeLink);
+            }
         });
     }
 
-    onSelectChange(index) {
-        console.debug('tab switched:', index);
-        this.selectedIndex = index;
-        //this.router.navigate(['tree/', this.tabModel.selectedType]);
+    ngOnDestroy() {
+        this.childSubscriptions.forEach(subscribe => subscribe.unsubscribe());
     }
-
-    disableAllExcept(type:string) {
-        this.tabs.forEach(t => t.disabled = t.type != type);
-    }
-
-    enableAll() {
-        this.tabs.forEach(t => t.disabled = false);
-    }
-
-    get selectedIndex():number {
-        return this.tabs.findIndex(t => t.selected);
-    }
-
-    set selectedIndex(index:number) {
-        this.tabs.forEach(t => t.selected = false);
-        this.tabs[index].selected = true;
-    }
-
-    get selectedType() {
-        let selectedTab = this.tabs.find(t => t.selected);
-        return selectedTab ? selectedTab.type : null;
-    }
-
 
 }
 
-export class TabModel {
-    type:string;
+interface Tab {
+    link:string;
     title:string;
-    selected:boolean;
-    disabled?:boolean;
-}
-
-class RouteParams {
-    type:string;
-    code:string;
 }

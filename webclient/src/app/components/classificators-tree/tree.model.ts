@@ -9,10 +9,15 @@ export class Tree {
   nodes: Tree[];
   classificator: ClassificatorItem;
 
+  constructor(rootId: string = null) {
+     if(rootId) {
+       this.classificator = {code: rootId, name: ""};
+     }
+  }
+
   get hasNodes(): boolean {
     return  this.classificator.hasChildren;
   }
-
 
   get id(): string {
     return this.classificator && this.classificator.code.replace(/\./g, '');

@@ -1,14 +1,12 @@
-import {Component, Input} from "@angular/core";
-import {Router} from "@angular/router";
-import {ClassificatorTreeModel} from "./classificator-tree.model";
-import {EventService} from "../../service/event.service";
-import {EVENT_PATH_CLICK} from './consts';
+import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {ClassificatorTreeService} from "./classificator-tree.service";
 import {Tree} from "./tree.model";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
     selector: 'classificator-tree-detailed',
     template: `
-<div>
+<div *ngIf="tree">
   <h2>{{tree.classificator.code}} {{tree.classificator.name}}</h2>
   {{tree.classificator.notes}}
   <h3>Связи</h3>
@@ -21,20 +19,39 @@ import {Tree} from "./tree.model";
       </span>
     </div>
   </div>
-
 </div>`
 })
-export class ClassificatorTreeDetailedComponent {
+export class ClassificatorTreeDetailedComponent implements OnInit, OnDestroy {
 
-    @Input() type:string;
+    clsfType: string;
 
-    @Input() tree:Tree;
+    clsfCode: string;
 
-    constructor(private eventService:EventService) {
+    tree:Tree;
+
+    paramsSub;
+
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private treeService: ClassificatorTreeService) {
     }
 
-    onPathClick(nodeId:string) {
-        this.eventService.publish(EVENT_PATH_CLICK, nodeId);
+    ngOnInit() {
+        console.log('TREE DETAILED: init');
+        this.paramsSub = this.route.params.subscribe(params => {
+            console.log('TREE DETAILED: route change ::', params);
+            this.clsfType = params['type'];
+            this.clsfCode = params['code'];
+            this.initTree();
+        });
+    }
+
+    ngOnDestroy() {
+        this.paramsSub.unsubscribe();
+    }
+
+    initTree() {
+        this.treeService.updateTree(new Tree(this.clsfCode), this.clsfType).then(tree => this.tree = tree);
     }
 
 }
