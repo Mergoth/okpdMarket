@@ -46,9 +46,7 @@ export class ClsfTreeDetailedComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('TREE DETAILED: init');
-       this.route.params.subscribe(params => {
-            console.log('TREE DETAILED: route change ::', params);
+        this.route.params.subscribe(params => {
             this.clsfType = params['type'];
             this.clsfCode = params['code'];
             this.initTree();

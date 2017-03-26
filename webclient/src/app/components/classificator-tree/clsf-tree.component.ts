@@ -31,14 +31,12 @@ export class ClsfTreeComponent implements OnInit, OnDestroy {
   }
 
   initTree(clsfType: string) {
-    console.debug('Init tree', clsfType);
     this.clsfType = clsfType;
     this.treeService.updateTree(new Tree(), this.clsfType).then(tree => this.tree = tree);
   }
 
   ngOnInit() {
    this.route.params.subscribe(params => {
-      console.log('TREE +: route change ::', params);
       this.initTree(params['type']);
 
     });

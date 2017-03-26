@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {AfterContentInit, Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Router, Event, NavigationEnd} from "@angular/router";
 import {ClassificatorService} from "../service/classificator.service";
 import {Classificator} from "../domain/classificator";
@@ -6,21 +6,26 @@ import {Classificator} from "../domain/classificator";
 @Component({
     selector: 'clsfs-tabs',
     template: `
- <nav md-tab-nav-bar>
+ <nav md-tab-nav-bar *ngIf="activeLink">
     <a md-tab-link
        *ngFor="let tab of tabs; let i = index" 
        [active]="activeLinkIndex === i"
+       [routerLinkActive]="'active'"
        (click)="activeLinkIndex = i"
        [routerLink]="tab.link"
        >
       {{tab.title}}
     </a>
   </nav>
-  <router-outlet></router-outlet>
+ <div class="loading" *ngIf="!activeLink"></div>
+ <router-outlet></router-outlet>
 `,
     providers: [ClassificatorService]
 })
-export class ClsfTabsComponent implements OnInit {
+export class ClsfTabsComponent implements OnInit, AfterContentInit {
+    ngAfterContentInit(): void {
+        console.log('After content init');
+    }
 
 
     tabs: Tab[] = [];
@@ -37,30 +42,15 @@ export class ClsfTabsComponent implements OnInit {
     }
 
     selectTab(link: string) {
-        console.log('selectTab:', link, this.tabs);
         this.activeLinkIndex = this.tabs.findIndex(tab => tab.link == link);
         this.activeLink = link;
     }
 
     ngOnInit() {
-        //todo: супер мега хак и-за неправильной работы роутера Ангуляра. При изменении роута переключает таб.
-        this.router.events.subscribe((event: Event) => {
-            if (event instanceof NavigationEnd) {
-                const urlPath = event.url.split("/");
-                let routeMap = {};
-                (this.router.config as Object[]).forEach((route) => {
-                    const componentName = route['component'] ? route['component']['name'] : '';
-                    routeMap[componentName] = route['path'];
-                });
-                let currentPathName = routeMap['ClsfTabsComponent'];
-                const currentUrlIndex = urlPath.indexOf(currentPathName);
-                if (currentUrlIndex < urlPath.length) {
-                    const childPath = urlPath[currentUrlIndex + 1];
-                    this.selectTab(childPath);
-                }
-            }
+        this.route.params.subscribe(params => {
+            console.log('TABS change parans:', params)
         });
-
+        this.subscribeToRouteChange();
         this.classificatorService.classificatorTypes().then(res => {
             this.classificatorTypes = res;
             this.tabs = [];
@@ -68,13 +58,38 @@ export class ClsfTabsComponent implements OnInit {
                 link: clsfType.code,
                 title: clsfType.name
             }));
-        }).then(_ => {
-            const defaultType = this.classificatorTypes[0].code;
-            console.log('defaultType navigate:', `../${defaultType}`);
-            if(!this.activeLink) {
-                this.router.navigate(['./', defaultType], { relativeTo: this.route });
-            } else {
-                this.activeLinkIndex = this.tabs.findIndex(tab => tab.link == this.activeLink);
+        }).then(_ => setTimeout(this.navigateDefault(), 1000));
+    }
+
+    navigateDefault() {
+        console.log('navigateDefault')
+        const defaultType = this.classificatorTypes[0].code;
+        if(!this.activeLink) {
+            this.router.navigate(['./', defaultType], { relativeTo: this.route });
+        } else {
+            this.activeLinkIndex = this.tabs.findIndex(tab => tab.link == this.activeLink);
+        }
+    }
+
+    //todo: супер мега хак и-за неправильной работы роутера Ангуляра. При изменении роута переключает таб.
+    subscribeToRouteChange() {
+        this.router.events.subscribe((event: Event) => {
+            if (event instanceof NavigationEnd) {
+                const urlPath = event.url.split("/");
+                let routeMap = {};
+                (this.router.config as Object[]).forEach((route) => {
+                    const componentName = route['component'] ? route['component']['name'] : '';
+                    const path = route['path'];
+                    if(urlPath.indexOf(path) > -1) {
+                        routeMap[componentName] = route['path'];
+                    }
+                });
+                let currentPathName = routeMap['ClsfTabsComponent'];
+                const currentUrlIndex = urlPath.indexOf(currentPathName);
+                if (currentUrlIndex > -1 && currentUrlIndex < urlPath.length) {
+                    const childPath = urlPath[currentUrlIndex + 1];
+                    this.selectTab(childPath);
+                }
             }
         });
     }

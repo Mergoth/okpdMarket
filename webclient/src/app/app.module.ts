@@ -4,7 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
 import {MaterialModule} from "@angular/material";
 import {AppComponent} from "./app.component";
-import {ClassificatorSearchComponent} from "./components/classificator-search/classificator-search.component";
+import {ClsfSearchComponent} from "./components/classificator-search/clsf-search.component";
 import {ClsfTreeComponent} from "./components/classificator-tree/clsf-tree.component";
 import {ClassificatorService} from "./service/classificator.service";
 import {BackAPI} from "./service/back-api.service";
@@ -19,7 +19,12 @@ import {RouterModule, Routes} from "@angular/router";
 
 const routes:Routes = [
   { path: '', redirectTo: '/search', pathMatch: 'full'},
-  { path: 'search', component: ClassificatorSearchComponent},
+  {
+    path: 'search', component: ClsfTabsComponent,
+    children: [
+      {path: ':type', component: ClsfSearchComponent}
+    ]
+  },
   {
     path: 'tree', component: ClsfTabsComponent,
     children: [
@@ -46,7 +51,7 @@ const routes:Routes = [
   declarations: [
     AppComponent,
     ClsfTabsComponent,
-    ClassificatorSearchComponent,
+    ClsfSearchComponent,
     ClsfTreeComponent,
     ClsfTreeDetailedComponent,
     ClsfTreeViewComponent,

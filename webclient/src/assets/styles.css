@@ -56,7 +56,6 @@ nav a {
   margin-top: 10px;
   display: inline-block;
   background-color: #eee;
-  border-radius: 4px;
 }
 
 nav a:visited, a:link {
@@ -68,8 +67,9 @@ nav a:hover {
   background-color: #CFD8DC;
 }
 
-nav a.router-link-active {
-  color: #039be5;
+nav a.active {
+  color: #606060;
+  opacity: 1;
 }
 
 /* items class */
