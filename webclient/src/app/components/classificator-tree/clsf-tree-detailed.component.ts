@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {ClsfTreeService} from "./service/clsf-tree.service";
 import {Tree} from "./model/tree.model";
 import {ActivatedRoute} from "@angular/router";
@@ -33,7 +33,7 @@ import {ActivatedRoute} from "@angular/router";
         </div>
     `
 })
-export class ClsfTreeDetailedComponent implements OnInit, OnDestroy {
+export class ClsfTreeDetailedComponent implements OnInit {
 
     clsfType: string;
 
@@ -41,24 +41,18 @@ export class ClsfTreeDetailedComponent implements OnInit, OnDestroy {
 
     tree:Tree;
 
-    paramsSub;
-
     constructor(private route: ActivatedRoute,
                 private treeService: ClsfTreeService) {
     }
 
     ngOnInit() {
         console.log('TREE DETAILED: init');
-        this.paramsSub = this.route.params.subscribe(params => {
+       this.route.params.subscribe(params => {
             console.log('TREE DETAILED: route change ::', params);
             this.clsfType = params['type'];
             this.clsfCode = params['code'];
             this.initTree();
         });
-    }
-
-    ngOnDestroy() {
-        this.paramsSub.unsubscribe();
     }
 
     initTree() {

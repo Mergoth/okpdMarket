@@ -1,8 +1,7 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
-import {ActivatedRoute, Router} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, Router, Event, NavigationEnd} from "@angular/router";
 import {ClassificatorService} from "../service/classificator.service";
 import {Classificator} from "../domain/classificator";
-import {Subscription} from "rxjs/Subscription";
 
 @Component({
     selector: 'clsfs-tabs',
@@ -21,50 +20,47 @@ import {Subscription} from "rxjs/Subscription";
 `,
     providers: [ClassificatorService]
 })
-export class ClsfTabsComponent implements OnInit, OnDestroy {
+export class ClsfTabsComponent implements OnInit {
 
 
-    tabs:Tab[] = [];
+    tabs: Tab[] = [];
 
-    classificatorTypes:Classificator[];
+    classificatorTypes: Classificator[];
 
     activeLinkIndex = 0;
 
     activeLink;
 
-    childSubscriptions:Subscription[];
-
-    constructor(private route:ActivatedRoute,
-                private router:Router,
-                private classificatorService:ClassificatorService) {
-        console.log('Tabs component!!', this.route);
-        console.log('router', this.router);
-
-
-        this.childSubscriptions = [];
-        this.route.children.forEach(childRoute => {
-            this.childSubscriptions.push(
-                childRoute.params.subscribe(params => {
-                    console.log('TAbs: child route change ::', params);
-                    if(params['type']) {
-                        this.selectTab(params['type']);
-                    }
-                })
-            );
-        });
-
-        console.log('this.route.children:', this.route.children);
-        console.log('this.childSubscriptions:', this.childSubscriptions);
-
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private classificatorService: ClassificatorService) {
     }
 
     selectTab(link: string) {
         console.log('selectTab:', link, this.tabs);
-        this.activeLinkIndex =  this.tabs.findIndex(tab => tab.link == link);
+        this.activeLinkIndex = this.tabs.findIndex(tab => tab.link == link);
         this.activeLink = link;
     }
 
     ngOnInit() {
+        //todo: супер мега хак и-за неправильной работы роутера Ангуляра. При изменении роута переключает таб.
+        this.router.events.subscribe((event: Event) => {
+            if (event instanceof NavigationEnd) {
+                const urlPath = event.url.split("/");
+                let routeMap = {};
+                (this.router.config as Object[]).forEach((route) => {
+                    const componentName = route['component'] ? route['component']['name'] : '';
+                    routeMap[componentName] = route['path'];
+                });
+                let currentPathName = routeMap['ClsfTabsComponent'];
+                const currentUrlIndex = urlPath.indexOf(currentPathName);
+                if (currentUrlIndex < urlPath.length) {
+                    const childPath = urlPath[currentUrlIndex + 1];
+                    this.selectTab(childPath);
+                }
+            }
+        });
+
         this.classificatorService.classificatorTypes().then(res => {
             this.classificatorTypes = res;
             this.tabs = [];
@@ -78,14 +74,11 @@ export class ClsfTabsComponent implements OnInit, OnDestroy {
             if(!this.activeLink) {
                 this.router.navigate(['./', defaultType], { relativeTo: this.route });
             } else {
-                this.activeLinkIndex =  this.tabs.findIndex(tab => tab.link == this.activeLink);
+                this.activeLinkIndex = this.tabs.findIndex(tab => tab.link == this.activeLink);
             }
         });
     }
 
-    ngOnDestroy() {
-        this.childSubscriptions.forEach(subscribe => subscribe.unsubscribe());
-    }
 
 }
 

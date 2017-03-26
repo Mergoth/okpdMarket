@@ -23,8 +23,6 @@ export class ClsfTreeComponent implements OnInit, OnDestroy {
 
   tree: Tree;
 
-  paramsSubscription;
-
   constructor(private route: ActivatedRoute,
               private treeService: ClsfTreeService,
               private eventService: EventService
@@ -39,7 +37,7 @@ export class ClsfTreeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.paramsSubscription = this.route.params.subscribe(params => {
+   this.route.params.subscribe(params => {
       console.log('TREE +: route change ::', params);
       this.initTree(params['type']);
 
@@ -49,7 +47,6 @@ export class ClsfTreeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.eventService.unsubscribeAllFor(COMPONENT_NAME);
-    this.paramsSubscription.unsubscribe();
   }
 
   expandNode = (rootId: string) => {
