@@ -6,6 +6,7 @@ import {EventService} from "../../service/event.service";
 import {EVENT_NODE_EXPAND} from './consts';
 
 const COMPONENT_NAME = 'ClsfTreeComponent';
+const CACHED_SATE = new Map<string, Tree>();
 
 @Component({
   selector: 'clsf-tree',
@@ -26,19 +27,24 @@ export class ClsfTreeComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private treeService: ClsfTreeService,
               private eventService: EventService
-  ) {
-    console.log('');
-  }
+  ) {}
 
   initTree(clsfType: string) {
     this.clsfType = clsfType;
-    this.treeService.updateTree(new Tree(), this.clsfType).then(tree => this.tree = tree);
+    if(CACHED_SATE.has(clsfType)) {
+      this.tree = CACHED_SATE.get(clsfType);
+    } else {
+      this.treeService.updateTree(new Tree(), clsfType)
+          .then(tree => {
+            CACHED_SATE.set(clsfType, tree);
+            this.tree = tree;
+          });
+    }
   }
 
   ngOnInit() {
    this.route.params.subscribe(params => {
       this.initTree(params['type']);
-
     });
     this.eventService.subscribeFor(COMPONENT_NAME, EVENT_NODE_EXPAND, this.expandNode);
   }
