@@ -29,9 +29,9 @@ a, .href {
   text-decoration: underline;
 }
 
-button {
+[md-button] {
   font-family: Arial;
-  background-color: #eee;
+  background: #eee;
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -39,11 +39,11 @@ button {
   cursor: hand;
 }
 
-button:hover {
+[md-button]:hover {
   background-color: #cfd8dc;
 }
 
-button:disabled {
+[md-button]:disabled {
   background-color: #eee;
   color: #aaa;
   cursor: auto;
@@ -181,7 +181,6 @@ md-ink-bar {
 
 .md-input-placeholder.md-focused {
   color: #369;
-  background-color: #369;
 }
 
 
