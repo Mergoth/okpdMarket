@@ -1,5 +1,5 @@
-<md-card>
-  Поиск по {{clsfType}}
+<md-card *ngIf="clsf">
+  Поиск по {{clsf.name}}
   <md-input [(ngModel)]="query" placeholder="Полнотекстовый поиск"></md-input>
   <button md-button (click)="search()">Искать</button>
 

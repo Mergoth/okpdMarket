@@ -1,6 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
-import {ClassificatorItem} from "../../domain/classificator";
+import {ClassificatorItem, Classificator} from "../../domain/classificator";
 import {ClassificatorService} from "../../service/classificator.service";
 
 @Component({
@@ -11,7 +11,7 @@ import {ClassificatorService} from "../../service/classificator.service";
 })
 export class ClsfSearchComponent implements OnInit {
 
-  clsfType: string;
+  clsf: Classificator;
 
   query: string = "";
 
@@ -23,7 +23,8 @@ export class ClsfSearchComponent implements OnInit {
 
   ngOnInit():void {
     this.route.params.subscribe(params => {
-      this.clsfType = params['type'];
+      let clsfTypeCode = params['type'];
+      this.classificatorService.classificatorType(clsfTypeCode).then(clsf => this.clsf = clsf);
     });
   }
 
@@ -37,7 +38,7 @@ export class ClsfSearchComponent implements OnInit {
     }
     this.searchResult = null;
     this.searching = true;
-    this.classificatorService.getList(this.query, this.clsfType).then(res => {
+    this.classificatorService.getList(this.query, this.clsf.code).then(res => {
       this.searchResult = res;
     }).then(_ => this.searching = false);
   }
