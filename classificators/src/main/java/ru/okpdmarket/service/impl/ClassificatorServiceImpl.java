@@ -1,7 +1,6 @@
 package ru.okpdmarket.service.impl;
 
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dao.ClassificatorDao;
@@ -29,7 +28,6 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
     private final SearchService searchService;
 
-    @Autowired
     public ClassificatorServiceImpl(ClassificatorRepository repository, ClassificatorDao classificatorDao, @Lazy DaoSerializer daoSerializer, SearchService searchService) {
         this.repository = repository;
         this.classificatorDao = classificatorDao;
