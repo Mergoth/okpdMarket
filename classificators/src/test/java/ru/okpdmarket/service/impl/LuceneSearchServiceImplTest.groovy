@@ -2,7 +2,9 @@ package ru.okpdmarket.service.impl
 
 import ru.okpdmarket.model.Classificator
 import ru.okpdmarket.model.ClassificatorItem
+import ru.okpdmarket.repository.ClassificatorRepository
 import ru.okpdmarket.repository.impl.ClassificatorContents
+import ru.okpdmarket.repository.impl.ClassificatorRepositoryImpl
 import spock.lang.Specification
 
 /**
@@ -12,9 +14,11 @@ class LuceneSearchServiceImplTest extends Specification {
 
     Classificator classificator
     LuceneSearchServiceImpl service
+    ClassificatorRepository repository
 
     def setup() {
-        service = new LuceneSearchServiceImpl()
+        repository = new ClassificatorRepositoryImpl()
+        service = new LuceneSearchServiceImpl(repository)
         classificator = new Classificator()
         classificator.setCode("OKPD")
         classificator.setName("ОКПД")
@@ -24,6 +28,7 @@ class LuceneSearchServiceImplTest extends Specification {
         def item2 = new ClassificatorItem("2", "cats", "Кошки тут")
         classificator.getContents().putItem(item)
         classificator.getContents().putItem(item2)
+        repository.putClassificator(classificator)
     }
 
     def "Index Classificator"() {

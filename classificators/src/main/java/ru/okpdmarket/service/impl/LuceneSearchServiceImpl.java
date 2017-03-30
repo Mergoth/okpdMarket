@@ -1,13 +1,10 @@
 package ru.okpdmarket.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -27,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.service.SearchService;
 import ru.okpdmarket.service.exception.SearchServiceException;
 
@@ -39,13 +37,18 @@ import java.util.List;
  */
 @Service
 public class LuceneSearchServiceImpl implements SearchService {
-    public static final String CONTENT_FIELD = "content";
-    public static final String CLS_ID = "classificator_code";
-    public static final String ITEM_ID = "item_code";
+    private static final String CONTENT_FIELD = "content";
+    private static final String CLS_ID = "classificator_code";
+    private static final String ITEM_ID = "item_code";
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
-    private static final String ITEM = "item";
+
+    private final ClassificatorRepository repository;
+
     RAMDirectory idx = new RAMDirectory();
-    ObjectMapper objectMapper = new ObjectMapper();
+
+    public LuceneSearchServiceImpl(ClassificatorRepository repository) {
+        this.repository = repository;
+    }
 
     private Document createDocument(ClassificatorItem item) {
         Document doc = new Document();
@@ -56,11 +59,7 @@ public class LuceneSearchServiceImpl implements SearchService {
         doc.add(new TextField(CONTENT_FIELD, item.getCode(), Field.Store.NO));
         doc.add(new TextField(CONTENT_FIELD, item.getName(), Field.Store.NO));
         doc.add(new TextField(CONTENT_FIELD, item.getNotes(), Field.Store.NO));
-        try {
-            doc.add(new StoredField(ITEM, objectMapper.writeValueAsBytes(item)));
-        } catch (JsonProcessingException e) {
-            log.error("Error serializing item: " + item.getClassificatorCode() + "/" + item.getCode(), e);
-        }
+
         return doc;
     }
 
@@ -119,11 +118,7 @@ public class LuceneSearchServiceImpl implements SearchService {
     }
 
     private ClassificatorItem getClassificatorItem(Document doc) {
-        try {
-            return objectMapper.readValue(doc.getBinaryValue(ITEM).bytes, ClassificatorItem.class);
-        } catch (IOException e) {
-            throw new SearchServiceException("Error deserializing item: " + doc.get(ITEM_ID), e);
-        }
+        return repository.getClassificatorByCode(doc.get(CLS_ID)).getContents().getItemByCode(doc.get(ITEM_ID));
     }
 
 
