@@ -1,4 +1,4 @@
-<md-card *ngIf="clsf">
+<div class="searchCard" *ngIf="clsf">
   Поиск по {{clsf.name}}
   <md-input [(ngModel)]="query" placeholder="Полнотекстовый поиск"></md-input>
   <button md-button (click)="search()">Искать</button>
@@ -27,4 +27,4 @@
     <span  *ngIf="searchResult.length == 0">Ничего не найдено</span>
   </div>
   <div class="loading" *ngIf="searching"></div>
-</md-card>
+</div>
