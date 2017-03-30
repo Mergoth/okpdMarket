@@ -4,13 +4,13 @@ import {Tree} from "./model/tree.model";
 @Component({
     selector: 'clsf-tree-view-node',
     template: `
-        <div *ngIf="tree.hasNodes" class="list-item">
+        <div *ngIf="tree.hasNodes" class="list-item level{{level}}">
             <span [style.margin-left.px]="level*20"></span>
             <md-icon *ngIf="!tree.expanded">expand_more</md-icon>
             <md-icon *ngIf="tree.expanded">expand_less</md-icon>
             <span class="code">{{tree.classificator.code}}</span> {{tree.classificator.name}}
             <a [routerLink]="['/tree', clsfType, tree.id]">
-                <md-icon class="todetail">fullscreen</md-icon>
+                <button md-button class="todetail">ДЕТАЛИ</button>
             </a>
         </div>
         <div *ngIf="!tree.hasNodes" class="list-item">
@@ -18,7 +18,7 @@ import {Tree} from "./model/tree.model";
             <span class="no-icon"></span>
             <span class="code">{{tree.classificator.code}}</span> {{tree.classificator.name}}
             <a [routerLink]="['/tree', clsfType, tree.id]">
-                <md-icon class="todetail">fullscreen</md-icon>
+                <button md-button class="todetail">ДЕТАЛИ</button>
             </a>
         </div>
     `,
