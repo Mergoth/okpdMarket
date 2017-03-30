@@ -1,4 +1,5 @@
 import {Component, OnInit} from "@angular/core";
+import {Location} from "@angular/common";
 import {ClsfTreeService} from "./service/clsf-tree.service";
 import {Tree} from "./model/tree.model";
 import {ActivatedRoute} from "@angular/router";
@@ -11,6 +12,7 @@ import {ActivatedRoute} from "@angular/router";
     ],
     template: `        
         <div class="detailed" *ngIf="tree">
+            <md-icon class="backspace" (click)="back()">backspace</md-icon>
             <nav class="path">
                 <div *ngFor="let item of treePath();let i=index">
                     <a class="node" [style.margin-left.px]="i*10"  [routerLink]="['/tree', clsfType, item.code]">
@@ -45,7 +47,8 @@ export class ClsfTreeDetailedComponent implements OnInit {
     tree:Tree;
 
     constructor(private route: ActivatedRoute,
-                private treeService: ClsfTreeService) {
+                private treeService: ClsfTreeService,
+                private location: Location) {
     }
 
     ngOnInit() {
@@ -54,6 +57,11 @@ export class ClsfTreeDetailedComponent implements OnInit {
             this.clsfCode = params['code'];
             this.initTree();
         });
+    }
+
+    back() {
+       console.log('back')
+        this.location.back();
     }
 
     initTree() {
