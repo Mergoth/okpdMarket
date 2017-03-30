@@ -10,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
         ClsfTreeService
     ],
     template: `        
-        <div *ngIf="tree">
+        <div class="detailed" *ngIf="tree">
             <nav class="path">
                 <div *ngFor="let item of treePath();let i=index">
                     <a class="node" [style.margin-left.px]="i*10"  [routerLink]="['/tree', clsfType, item.code]">
@@ -19,15 +19,18 @@ import {ActivatedRoute} from "@angular/router";
                 </div>
             </nav>
             <h2>{{tree.classificator.code}} {{tree.classificator.name}}</h2>
-            {{tree.classificator.notes}}
-            <h3>Связи</h3>
-            <div *ngIf="tree.classificator.links" class="links">
-                <div *ngFor="let links of tree.classificator.links | mapIterable" class="section">
-                    <div class="title">{{links.key}}:</div>
-                    <span *ngFor="let link of links.val" class="link">
-                        <a [routerLink]="['/tree', links.key, link.code]">{{link.code}}</a>
-                        <span class="name">{{link.name}}</span>
-                    </span>
+            <p>{{tree.classificator.notes}}</p>
+            <div class="linksWrapper">
+                <h3>Связи</h3>
+                <md-icon id="linkIcon">link</md-icon>
+                <div *ngIf="tree.classificator.links" class="links">
+                    <div *ngFor="let links of tree.classificator.links | mapIterable" class="section">
+                        <div class="title">{{links.key}}:</div>
+                        <span *ngFor="let link of links.val" class="link">
+                            <a [routerLink]="['/tree', links.key, link.code]">{{link.code}}</a>
+                            <span class="name">{{link.name}}</span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

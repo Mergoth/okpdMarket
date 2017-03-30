@@ -33,12 +33,27 @@
     font-weight: bold
 }
 
+.detailed {
+    padding-left: 20px;
+}
+
+.linksWrapper {
+    position: relative;
+}
+
+#linkIcon {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    color: #444;
+}
+
 h3 {
     margin-bottom: 0.5em;
 }
 
 
-/** ?? **/
+    /** ?? **/
 .tree {
     position:  relative;
 }
