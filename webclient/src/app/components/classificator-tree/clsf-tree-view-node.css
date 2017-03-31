@@ -4,10 +4,11 @@
   margin-bottom: -1px;
   cursor: pointer;
   border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
 
 .list-item:hover {
-  background-color: #F5F5F5;
+  background-color: #FCFCFC;
 }
 
 .no-icon {
@@ -18,6 +19,7 @@
 md-icon {
   font-weight: bold;
   font-size: inherit;
+  height: 0;
 }
 
 .list-item .code {
@@ -26,7 +28,19 @@ md-icon {
 
 .todetail {
   position: absolute;
+  top: 6px;
   right: 0;
-  font-size: 22px;
-  color: black;
+  line-height: 25px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #444;
+  display: none;
+}
+
+.list-item:hover .todetail  {
+  display: block;
+}
+
+.list-item.level {
+   border-top: 0;
 }
