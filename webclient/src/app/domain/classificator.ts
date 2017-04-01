@@ -3,9 +3,7 @@ export interface Classificator {
     name: string;
 }
 
-export interface ClassificatorItem {
-    code: string;
-    name: string;
+export interface ClassificatorItem extends  Classificator {
     parentCode?: string;
     notes?: string;
     hasChildren?: boolean;

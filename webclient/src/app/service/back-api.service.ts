@@ -30,47 +30,30 @@ export class BackAPI {
 
   private get(url: string, params: Object = {}): Promise<any> {
     let headers = new Headers({'Content-Type': 'application/json'});
-    let queryParams = this.buildQueryParams(params);
+    const searchParams = this.buildURLSearchParams(params);
     let options = new RequestOptions({
       headers: headers,
-      search: new URLSearchParams(queryParams)
+      search: searchParams
     });
-    console.log('GET:', `${backendRestUrlRoot}/${url}?${queryParams}`);
+    console.debug('GET:', `${backendRestUrlRoot}/${url}?${searchParams.toString()}`);
     return this.http.get(`${backendRestUrlRoot}/${url}`, options)
         .toPromise()
         .then(this.extractData)
         .catch(this.handleError);
   }
 
-  private buildQueryParams(params: Object) {
-    const pairs: string[] = [];
+  private buildURLSearchParams(params: Object): URLSearchParams {
+    const urlSearchParams = new URLSearchParams();
     const keys: string[] = Object.keys(params || {}).sort();
-    const encode = encodeURIComponent;
-    const encodeKey = function encodeKey(k: string) {
-      return encode(k).replace('%24', '$');
-    };
-
     for (let i = 0, len = keys.length; i < len; i++) {
       const key = keys[i];
       const value = params[key];
       if (value === null || value === undefined) {
         continue;
       }
-
-      if (Array.isArray(value)) {
-        const arrayKey = encodeKey(key);
-        for (let j = 0, l = value.length; j < l; j++) {
-          pairs.push(`${arrayKey}=${encode(value[j])}`);
-        }
-      } else {
-        pairs.push(`${encodeKey(key)}=${encode(value)}`);
-      }
+      urlSearchParams.set(key, value);
     }
-
-    if (pairs.length === 0) {
-      return '';
-    }
-    return `${pairs.join('&')}`;
+    return urlSearchParams;
   }
 
   private extractData(res: Response) {

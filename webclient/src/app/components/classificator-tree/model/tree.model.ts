@@ -1,4 +1,4 @@
-import {ClassificatorItem} from '../../domain/classificator';
+import {ClassificatorItem} from '../../../domain/classificator';
 
 export class Tree {
   level: number;
@@ -9,13 +9,18 @@ export class Tree {
   nodes: Tree[];
   classificator: ClassificatorItem;
 
+  constructor(rootId: string = null) {
+     if(rootId) {
+       this.classificator = {code: rootId, name: ""};
+     }
+  }
+
   get hasNodes(): boolean {
     return  this.classificator.hasChildren;
   }
 
-
   get id(): string {
-    return this.classificator.code.replace(/\./g, '');
+    return this.classificator && this.classificator.code.replace(/\./g, '');
   }
 
   subTree(nodeId: string, tree: Tree = this, level: number = 0): Tree {

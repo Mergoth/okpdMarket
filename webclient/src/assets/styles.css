@@ -29,9 +29,9 @@ a, .href {
   text-decoration: underline;
 }
 
-button {
+[md-button] {
   font-family: Arial;
-  background-color: #eee;
+  background: #eee;
   border: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -39,11 +39,11 @@ button {
   cursor: hand;
 }
 
-button:hover {
+[md-button]:hover {
   background-color: #cfd8dc;
 }
 
-button:disabled {
+[md-button]:disabled {
   background-color: #eee;
   color: #aaa;
   cursor: auto;
@@ -56,7 +56,6 @@ nav a {
   margin-top: 10px;
   display: inline-block;
   background-color: #eee;
-  border-radius: 4px;
 }
 
 nav a:visited, a:link {
@@ -68,8 +67,9 @@ nav a:hover {
   background-color: #CFD8DC;
 }
 
-nav a.router-link-active {
-  color: #039be5;
+nav a.active {
+  color: #606060;
+  opacity: 1;
 }
 
 /* items class */
@@ -181,7 +181,6 @@ md-ink-bar {
 
 .md-input-placeholder.md-focused {
   color: #369;
-  background-color: #369;
 }
 
 

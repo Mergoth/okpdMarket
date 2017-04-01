@@ -1,13 +1,5 @@
-.demo-tab-group {
-  border: 1px solid #e0e0e0;
-}
-
-.md-tab-header {
-  background: #f9f9f9;
-}
-
-.md-tab-body {
-  padding: 12px;
+.searchCard {
+   padding-top: 20px;
 }
 
 .search-result {
@@ -17,10 +9,15 @@
 
 .search-result th {
   text-align: left;
+  line-height: 22px;
 }
 
 .search-result tr:nth-child(2n) {
     background-color: #f9f9f9;
+}
+
+.search-result td {
+    padding: 5px 5px 5px 10px;
 }
 
 .search-result td.code {
@@ -39,4 +36,8 @@
  span.highlighted {
    font-weight: bold;
    color: darkblue;
+ }
+
+ .linksHeader span, .linksHeader md-tab {
+     float: left;
  }
