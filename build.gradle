@@ -16,8 +16,9 @@ subprojects {
         configure(project) {
             apply plugin: 'idea'
             apply plugin: 'spring-boot'
-            apply plugin: "io.spring.dependency-management"
+            apply plugin: 'io.spring.dependency-management'
             apply plugin: 'groovy'
+            apply plugin: 'jacoco'
 
             version = '0.0.1-SNAPSHOT'
 
@@ -53,6 +54,10 @@ subprojects {
             }
 
             build.finalizedBy(copyForDocker)
+
+            jacoco {
+                toolVersion = "0.7.6.201602180812"
+            }
         }
 
         //for the debug purposes. Run as: gradle debug bootRun
@@ -66,28 +71,25 @@ subprojects {
                 }
             }
         }
+        task('codeCoverageReport',type: JacocoReport) {
+            executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+            sourceSets sourceSets.main
+
+            reports {
+                xml.enabled true
+                xml.destination "${buildDir}/reports/jacoco/report.xml"
+                html.enabled false
+                csv.enabled false
+            }
+        }
     }
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    subprojects.each {
-        sourceSets it.sourceSets.main
-    }
-
-    reports {
-        xml.enabled true
-        xml.destination "${buildDir}/reports/jacoco/report.xml"
-        html.enabled false
-        csv.enabled false
-    }
 }
 
-codeCoverageReport.dependsOn {
-    subprojects*.test
-}
 
-/*task runDocker(type: Exec) {
+
+/* task runDocker(type: Exec) {
    *//* workingDir './'
     environment.put("CONFIG_SERVICE_PASSWORD",123)
     commandLine 'docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d'

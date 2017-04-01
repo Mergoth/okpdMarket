@@ -45,18 +45,22 @@ task ngBuildProd(type: Exec, dependsOn: ['clean', 'npmInstall']) {
 }
 
 task moveToGateway {
-    if (file (gatewayStaticDir).exists()) {
-        println "Copy from ${distDir} into ${gatewayStaticDir}"
-        copy {
-            from "${distDir}"
-            into "${gatewayStaticDir}"
-            include '*'
+    doLast {
+        if (file(gatewayStaticDir).exists()) {
+            println "Copy from ${distDir} into ${gatewayStaticDir}"
+            copy {
+                from "${distDir}"
+                into "${gatewayStaticDir}"
+                include '*'
+            }
+        } else {
+            println "ERROR: Dir ${gatewayStaticDir} not found"
         }
-    } else {
-        println "ERROR: Dir ${gatewayStaticDir} not found"
     }
 }
 
 task buildProd(dependsOn: ['clean', 'npmInstall', 'ngBuildProd', 'moveToGateway']) {
-    println "OK"
+    doLast {
+        println "OK"
+    }
 }
