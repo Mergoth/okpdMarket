@@ -1,0 +1,94 @@
+version: '2'
+services:
+  rabbitmq:
+      image: rabbitmq:3-management
+      restart: always
+      ports:
+        - 15672:15672
+      logging:
+        options:
+          max-size: "10m"
+          max-file: "10"
+
+  mongodb:
+    image: sameersbn/mongodb:latest
+    environment:
+        INIT_DUMP: classificators-dump.js
+        MONGODB_PASSWORD: $MONGODB_PASSWORD
+    ports:
+      - "27017:27017"
+    volumes:
+      - /tmp/docker/mongodb:/var/lib/mongodb
+    restart: always
+
+  config:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    build: config
+    restart: always
+    depends_on:
+      - rabbitmq
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  registry:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    build: registry
+    restart: always
+    ports:
+      - 8761:8761
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  gateway:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: gateway
+    restart: always
+    ports:
+      - 80:4000
+    depends_on:
+      - config
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  classificators:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    build: classificators
+    restart: always
+    depends_on:
+      - config
+      - mongodb
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  monitoring:
+      environment:
+        CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      image: monitoring
+      restart: always
+      depends_on:
+        - config
+        - rabbitmq
+      ports:
+        - 9000:8080
+        - 8989:8989
+      logging:
+        options:
+          max-size: "10m"
+          max-file: "10"
+
+

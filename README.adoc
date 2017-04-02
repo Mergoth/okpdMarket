@@ -1,0 +1,2 @@
+image:https://travis-ci.org/Mergoth/okpdMarket.svg?branch=dev["Build Status", link="https://travis-ci.org/Mergoth/okpdMarket"]
+image:https://codecov.io/gh/Mergoth/okpdMarket/branch/master/graph/badge.svg["Codecov", link="https://codecov.io/gh/Mergoth/okpdMarket"]

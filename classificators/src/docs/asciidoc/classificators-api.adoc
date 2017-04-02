@@ -1,0 +1,139 @@
+= RESTful Classificators API Guide
+Vlad Vorobev;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+[[overview]]
+= Overview
+
+[[overview-http-verbs]]
+== HTTP verbs
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PATCH`
+| Used to update an existing resource, including partial updates
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+[[overview-errors]]
+== Errors
+
+Whenever an error response (status code >= 400) is returned, the body will contain a JSON object
+that describes the problem. The error object has the following structure:
+
+include::{snippets}/error-example/response-fields.adoc[]
+
+For example, a request that attempts to apply a non-existent tag to a note will produce a
+`400 Bad Request` response:
+
+include::{snippets}/error-example/http-response.adoc[]
+
+[[API]]
+= API
+
+
+
+[[resources-classificators]]
+== Classificators
+
+
+[[resources-classificators-access]]
+=== Accessing classificators list
+
+A `GET` request to `/classificators` is used to access classificators list
+
+
+==== Response structure
+
+include::{snippets}/classificators/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/classificators/http-response.adoc[]
+
+
+
+[[resources-classificator-top-level]]
+== Classificator top level items
+
+A `GET` request to `/classificators/{Id}` is used to get particular classificator top-level items
+
+==== Response structure
+
+include::{snippets}/classificator-top-items/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/classificator-top-items/http-response.adoc[]
+
+
+
+[[resources-classificator-item]]
+== Particular classificator item
+
+A `GET` request to `/classificators/{Classificator.Id}/{Code}` is used to get particular classificator item
+
+==== Response structure
+
+include::{snippets}/classificator-item/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/classificator-item/http-response.adoc[]
+
+[[resources-classificator-search]]
+== Fulltext search in classificator
+
+A `GET` request to `/classificators/{Classificator.Id}/search?query={fulltext_search_query}` is used to use fulltext search by classificator contents
+
+==== Response structure
+
+include::{snippets}/classificator-search/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/classificator-search/http-response.adoc[]
+
