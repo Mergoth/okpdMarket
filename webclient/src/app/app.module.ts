@@ -12,6 +12,7 @@ import {ClsfTreeViewComponent} from "./components/classificator-tree/clsf-tree-v
 import {ClsfTreeViewNodeComponent} from "./components/classificator-tree/clsf-tree-view-node.component";
 import {MapIterable} from "./components/map-iterable.pipe";
 import {EventService} from "./service/event.service";
+import {PageNotFoundComponent} from "./not-found.component";
 import {ClsfTabsComponent} from "./components/clsf-tabs.component";
 import {ClsfTreeDetailedComponent} from "./components/classificator-tree/clsf-tree-detailed.component";
 import {RouterModule, Routes} from "@angular/router";
@@ -31,7 +32,8 @@ const routes:Routes = [
       {path: ':type', component: ClsfTreeComponent, pathMatch: 'full'},
       {path: ':type/:code', component: ClsfTreeDetailedComponent, pathMatch: 'full'}
     ]
-  }
+  },
+  {path: '**', component: PageNotFoundComponent}
 ];
 
 // Imports for loading & configuring the in-memory web api
@@ -56,7 +58,8 @@ const routes:Routes = [
     ClsfTreeDetailedComponent,
     ClsfTreeViewComponent,
     ClsfTreeViewNodeComponent,
-    MapIterable
+    MapIterable,
+    PageNotFoundComponent
   ],
   bootstrap: [AppComponent],
   providers: [
