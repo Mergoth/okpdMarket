@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.SearchService;
 import ru.okpdmarket.service.impl.ClassificatorItemService;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -41,6 +42,8 @@ public class ClassificatorControllerTest {
     @Autowired
     private ClassificatorService classificatorService;
     @Autowired
+    private SearchService searchService;
+    @Autowired
     private ClassificatorItemService itemService;
 
     private MockMvc mockMvc;
@@ -57,15 +60,15 @@ public class ClassificatorControllerTest {
                 .build();
 
         Classificator classificator1 = new Classificator();
-        classificator1.setCode("OKPD");
+        classificator1.setCode("okpd");
         classificator1.setName("ОКПД");
         classificatorService.put(classificator1);
-        val item11 = add("OKPD", "1", "Test", "");
-        add("OKPD", "11", "TestLevel11", "1");
-        add("OKPD", "12", "TestLevel12", "1");
-        add("OKPD", "13", "TestLevel13", "1");
-        add("OKPD", "121", "TestLevel121", "12");
-        val item12 = add("OKPD", "2", "Test2", "");
+        val item11 = add("okpd", "1", "Test", "");
+        add("okpd", "11", "TestLevel11", "1");
+        add("okpd", "12", "TestLevel12", "1");
+        add("okpd", "13", "TestLevel13", "1");
+        add("okpd", "121", "TestLevel121", "12");
+        val item12 = add("okpd", "2", "Test2", "");
 
         Classificator classificator2 = new Classificator();
         classificator2.setCode("tnvd");
@@ -75,7 +78,8 @@ public class ClassificatorControllerTest {
         val item21 = add("tnvd", "1", "TestTnvd", "");
         itemService.linkItem(item11, item21);
         itemService.linkItem(item21, item12);
-
+        searchService.indexClassificator(classificator1);
+        searchService.indexClassificator(classificator2);
     }
 
     @After
@@ -87,7 +91,7 @@ public class ClassificatorControllerTest {
         this.mockMvc.perform(get("").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificators", preprocessResponse(prettyPrint()), responseFields(
-                        fieldWithPath("[].code").description("English name of classificator type. To use in URL"),
+                        fieldWithPath("[].code").description("Unique identifier of classificator type. To use in URL"),
                         fieldWithPath("[].name").description("Localized name of Classificator type"),
                         fieldWithPath("[].description").description("Description"))));
     }
@@ -95,23 +99,39 @@ public class ClassificatorControllerTest {
 
     @Test
     public void getTopItems() throws Exception {
-        this.mockMvc.perform(get("/OKPD").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/okpd").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-top-items", preprocessResponse(prettyPrint())));
+                .andDo(document("classificator-top-items", preprocessResponse(prettyPrint()), responseFields(
+                        fieldWithPath("[].code").description("Classificator code to identify and use in URL"),
+                        fieldWithPath("[].name").description("Localized name of Classificator item"),
+                        fieldWithPath("[].parentCode").description("Code of parent"))));
     }
 
+    /*
+     "code" : "2",
+      "name" : "Test2",
+      "parentCode" : "-",
+      "path" : [ {
+        "name" : "Test2",
+        "code" : "2"
+      } ],
+      "level" : 1,
+      "children" : [ ],
+      "hasChildren" : false,
+      "links"
+     */
     @Test
     public void getItem() throws Exception {
-        this.mockMvc.perform(get("/OKPD/12").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/okpd/12").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }
 
     @Test
     public void search() throws Exception {
-        this.mockMvc.perform(get("/OKPD/search?query=Test").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/okpd/search?query=Test").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
+                .andDo(document("classificator-search", preprocessResponse(prettyPrint())));
     }
 
 

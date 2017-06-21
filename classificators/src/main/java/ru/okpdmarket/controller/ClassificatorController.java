@@ -1,7 +1,12 @@
 package ru.okpdmarket.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
@@ -34,7 +39,7 @@ public class ClassificatorController {
 
     @RequestMapping(value = "/{classificatorCode}", method = RequestMethod.GET)
     public List<ClassificatorItem> getTopItems(@PathVariable(value = "classificatorCode") String classificatorCode) {
-        return classificatorService.getClassificatorFirstLevel(classificatorCode);
+        return classificatorService.getClassificatorFirstLevel(classificatorCode.toLowerCase());
     }
 
     /**
@@ -45,11 +50,11 @@ public class ClassificatorController {
     @RequestMapping(value = "/{classificatorCode}/{itemCode}", method = RequestMethod.GET)
     public ClassificatorItem getItem(@PathVariable(value = "classificatorCode") String classificatorCode,
                                      @PathVariable(value = "itemCode") String itemCode) {
-        return classificatorService.getItem(classificatorCode, itemCode);
+        return classificatorService.getItem(classificatorCode.toLowerCase(), itemCode.toLowerCase());
     }
 
     @RequestMapping(value = "/{code}/search", method = RequestMethod.GET)
     public List<ClassificatorItem> search(@PathVariable(value = "code") String classificatorCode, @RequestParam String query) {
-        return searchService.searchByClassificator(classificatorCode, query);
+        return searchService.searchByClassificator(classificatorCode.toLowerCase(), query);
     }
 }
