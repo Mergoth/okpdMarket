@@ -20,7 +20,7 @@ public class ClassificatorItemRelations {
     Map<Classificator, ClassificatorLinks> links = new HashMap<>();
 
   /*  public ClassificatorItem linkItem(ClassificatorItem linkedItem) {
-        val targetClassificator = linkedItem.getRelations().getClassificator();
+        val targetClassificator = linkedItem.getClassificator();
         if (addLink(targetClassificator, linkedItem)) {
             linkedItem.getRelations().addLink(this.getClassificator(), item);
         }

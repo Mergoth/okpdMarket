@@ -1,9 +1,6 @@
 package ru.okpdmarket.fake;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
@@ -15,9 +12,10 @@ import java.util.List;
 /**
  * Created by Vladislav on 26.10.2016.
  */
+/*
 @Component
 @Profile("debug")
-@Primary
+@Primary*/
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class FakeSearchServiceImpl implements SearchService {
 

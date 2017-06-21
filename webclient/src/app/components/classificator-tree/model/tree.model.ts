@@ -1,14 +1,27 @@
+import {ClassificatorItem} from '../../../domain/classificator';
+
 export class Tree {
   level: number;
   expanded: boolean;
   parentId: string;
   parent: Tree;
-  id: string;
-  name: string;
-  notes: string;
-  hasNodes: boolean;
   path?: [string, string][];
   nodes: Tree[];
+  classificator: ClassificatorItem;
+
+  constructor(rootId: string = null) {
+     if(rootId) {
+       this.classificator = {code: rootId, name: ""};
+     }
+  }
+
+  get hasNodes(): boolean {
+    return  this.classificator.hasChildren;
+  }
+
+  get id(): string {
+    return this.classificator && this.classificator.code.replace(/\./g, '');
+  }
 
   subTree(nodeId: string, tree: Tree = this, level: number = 0): Tree {
     //console.log('subTree:' + nodeId + ', tree:', tree);

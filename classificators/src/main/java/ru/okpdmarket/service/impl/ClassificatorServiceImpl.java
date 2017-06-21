@@ -1,7 +1,6 @@
 package ru.okpdmarket.service.impl;
 
 import lombok.val;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dao.ClassificatorDao;
@@ -11,6 +10,7 @@ import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.service.ClassificatorService;
+import ru.okpdmarket.service.SearchService;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -26,11 +26,13 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
     private final DaoSerializer daoSerializer;
 
-    @Autowired
-    public ClassificatorServiceImpl(ClassificatorRepository repository, ClassificatorDao classificatorDao, @Lazy DaoSerializer daoSerializer) {
+    private final SearchService searchService;
+
+    public ClassificatorServiceImpl(ClassificatorRepository repository, ClassificatorDao classificatorDao, @Lazy DaoSerializer daoSerializer, SearchService searchService) {
         this.repository = repository;
         this.classificatorDao = classificatorDao;
         this.daoSerializer = daoSerializer;
+        this.searchService = searchService;
     }
 
     @PostConstruct
@@ -38,6 +40,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
         List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
         List<Classificator> classificators = daoSerializer.deserializeList(classificatorDaoAll);
         classificators.forEach(repository::putClassificator);
+        classificators.forEach(searchService::indexClassificator);
         classificatorDaoAll.forEach(d -> daoSerializer.loadLinks(d.getLinks()));
     }
 
