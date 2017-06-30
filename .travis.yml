@@ -1,42 +1,36 @@
 sudo: required
-
 language: java
 jdk: oraclejdk8
 services:
-  - docker
-
+- docker
+before_install:
+  # set up awscli packages
+  - pip install --user awscli
 before_script:
-  - chmod +x gradlew
+- chmod +x gradlew
 script:
-  - ./gradlew check
-  - ./gradlew codeCoverageReport
-
+- ./gradlew check
+- ./gradlew codeCoverageReport
 env:
   global:
-    - secure: "GeONVsTD48Y88CKoqupo/FC1Gy0eCrT1UNylvMzz5VYcLhWcUcu/d4870ZJznBqslGHbFaRc6VCXFLnbKNyR5Chgg127ouWOv/NFubJ5cO0UjHlBwoAxQ/SIrxG9W4B6Y2VeWRO0SIPHF6wUVeELiaPmIIe/jF15/SWJA926G2dF0+zTbn1KNWoVRi9pxZ0bIbEvVcVfHjWHsPtho916KRZ7ToV27f5E9DPLVMraK2HROOplJlXKNLuUor9xSmtOB/787yNrZmdsUaQDMHVfru9yEubfg4tF5ydoluB+JPzeUqIK2PrDgAiwmkEdoJFfbAOqwdy8vZkgpYd/t5vkhbOn3yA0QO1pnyhidx1YgyoJN3HwfMeVNQwUVg8jw7bltVe/DxsNo/AW11Tu7jKteuxewRHCxORzaUSmy5rnLq3AKIXT6h8Kq5VxP5tGbQypa7/z+Zu4vfOBdKGMiLllQ0vhhU0osgYzk/jT4KknuWQtOkX+QTS9iViIUwQgcn3kIMlz4eO83Mbt+IkNvgjF0DyE64mfV2ThTjXDV6959g3Nl/Fl95VMSTg95xtl0tbf733Lj+9HCIfLetlBz4ZzOqaDgD5fRL5HA8jR3FFHVdMd+dx/JELjSRHxO6ZFrCVG/2hBldIakO31/FbpODnDIkKO+86Oqz9DPKVnLJlmZp4=" # DOCKER_EMAIL
-    - secure: "Gl6a03cI88dKHV4rjP1IkYqCdVe7IM0XNcEzFDCxmvXHWSpqlotntOYtgvtRKsYOzb0cfdQwgFuwj80glUbFX5vbX1y5r+qR5sQSrJVi61e8Pijn0MT7rE/d2gCJwaRTkR2lvtRRTIX41LA+aZ6F7+xFSd+ni82IlaXtDywQJWpCEmxcSqSUd5nVhHzH5JZmkYQmQ8fjxzGUhpeePfapYThPxXsHGxmJeoIlEDM1TEFtxVf3Zo9D10812uesa7EwNSKL6MOBU/Me7+liIHdRRpRwVmOjaFAZLeHsUfZQWcLWer0ODULov1U/YMdF860gV1X8PPYxAYNnWqevOGZIsYTX60yem/dCq90Lx7cIiK/TBZIS7x9k65QwP/shnO/RK8PPANBt8bJ4FBxmDPRMPRvgCPp4wQIYTyaiXd0M6BmK+LysS5cRgOOg7YF+ZRqKjNGY9rkNeGs0x8LIaE4Vz138tJCVJ0U+r2OOZFLCIu4dmvuOo1rWf4Hzh+Xt/nx8RrAwwqHKWRyayHkZEbQv2dNGcJsZyAzXsxA6NTDGQfKYloX5oY4qq3BMCkRoid9sLHoJvZrfkN6mjbZkEd2Ed3RzyTIxasmRUeD45vfr7go9ts1a6ppDrRYJWLi26pqyPhimTI0ljEYXp4QnK5JMya2y6H0wo/hJmzrqfXj4+C0=" # DOCKER_USER
-    - secure: "Kt8hRbEIkYW3CYJgvqEK9zCyS/l54XOI90799xEuXWgFQtZCH9Rjp6pthk+CxNg+zWndAcxaOm48uccDIEHgyVg/iL5LiwhuZtUNN2NBssSmvhaZM2dXt4fthVF/lp9JcGqeY9g4VvtDV6ODUvtzTXc1oSp0+vxYb94DNJjXvSOJj74Ia3qk67LxrvC+t4pwKb3NZ7vb07Ttjd97Cou2cNoCtj7GyHcsWvfhe2Txxx8XAo/wvSL96YJOd3cooio+n7hzm7PPgid+8G1EeBdOVca/4DI3Q4Z9a2dPFlvBMYSLfd03CVJ/AORiH0xiqMBI/X2K9Go3fLgXDeQhJDdbCXp7dR+ijtV0nEIh8MHeZdBJXMvjtDmKZkIovW6yxRG8qguYpbiFjSvPd8t0gZaEXSaM3uh/Vqn5kmZ21uhUArKZs4mc3ENnXEmo4IMd6C/eQNCXJoMolx9PPdfWZtQfBCWIlYA6GrWPeYWZganfU/1/zVb60gBmuXBl1sFRHAfY2uTGGocYGBcS7P13vPuXC9zSekSvMKI9PKQh+HEakXSlTPYsXqEtGBh/2xv99egk7fynChWiXJ5gML/5WsYA+cFp+mkd24fXEIK2H/3jqFc+UTKw+74q0t0KeBHmSf1bgoXiomhhXqGxx5w5eAHi6a6aWPSQIruhTKGaXuBvztU=" # DOCKER_PASS
-    - COMMIT=${TRAVIS_COMMIT::7}
-    - REPO = 115056349306.dkr.ecr.us-east-1.amazonaws.com
-
-after_success:
+  - secure: aIAyRaSfgbkyccfjD/Q5ivCXdrXwv4mdKuDQY8I9x/dBC72/aUI2jqDAPtKX+1EiiAa705XVDKYQHsicVfm+J0f67ZXYBGC6EhQHkikx0o4F6v7hwWTTmHnY/fc9S7r1xEMwaGtDnn2//kNrX/2grUedoY0G1CX9qPWZdEN/MrmD5PtorTAPt6yxaVhsi1Edx09ZqDDl8Zk2o+tWdauioP6NPXLTy5bt4flE5B7VxixmOE6Y36+NBv5s3h1pvttaKhWZlHZv/egn6xaVJohomGvpUKVikoRsST7kF9zf3dUDxzKKwtbZB7GuTV8mxeuRZfFvmJ/Y+GYlziTOiYQnySBOnEr+S9wLNdRpN4aB2HsTkM3qr7RHETLP7oWxmvv0BtY0+4Sw1dffnzjAOyAgjhqf2GucFnjGddJbCYgJm5nElahjGig4jxT0DGN1fyCm9WnxS5Fm4DObUL8TF8oNfoVrkGUKG4TqWjZJKWEACiqu8NWEEayUojucP+k6QBhHciCG/E++l9n+NyBSNYCeF0kgPcR/hv6LVEC3geZkG8l7yUX5Jz/fRi/0e5rHktttFl6YqPmuQC20X6XlAbFecWXnQCU6rvvLsShgurqBdo5oaeZTOpeyULpa657NMY8oTdP+VVtAysf75ZcJSXM5PpEZJJocUZToAzuY4aA4BuM=
+  - secure: QKEmmcUWnpTSO0OYepspOTCmpP8zDPQiUpAY0qCAE0PL8VzwRcmMfWo48/c8zbjTS8rGZ/BoU6Bk79hlC9XwIMbhrFinaEbmqv78M5usI5TJsXOE6rAfOK41YpQRrL/FPmfi0caRs262yrstTYnX6MJsuykWnKLyVLDrS0aQmPFeA/OXgmhiHeABMtanJMG1HsBj2TveyRhEKY5n1plVgtp8YQuymjIlihDgM0Ag7pWDQ8cymF/FSqpBFaYaCn6ApfFuuC1nFErEghDTA3bjnC6u0BegEodzCutk8yWkaj497TRLgJ51vjb77SNuzBK6cWniV4S4xveP3gBtJhoL6cr6WmyRaHewbyOdYXWtRw8BLVK9tChzN4Qgz5QNBYvDr/2ZwmKdk+zDKlqU5pnwfVCAyAzrOP2cqgBSVcELCb0DNGtQDDxaiIYJjGTsKf6GnmkJSChUO+r80DrVUfoidH3K51X6vWGiAzjotxNrnUTniTb0zg2UZPj49eBV7Xz5d/vOp4DYZBsTKEdqsS1sgIDm0WYdEt435HY/07Y8I7iwZIprPciKJiCPomKv9r/+9wLLXRtfMAMwWpnypTO5Qo3kU6FPmoDY25Z6zs891LREtAt4Zn2qstRuOTkgXQXj0mh7z7RvltGeq8tX2ig3bV8pKE2AjViWpfGU5T+rAq4=
+  - secure: oXzHh56Zf/oWgkyuFjvJCTugU/+j86ldVW3f0Xt0RgP2oTyguUrlWEwtistTxa0xS9Pf0JgDqjBWCzIS5abmjCvUjrQh5QJsz/aYOz6JeELDTeA0YCfO4II1uwqtCcYVk/UNMciEzYlWvj2TqbGGiuynkX3ZUs5rYemUOulHy/018Swb89eOvGA1AiT5KHh5Zgte1nmPEjP7bNAe8F3aC8D0nqgbjxbk+BpTcjdxvYDyOYsKNlXDbYGgeb1KdFadmSSuwtKuS8MkxxwCv+fcWtlDOA5OAFIDMPiTwaRllQRDvK3HLrXpcEMT+zWZSMFZ0jj+p6I0Tc8yG2d8/eNcSkTiL+wJ1ccYy6niyV2TYaHAVq9OorNg/8vPqHYzwugH19tkSgxg2SHVEafkQyxC/d5x4524VtZxm3z8E28CYp9b1WDn4u4NbxYAva0CELpkCCpAl5coi46+NDmk14wJUDVoy6wkv/pbY2vqQohRM7gpviQdx6m3MED+i2pjE2pKhhoePQ5oXkX9DO6Cl/Xo7n3B2li8yXR0eyFN9Wlae691ZeUGSGYRzK96nO7XMAZcjBP3PhrMVhGIk7QoTaLYkmZFK8+GZNnCQs+xVvGf0xf4Pij2E5fgoS8bxijkBuhyoaZw5+8XigEkW5eiqKJ1TFMuzu6gyAASgO5JoEHj0Nw=
+  - COMMIT=${TRAVIS_COMMIT::7}
+  - REPO=115056349306.dkr.ecr.us-east-1.amazonaws.com
+ after_success:
   - bash <(curl -s https://codecov.io/bash)
-  #TAG
   - export TAG=`if [ "$TRAVIS_BRANCH" == "travis_test" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-
   - export DOCKER_LOGIN = `aws ecr get-login --region us-east-2`
-  - ${DOCKER_LOGIN}'
-
-  # CLASSIFICATORS SERVICE
-  - export CLASSIFICATORS_SERVICE=sqshq/piggymetrics-auth-service
+  - $DOCKER_LOGIN
+  - export CLASSIFICATORS_SERVICE=classificators
   - docker build -t $CLASSIFICATORS_SERVICE:$COMMIT ./classififcators
   - docker tag $CLASSIFICATORS_SERVICE:$COMMIT $REPO/$CLASSIFICATORS_SERVICE:$TAG
   - docker push $REPO/$CLASSIFICATORS_SERVICE:$TAG
-
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  github_token: $GITHUB_TOKEN
   local_dir: classificators/build/asciidoc/html5
   on:
     branch: master
