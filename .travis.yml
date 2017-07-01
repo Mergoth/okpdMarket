@@ -22,7 +22,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
   - export TAG=`if [ "$TRAVIS_BRANCH" == "travis_test" ]; then echo "latest"; else echo
     $TRAVIS_BRANCH ; fi`
-  - bash <(aws ecr get-login --region us-east-2)
+  - bash <(aws ecr get-login --region us-east-1)
   - export CLASSIFICATORS_SERVICE=classificators
   - docker build -t $CLASSIFICATORS_SERVICE:$COMMIT ./classificators
   - docker tag $CLASSIFICATORS_SERVICE:$COMMIT $REPO/$CLASSIFICATORS_SERVICE:$TAG
