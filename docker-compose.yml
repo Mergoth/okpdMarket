@@ -1,14 +1,14 @@
 version: '2'
 services:
   rabbitmq:
-      image: rabbitmq:3-management
-      restart: always
-      ports:
-        - 15672:15672
-      logging:
-        options:
-          max-size: "10m"
-          max-file: "10"
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - 15672:15672
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
 
   mongodb:
     image: sameersbn/mongodb:latest
@@ -25,7 +25,7 @@ services:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    build: config
+    image: config
     restart: always
     depends_on:
       - rabbitmq
@@ -37,7 +37,7 @@ services:
   registry:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    build: registry
+    image: registry
     restart: always
     ports:
       - 8761:8761
@@ -65,7 +65,7 @@ services:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    build: classificators
+    image: classificators
     restart: always
     depends_on:
       - config
@@ -76,19 +76,17 @@ services:
         max-file: "10"
 
   monitoring:
-      environment:
-        CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      image: monitoring
-      restart: always
-      depends_on:
-        - config
-        - rabbitmq
-      ports:
-        - 9000:8080
-        - 8989:8989
-      logging:
-        options:
-          max-size: "10m"
-          max-file: "10"
-
-
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: monitoring
+    restart: always
+    depends_on:
+      - config
+      - rabbitmq
+    ports:
+      - 9000:8080
+      - 8989:8989
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"

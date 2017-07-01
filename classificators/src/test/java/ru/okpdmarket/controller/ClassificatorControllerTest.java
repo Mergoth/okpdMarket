@@ -18,6 +18,7 @@ import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.impl.ClassificatorItemService;
+import ru.okpdmarket.service.impl.LuceneSearchServiceImpl;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -42,6 +43,8 @@ public class ClassificatorControllerTest {
     private ClassificatorService classificatorService;
     @Autowired
     private ClassificatorItemService itemService;
+    @Autowired
+    private LuceneSearchServiceImpl searchService;
 
     private MockMvc mockMvc;
     @Autowired
@@ -75,6 +78,9 @@ public class ClassificatorControllerTest {
         val item21 = add("tnvd", "1", "TestTnvd", "");
         itemService.linkItem(item11, item21);
         itemService.linkItem(item21, item12);
+
+        searchService.indexClassificator(classificator1);
+        searchService.indexClassificator(classificator2);
 
     }
 
