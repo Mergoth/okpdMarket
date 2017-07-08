@@ -14,7 +14,7 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
-    mem_limit: 400288000
+    mem_limit: 300000000
   mongodb:
     image: sameersbn/mongodb:latest
     environment:
@@ -24,4 +24,4 @@ services:
       - "27017:27017"
     volumes:
       - /tmp/docker/mongodb:/var/lib/mongodb
-    mem_limit: 400288000
+    mem_limit: 300000000
