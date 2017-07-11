@@ -2,11 +2,10 @@ spring:
   cloud:
     config:
       server:
-        native:
-          search-locations: classpath:/shared
-  profiles:
-     active: native
-
+        git:
+          uri: ${CONFIG_GIT_URI}
+          username: ${CONFIG_GIT_USERNAME}
+          password: ${CONFIG_GIT_PASSWORD}
 server:
   port: 8888
 
