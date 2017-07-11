@@ -1,0 +1,127 @@
+{
+  "family": "ecscompose-okpdMarket",
+  "containerDefinitions": [
+    {
+      "name": "classificators",
+      "image": "115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators",
+      "memoryReservation": 50,
+      "volumesFrom": [],
+      "extraHosts": [],
+      "dnsServers": [],
+      "disableNetworking": null,
+      "dnsSearchDomains": [],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "hostname": null,
+      "essential": true,
+      "environment": [
+        {
+          "name": "CONFIG_SERVICE_PASSWORD",
+          "value": "123"
+        },
+        {
+          "name": "MONGODB_PASSWORD",
+          "value": "123"
+        },
+        {
+          "name": "NOTIFICATION_SERVICE_PASSWORD",
+          "value": "123"
+        }
+      ],
+      "links": [
+        "mongodb"
+      ],
+      "workingDirectory": null,
+      "readonlyRootFilesystem": false,
+      "command": [],
+      "user": null,
+      "dockerLabels": {},
+      "logConfiguration": null,
+      "cpu": 0,
+      "privileged": false
+    },
+    {
+      "volumesFrom": [],
+      "memory": 381,
+      "extraHosts": [],
+      "dnsServers": [],
+      "disableNetworking": null,
+      "dnsSearchDomains": [],
+      "portMappings": [
+        {
+          "hostPort": 27017,
+          "containerPort": 27017,
+          "protocol": "tcp"
+        }
+      ],
+      "hostname": null,
+      "essential": true,
+      "entryPoint": [],
+      "mountPoints": [
+        {
+          "containerPath": "/var/lib/mongodb",
+          "sourceVolume": "volume-0",
+          "readOnly": false
+        }
+      ],
+      "name": "mongodb",
+      "ulimits": [],
+      "dockerSecurityOptions": [],
+      "environment": [
+        {
+          "name": "INIT_DUMP",
+          "value": "classificators-dump.js"
+        },
+        {
+          "name": "MONGODB_PASSWORD",
+          "value": "123"
+        }
+      ],
+      "links": [],
+      "workingDirectory": null,
+      "readonlyRootFilesystem": false,
+      "image": "sameersbn/mongodb:latest",
+      "command": [],
+      "user": null,
+      "dockerLabels": {},
+      "logConfiguration": null,
+      "cpu": 0,
+      "privileged": false,
+      "memoryReservation": null
+    }
+  ],
+  "placementConstraints": [],
+  "volumes": [
+    {
+      "host": {
+        "sourcePath": "/tmp/docker/mongodb"
+      },
+      "name": "volume-0"
+    }
+  ],
+  "requiresAttributes": [
+    {
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17",
+      "targetId": null,
+      "targetType": null
+    },
+    {
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18",
+      "targetId": null,
+      "targetType": null
+    },
+    {
+      "value": null,
+      "name": "com.amazonaws.ecs.capability.ecr-auth",
+      "targetId": null,
+      "targetType": null
+    }
+  ]
+}

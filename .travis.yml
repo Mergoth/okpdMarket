@@ -32,20 +32,20 @@ after_success:
   - docker push $REPO/$CLASSIFICATORS_SERVICE:$TAG
 
   - export CONFIG_SERVICE=config
-  - docker build -t $REPO/CONFIG_SERVICE:$TAG ./config
-  - docker push $REPO/CONFIG_SERVICE:$TAG
+  - docker build -t $REPO/$CONFIG_SERVICE:$TAG ./config
+  - docker push $REPO/$CONFIG_SERVICE:$TAG
 
   - export GATEWAY_SERVICE=gateway
-  - docker build -t $REPO/GATEWAY_SERVICE:$TAG ./gateway
-  - docker push $REPO/GATEWAY_SERVICE:$TAG
+  - docker build -t $REPO/$GATEWAY_SERVICE:$TAG ./gateway
+  - docker push $REPO/$GATEWAY_SERVICE:$TAG
 
   - export MONITORING_SERVICE=monitoring
-  - docker build -t $REPO/MONITORING_SERVICE:$TAG ./monitoring
-  - docker push $REPO/MONITORING_SERVICE:$TAG
+  - docker build -t $REPO/$MONITORING_SERVICE:$TAG ./monitoring
+  - docker push $REPO/$MONITORING_SERVICE:$TAG
 
   - export REGISTRY_SERVICE=registry
-  - docker build -t $REPO/REGISTRY_SERVICE:$TAG ./registry
-  - docker push $REPO/REGISTRY_SERVICE:$TAG
+  - docker build -t $REPO/$REGISTRY_SERVICE:$TAG ./registry
+  - docker push $REPO/$REGISTRY_SERVICE:$TAG
 deploy:
   provider: pages
   skip_cleanup: true
