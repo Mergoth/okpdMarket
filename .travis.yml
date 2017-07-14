@@ -32,7 +32,7 @@ after_success:
   - docker push $REPO/$CLASSIFICATORS_SERVICE:$TAG
 
   - export CONFIG_SERVICE=config
-  - docker build -t $REPO/$CONFIG_SERVICE:$TAG ./config
+  - docker build -t $REPO/$CONFIG_SERVICE:$TAG --build-arg CONFIG_GIT_URI=$CONFIG_GIT_URI --build-arg CONFIG_GIT_USERNAME=$CONFIG_GIT_USERNAME --build-arg CONFIG_GIT_PASSWORD=$CONFIG_GIT_PASSWORD ./config
   - docker push $REPO/$CONFIG_SERVICE:$TAG
 
   - export GATEWAY_SERVICE=gateway
