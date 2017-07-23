@@ -1,0 +1,55 @@
+version: '2'
+services:
+  config:
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+      MONGODB_PASSWORD: 123
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config
+    ports:
+      - 8888:8888
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    mem_limit: 300000000
+  registry:
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry
+    restart: always
+    ports:
+      - 8761:8761
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    mem_limit: 100000000
+  monitoring:
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/monitoring
+    restart: always
+    links:
+      - config
+    ports:
+      - 9000:9000
+      - 8989:8989
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    mem_limit: 100000000
+  gateway:
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway
+    restart: always
+    ports:
+      - 80:4000
+    links:
+      - config
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+    mem_limit: 100000000

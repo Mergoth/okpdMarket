@@ -40,11 +40,11 @@ task clean(type: Delete) {
     delete "${project.buildDir}"
 }
 
-task ngBuildProd(type: Exec, dependsOn: ['clean', 'npmInstall']) {
+task ngBuildProd(type: Exec, dependsOn:'npmInstall') {
     commandLine "${webclientDir}/node_modules/@angular/cli/bin/ng", 'build', '--prod'
 }
 
-task moveToGateway {
+task moveToGateway(dependsOn: 'ngBuildProd') {
     doLast {
         if (file(gatewayStaticDir).exists()) {
             println "Copy from ${distDir} into ${gatewayStaticDir}"
@@ -59,7 +59,7 @@ task moveToGateway {
     }
 }
 
-task buildProd(dependsOn: ['clean', 'npmInstall', 'ngBuildProd', 'moveToGateway']) {
+task build(dependsOn: 'moveToGateway') {
     doLast {
         println "OK"
     }

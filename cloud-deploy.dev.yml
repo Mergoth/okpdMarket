@@ -1,0 +1,10 @@
+version: '2'
+services:
+  config:
+    build: config
+  registry:
+    build: registry
+  monitoring:
+    build: monitoring
+  gateway:
+    build: gateway
