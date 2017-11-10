@@ -2,6 +2,6 @@ spring:
   data:
     mongodb:
       database: okpd
-      port: 0
+      port: 27017
   profiles:
       active: debug

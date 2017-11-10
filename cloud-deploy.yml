@@ -1,55 +1,72 @@
-version: '2'
+version: '3'
 services:
-  config:
+  mongodb:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - db-data:/var/lib/mongodb
+    environment:
+      MONGODB_PASSWORD: 123
+  classificators:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators
+    ports:
+      - "8080:8080"
     environment:
       CONFIG_SERVICE_PASSWORD: 123
+      NOTIFICATION_SERVICE_PASSWORD: 123
       MONGODB_PASSWORD: 123
+    depends_on:
+      - mongodb
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+  config:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config
     ports:
       - 8888:8888
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-    mem_limit: 300000000
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+      MONGODB_PASSWORD: 123
+      CONFIG_GIT_URI: https://git-codecommit.us-east-1.amazonaws.com/v1/repos/okpdMarket-config
+      CONFIG_GIT_USERNAME: codeCommitUser+1-at-115056349306
+      CONFIG_GIT_PASSWORD: IVEjmK3jyZbod0/x93fiGUwMK9zpZ3whmauU6wwdeVE=
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
   registry:
-    environment:
-      CONFIG_SERVICE_PASSWORD: 123
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry
-    restart: always
     ports:
-      - 8761:8761
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-    mem_limit: 100000000
-  monitoring:
+          - 8761:8761
     environment:
       CONFIG_SERVICE_PASSWORD: 123
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/monitoring
-    restart: always
-    links:
-      - config
-    ports:
-      - 9000:9000
-      - 8989:8989
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-    mem_limit: 100000000
+    deploy:
+      restart_policy:
+        condition: on-failure
   gateway:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway
+    ports:
+          - 80:4000
     environment:
       CONFIG_SERVICE_PASSWORD: 123
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway
-    restart: always
-    ports:
-      - 80:4000
-    links:
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
       - config
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-    mem_limit: 100000000
+volumes:
+  db-data:

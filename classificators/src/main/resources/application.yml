@@ -4,14 +4,14 @@ spring:
       host: mongodb
       database: okpd
       port: 27017
+      username: user
+      password: 123
   profiles:
     active: debug
 eureka:
   client:
     register-with-eureka: false
     eureka.client.fetch-registry: false
-
-
 server:
   context-path: /classificators
   port: 8080
