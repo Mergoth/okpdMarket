@@ -7,7 +7,6 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:1.0.3'
     }
 }
 
@@ -63,9 +62,6 @@ subprojects {
         //for the debug purposes. Run as: gradle debug bootRun
         task debug {
             doLast {
-                dependencies {
-                    compile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "2.0.0"
-                }
                 bootRun {
                     jvmArgs '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
                 }

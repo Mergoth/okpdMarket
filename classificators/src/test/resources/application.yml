@@ -1,7 +1,8 @@
 spring:
   data:
     mongodb:
+      host: localhost
       database: okpd
-      port: 27017
+      port: 27010
   profiles:
       active: debug

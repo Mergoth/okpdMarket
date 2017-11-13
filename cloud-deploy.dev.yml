@@ -1,5 +1,7 @@
 version: '3'
 services:
+  classificators:
+    build: classificators
   config:
     build: config
   registry:
@@ -8,3 +10,5 @@ services:
     build: monitoring
   gateway:
     build: gateway
+  classificators-mongodb:
+    build: classificators-mongodb

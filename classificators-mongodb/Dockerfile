@@ -1,6 +1,7 @@
 FROM mongo:3
 MAINTAINER Vladislav Vorobev <nowspamhere@gmail.com>
 
+ENV INIT_DUMP classificators-dump.js
 ADD init.sh /init.sh
 ADD ./dump /
 
