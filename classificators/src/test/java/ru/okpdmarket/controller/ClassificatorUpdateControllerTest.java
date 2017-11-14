@@ -89,7 +89,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
-        ClassificatorItem item1 = createClassificatorItem("11", "111", "name", "testNotes");
+        ClassificatorItem item1 = createClassificatorItem("", "111", "name", "testNotes");
         this.mockMvc.perform(put("/update/OKPD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item1)));
 
@@ -97,7 +97,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator2)));
 
-        ClassificatorItem item2 = createClassificatorItem("22", "222", "name", "testNotes");
+        ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
         this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item2)));
 
@@ -113,6 +113,22 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
     @Test
     public void commit() throws Exception {
+        /*Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator1)));
+
+        ClassificatorItem item1 = createClassificatorItem("", "111", "name", "testNotes");
+        this.mockMvc.perform(put("/update/OKPD/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item1)));
+
+        Classificator classificator2 = createClassificator("TNVD", "ТНВД");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator2)));
+
+        ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
+        this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item2)));*/
+
         this.mockMvc.perform(post("/update/commit").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("update-classificators-commit", preprocessResponse(prettyPrint())));
@@ -125,9 +141,9 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         return classificator1;
     }
 
-    private ClassificatorItem createClassificatorItem(String paerntCode, String code, String name, String notes) {
+    private ClassificatorItem createClassificatorItem(String parentCode, String code, String name, String notes) {
         val item = new ClassificatorItem(code, name, notes);
-        item.setParentCode(paerntCode);
+        item.setParentCode(parentCode);
         return item;
     }
 }
