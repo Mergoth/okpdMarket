@@ -1,10 +1,7 @@
 package ru.okpdmarket.dao;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.okpdmarket.IntegrationTest;
 import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.dao.dto.ClassificatorItemDaoDto;
@@ -15,8 +12,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by User on 25.11.2016.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
 public class ClassificatorDaoTest extends IntegrationTest {
 
     @Autowired
