@@ -1,5 +1,6 @@
 package ru.okpdmarket.dao;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.okpdmarket.IntegrationTest;
@@ -19,6 +20,7 @@ public class ClassificatorDaoTest extends IntegrationTest {
 
 
     @Test
+    @Ignore
     public void addClassificator(){
         ClassificatorDaoDto classificator = new ClassificatorDaoDto();
         classificator.setCode("code");
