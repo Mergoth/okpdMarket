@@ -6,6 +6,8 @@ services:
 
   config:
     build: config
+    environment:
+      - SPRING_PROFILES_ACTIVE=local
     ports:
       - 8888:8888
 
