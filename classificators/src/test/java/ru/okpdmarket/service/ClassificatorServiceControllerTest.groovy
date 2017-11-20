@@ -15,7 +15,6 @@ class ClassificatorTest extends GroovyTestCase {
 */
     }
 
-
     void testGetItemByCode() {
         /*  Classificator okpd = new Classificator("test1", "Test Name")
           okpd.add("01", "Продукция и услуги сельского хозяйства и охоты")
@@ -24,7 +23,6 @@ class ClassificatorTest extends GroovyTestCase {
           assert(itemByCode)
           assertEquals("Got something wrong by code!","Культуры однолетние",itemByCode.name)*/
     }
-
 
     void testName() {
         /*      Classificator okpd = new Classificator("test2", "Test2 Name")

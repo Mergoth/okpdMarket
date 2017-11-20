@@ -75,16 +75,13 @@ include::{snippets}/error-example/http-response.adoc[]
 = API
 
 
-
 [[resources-classificators]]
 == Classificators
-
 
 [[resources-classificators-access]]
 === Accessing classificators list
 
 A `GET` request to `/classificators` is used to access classificators list
-
 
 ==== Response structure
 
@@ -93,7 +90,6 @@ include::{snippets}/classificators/response-fields.adoc[]
 ==== Example response
 
 include::{snippets}/classificators/http-response.adoc[]
-
 
 
 [[resources-classificator-top-level]]
@@ -108,7 +104,6 @@ include::{snippets}/classificator-top-items/response-fields.adoc[]
 ==== Example response
 
 include::{snippets}/classificator-top-items/http-response.adoc[]
-
 
 
 [[resources-classificator-item]]

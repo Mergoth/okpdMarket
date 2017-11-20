@@ -15,5 +15,4 @@ public interface SearchService {
 
     void indexClassificator(Classificator classificator);
 
-
 }

@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 
-
     private LinkedHashMap<String, Classificator> classificatorsMap = new LinkedHashMap<>();
 
     @Override

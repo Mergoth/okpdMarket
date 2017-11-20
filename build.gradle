@@ -84,7 +84,6 @@ subprojects {
 }
 
 
-
 /* task runDocker(type: Exec) {
    *//* workingDir './'
     environment.put("CONFIG_SERVICE_PASSWORD",123)

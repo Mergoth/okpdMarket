@@ -24,7 +24,6 @@ public class ClassificatorContents {
 
     private LinkedHashMap<String, ClassificatorItem> elements = new LinkedHashMap<>();
 
-
     public ClassificatorItem putItem(ClassificatorItem newItem) {
         positionItem(newItem);
         return elements.put(newItem.getCode(), newItem);
