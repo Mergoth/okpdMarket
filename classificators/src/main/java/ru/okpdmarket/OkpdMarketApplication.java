@@ -36,8 +36,7 @@ public class OkpdMarketApplication {
 			public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins("*").allowedMethods(HttpMethod.GET.name(),
                         HttpMethod.HEAD.name(), HttpMethod.POST.name(),
-                        HttpMethod.OPTIONS.name(), HttpMethod.PUT.name(),
-                        HttpMethod.POST.name());
+                        HttpMethod.OPTIONS.name(), HttpMethod.PUT.name());
             }
         };
     }

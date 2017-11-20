@@ -3,7 +3,7 @@ services:
   classificators-mongodb:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb
     ports:
-      - "27017:27017"
+      - 27017:27017
     volumes:
       - db-data:/var/lib/mongodb
     environment:
@@ -11,13 +11,15 @@ services:
   classificators:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators
     ports:
-      - "8080:8080"
+      - 8080:8080
     environment:
       CONFIG_SERVICE_PASSWORD: 123
       NOTIFICATION_SERVICE_PASSWORD: 123
       MONGODB_PASSWORD: 123
     depends_on:
       - classificators-mongodb
+      - config
+      - registry
     deploy:
       replicas: 1
       update_config:
@@ -68,5 +70,6 @@ services:
         condition: on-failure
     depends_on:
       - config
+      - registry
 volumes:
   db-data:

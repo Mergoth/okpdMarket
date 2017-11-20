@@ -11,7 +11,7 @@ spring:
 eureka:
   client:
     register-with-eureka: false
-    eureka.client.fetch-registry: false
+    fetch-registry: true
 server:
   context-path: /classificators
   port: 8080
