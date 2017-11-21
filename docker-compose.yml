@@ -1,92 +1,75 @@
-version: '2'
+version: '3'
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    restart: always
+  classificators-mongodb:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb
     ports:
-      - 15672:15672
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  mongodb:
-    image: sameersbn/mongodb:latest
-    environment:
-        INIT_DUMP: classificators-dump.js
-        MONGODB_PASSWORD: $MONGODB_PASSWORD
-    ports:
-      - "27017:27017"
+      - 27017:27017
     volumes:
-      - /tmp/docker/mongodb:/var/lib/mongodb
-    restart: always
-
-  config:
+      - db-data:/var/lib/mongodb
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: config
-    restart: always
-    depends_on:
-      - rabbitmq
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  registry:
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: registry
-    restart: always
-    ports:
-      - 8761:8761
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  gateway:
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: gateway
-    restart: always
-    ports:
-      - 80:4000
-    depends_on:
-      - config
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+      MONGODB_PASSWORD: 123
   classificators:
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
-      MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: classificators
-    restart: always
-    depends_on:
-      - config
-      - mongodb
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  monitoring:
-    environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: monitoring
-    restart: always
-    depends_on:
-      - config
-      - rabbitmq
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators
     ports:
-      - 9000:8080
-      - 8989:8989
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
+      - 8080:8080
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+      NOTIFICATION_SERVICE_PASSWORD: 123
+      MONGODB_PASSWORD: 123
+    depends_on:
+      - classificators-mongodb
+      - config
+      - registry
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+  config:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config
+    ports:
+      - 8888:8888
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+      MONGODB_PASSWORD: 123
+      CONFIG_GIT_URI: https://git-codecommit.us-east-1.amazonaws.com/v1/repos/okpdMarket-config
+      CONFIG_GIT_USERNAME: codeCommitUser+1-at-115056349306
+      CONFIG_GIT_PASSWORD: IVEjmK3jyZbod0/x93fiGUwMK9zpZ3whmauU6wwdeVE=
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+  registry:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry
+    ports:
+          - 8761:8761
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+    deploy:
+      restart_policy:
+        condition: on-failure
+  gateway:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway
+    ports:
+          - 80:4000
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+    deploy:
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - config
+      - registry
+volumes:
+  db-data:

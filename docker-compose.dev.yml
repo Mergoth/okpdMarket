@@ -1,31 +1,16 @@
-version: '2'
+version: '3'
 services:
-  rabbitmq:
-    ports:
-      - 5672:5672
-
+  classificators:
+    build: classificators
   config:
     build: config
     environment:
       - SPRING_PROFILES_ACTIVE=local
-    ports:
-      - 8888:8888
-
   registry:
     build: registry
-
+  monitoring:
+    build: monitoring
   gateway:
     build: gateway
-
-  mongodb:
-    build: mongodb
-    ports:
-      - 27017:27017
-
-  classificators:
-    build: classificators
-    ports:
-      - 8086:6000
-
-  monitoring:
-      build: monitoring
+  classificators-mongodb:
+    build: classificators-mongodb
