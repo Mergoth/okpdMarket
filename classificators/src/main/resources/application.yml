@@ -8,10 +8,6 @@ spring:
       password: 123
   profiles:
     active: debug
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: true
 server:
   context-path: /classificators
   port: 8080

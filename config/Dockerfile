@@ -11,3 +11,5 @@ ADD ./build/config.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/config.jar"]
 
 EXPOSE 8888
+
+HEALTHCHECK CMD "curl -f http://localhost:8888/health"

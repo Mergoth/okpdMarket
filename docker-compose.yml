@@ -1,7 +1,7 @@
 version: '3'
 services:
   classificators-mongodb:
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb:0.0.1
     ports:
       - 27017:27017
     volumes:
@@ -9,7 +9,7 @@ services:
     environment:
       MONGODB_PASSWORD: 123
   classificators:
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators:0.0.1
     ports:
       - 8080:8080
     environment:
@@ -31,15 +31,12 @@ services:
         max_attempts: 3
         window: 120s
   config:
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config:0.0.1
     ports:
       - 8888:8888
     environment:
       CONFIG_SERVICE_PASSWORD: 123
       MONGODB_PASSWORD: 123
-      CONFIG_GIT_URI: https://git-codecommit.us-east-1.amazonaws.com/v1/repos/okpdMarket-config
-      CONFIG_GIT_USERNAME: codeCommitUser+1-at-115056349306
-      CONFIG_GIT_PASSWORD: IVEjmK3jyZbod0/x93fiGUwMK9zpZ3whmauU6wwdeVE=
     deploy:
       replicas: 1
       update_config:
@@ -48,28 +45,34 @@ services:
       restart_policy:
         condition: on-failure
         delay: 10s
-        max_attempts: 3
         window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
   registry:
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry:0.0.1
     ports:
-          - 8761:8761
+      - 8761:8761
     environment:
       CONFIG_SERVICE_PASSWORD: 123
+    depends_on:
+      - config
     deploy:
       restart_policy:
         condition: on-failure
   gateway:
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway:0.0.1
     ports:
-          - 80:4000
+      - 80:4000
     environment:
       CONFIG_SERVICE_PASSWORD: 123
-    deploy:
-      restart_policy:
-        condition: on-failure
     depends_on:
       - config
       - registry
+    deploy:
+      restart_policy:
+        condition: on-failure
 volumes:
   db-data:

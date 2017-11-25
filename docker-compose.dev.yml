@@ -5,7 +5,7 @@ services:
   config:
     build: config
     environment:
-      - SPRING_PROFILES_ACTIVE=local
+      - SPRING_PROFILES_ACTIVE=local,debug,native
   registry:
     build: registry
   monitoring:

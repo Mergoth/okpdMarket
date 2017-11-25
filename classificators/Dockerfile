@@ -5,3 +5,5 @@ ADD ./build/classificators.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/classificators.jar"]
 
 EXPOSE 8080
+
+HEALTHCHECK CMD "curl -f http://localhost:8080/health"
