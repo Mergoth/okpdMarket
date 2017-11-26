@@ -5,5 +5,3 @@ ADD ./build/registry.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/registry.jar"]
 
 EXPOSE 8761
-
-HEALTHCHECK CMD "curl -f http://localhost:8761/health"
