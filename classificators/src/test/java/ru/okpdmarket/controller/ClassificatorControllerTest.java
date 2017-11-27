@@ -94,7 +94,6 @@ public class ClassificatorControllerTest extends IntegrationTest {
                         fieldWithPath("[].description").description("Description"))));
     }
 
-
     @Test
     public void getTopItems() throws Exception {
         this.mockMvc.perform(get("/OKPD").accept(MediaType.APPLICATION_JSON))
@@ -115,7 +114,6 @@ public class ClassificatorControllerTest extends IntegrationTest {
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search-results", preprocessResponse(prettyPrint())));
     }
-
 
     private ClassificatorItem add(String clsId, String code, String name, String parentCode) {
         val item = new ClassificatorItem(code, name);

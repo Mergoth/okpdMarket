@@ -18,7 +18,6 @@ public class ClassificatorDaoTest extends IntegrationTest {
     @Autowired
     ClassificatorDao classificatorDao;
 
-
     @Test
     @Ignore
     public void addClassificator(){
@@ -72,6 +71,5 @@ public class ClassificatorDaoTest extends IntegrationTest {
         //Classificator classificator1 = classificatorDao.findOne("test");
         //assertEquals(classificator.getCode(), classificator1.getCode());
     }
-
 
 }

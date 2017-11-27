@@ -6,7 +6,6 @@ spring:
       password: ${MONGODB_PASSWORD}
       database: okpd
       port: 27017
-
 server:
   context-path: /classificators
   port: 6000

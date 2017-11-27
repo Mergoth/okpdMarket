@@ -21,7 +21,6 @@ public class FakeSearchServiceImpl implements SearchService {
 
     private final ClassificatorService classificatorService;
 
-
     @Override
     public List<ClassificatorItem> searchByClassificator(String classificatorCode, String query) {
         return classificatorService.getClassificatorFirstLevel(classificatorCode);

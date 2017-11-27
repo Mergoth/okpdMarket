@@ -27,8 +27,8 @@ subprojects {
 
             dependencyManagement {
                 imports {
-                    mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
-                    mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
+                    mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.4.0.RELEASE'
+                    mavenBom 'org.springframework.cloud:spring-cloud-config:1.4.0.RELEASE'
                 }
             }
 
@@ -82,7 +82,6 @@ subprojects {
     }
 
 }
-
 
 
 /* task runDocker(type: Exec) {

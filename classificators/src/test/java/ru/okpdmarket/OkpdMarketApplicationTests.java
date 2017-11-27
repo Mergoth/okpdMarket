@@ -2,7 +2,6 @@ package ru.okpdmarket;
 
 import org.junit.Test;
 
-
 public class OkpdMarketApplicationTests extends IntegrationTest {
 
    /* @Configuration

@@ -97,7 +97,6 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item2)));
 
-
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
         testLinks.setTargetClassificatorCode("TNVD");
         testLinks.setTargetItemCode("222");
@@ -123,8 +122,8 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
         ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
         this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
-                this.objectMapper.writeValueAsString(item2)));*/
-
+                this.objectMapper.writeValueAsString(item2)));
+*/
         this.mockMvc.perform(post("/update/commit").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("update-classificators-commit", preprocessResponse(prettyPrint())));
