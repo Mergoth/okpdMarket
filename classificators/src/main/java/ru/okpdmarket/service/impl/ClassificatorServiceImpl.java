@@ -66,9 +66,10 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
     @Override
     public void commitClassificators() {
-        val classificators = repository.getClassificators();
+        List<Classificator> classificators = repository.getClassificators();
 
-        val daoDtos = daoSerializer.serializeList(classificators);
+        List<ClassificatorDaoDto> daoDtos = daoSerializer.serializeList(classificators);
+        classificatorDao.delete(daoDtos);
         classificatorDao.save(daoDtos);
     }
 
@@ -92,7 +93,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
             Classificator classificator = new Classificator();
             classificator.setCode(dto.getCode());
             classificator.setName(dto.getName());
-            classificator.setDescription(dto.getDescription());
+            classificator.setDescription(dto.getDescription() != null ? dto.getDescription() : "");
             put(classificator);
             loadChildren(null, dto.getTree(), classificator);
             return classificator;

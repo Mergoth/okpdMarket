@@ -1,6 +1,5 @@
 package ru.okpdmarket.dao;
 
-import lombok.val;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.dao.dto.ClassificatorItemDaoDto;
@@ -28,18 +27,18 @@ public class DaoSerializer {
         dto.setCode(item.getCode());
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
-        val daoDtoChilderList = serializeList(item.getContents().getFirstLevel());
+        List<ClassificatorItemDaoDto> daoDtoChilderList = serializeList(item.getContents().getFirstLevel());
         dto.setTree(daoDtoChilderList);
         dto.setLinks(serializeLinks(item));
         return dto;
     }
 
     private ClassificatorItemDaoDto serialize(ClassificatorItem item) {
-        val dto = new ClassificatorItemDaoDto(item);
+        ClassificatorItemDaoDto dto = new ClassificatorItemDaoDto(item);
 
         // Serialize children
-        val childrenItems = item.getRelations().getChildren();
-        val fullChildrenList = childrenItems.stream().map(this::serialize).collect(Collectors.toList());
+        List<ClassificatorItem> childrenItems = item.getRelations().getChildren();
+        List<ClassificatorItemDaoDto> fullChildrenList = childrenItems.stream().map(this::serialize).collect(Collectors.toList());
         dto.setChildren(fullChildrenList);
         return dto;
     }
