@@ -121,8 +121,6 @@ public class LuceneSearchServiceImpl implements SearchService {
         return repository.getClassificatorByCode(doc.get(CLS_ID)).getContents().getItemByCode(doc.get(ITEM_ID));
     }
 
-
 }
-
 
 

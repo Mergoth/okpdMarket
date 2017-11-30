@@ -1,2 +1,11 @@
 image:https://travis-ci.org/Mergoth/okpdMarket.svg?branch=dev["Build Status", link="https://travis-ci.org/Mergoth/okpdMarket"]
 image:https://codecov.io/gh/Mergoth/okpdMarket/branch/master/graph/badge.svg["Codecov", link="https://codecov.io/gh/Mergoth/okpdMarket"]
+
+= AWS stand
+
+Endpoints:
+
+* http://okpd-market-webapp-s3.s3-website-us-east-1.amazonaws.com/[S3 Bucket serving static content]
+* http://okpdstack-external-10gw2qxvk00h6-371887841.us-east-1.elb.amazonaws.com/[Services ELB address]
+* http://okpdstack-external-10gw2qxvk00h6-371887841.us-east-1.elb.amazonaws.com/classificators[Classificators backend here]
+

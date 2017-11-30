@@ -1,94 +1,84 @@
-version: '2'
+version: '3'
 services:
-  rabbitmq:
-      image: rabbitmq:3-management
-      restart: always
-      ports:
-        - 15672:15672
-      logging:
-        options:
-          max-size: "10m"
-          max-file: "10"
-
-  mongodb:
-    image: sameersbn/mongodb:latest
-    environment:
-        INIT_DUMP: classificators-dump.js
-        MONGODB_PASSWORD: $MONGODB_PASSWORD
+  classificators-mongodb:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb:0.0.1
     ports:
-      - "27017:27017"
+      - 27017:27017
     volumes:
-      - /tmp/docker/mongodb:/var/lib/mongodb
-    restart: always
-
-  config:
+      - db-data:/var/lib/mongodb
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      MONGODB_PASSWORD: $MONGODB_PASSWORD
-    build: config
-    restart: always
+      MONGODB_PASSWORD: 123
+  classificators:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators:0.0.2
+    ports:
+      - 8080:8080
+    environment:
+      CONFIG_SERVICE_PASSWORD: 123
+      NOTIFICATION_SERVICE_PASSWORD: 123
+      MONGODB_PASSWORD: 123
     depends_on:
-      - rabbitmq
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  registry:
+      - classificators-mongodb
+      - config
+      - registry
+    deploy:
+      restart_policy:
+        condition: none
+  config:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config:0.0.2
+    ports:
+      - 8888:8888
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    build: registry
-    restart: always
+      CONFIG_SERVICE_PASSWORD: 123
+      MONGODB_PASSWORD: 123
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+  registry:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry:0.0.2
     ports:
       - 8761:8761
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  gateway:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: gateway
-    restart: always
+      CONFIG_SERVICE_PASSWORD: 123
+    depends_on:
+      - config
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 3
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+  gateway:
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway:0.0.2
     ports:
       - 80:4000
-    depends_on:
-      - config
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  classificators:
     environment:
-      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
-      MONGODB_PASSWORD: $MONGODB_PASSWORD
-    build: classificators
-    restart: always
+      CONFIG_SERVICE_PASSWORD: 123
     depends_on:
       - config
-      - mongodb
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
-  monitoring:
-      environment:
-        CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-      image: monitoring
-      restart: always
-      depends_on:
-        - config
-        - rabbitmq
-      ports:
-        - 9000:8080
-        - 8989:8989
-      logging:
-        options:
-          max-size: "10m"
-          max-file: "10"
-
-
+      - registry
+    deploy:
+      restart_policy:
+        condition: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+volumes:
+  db-data:

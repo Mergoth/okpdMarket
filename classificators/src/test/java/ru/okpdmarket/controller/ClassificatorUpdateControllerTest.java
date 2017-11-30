@@ -6,15 +6,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.okpdmarket.IntegrationTest;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.model.dto.ClassificatorLinkDto;
@@ -30,9 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by vladislav on 31/12/2016.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-public class ClassificatorUpdateControllerTest {
+public class ClassificatorUpdateControllerTest extends IntegrationTest {
+
     @Rule
     public JUnitRestDocumentation restDocumentation =
             new JUnitRestDocumentation("build/generated-snippets");
@@ -88,7 +85,7 @@ public class ClassificatorUpdateControllerTest {
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
-        ClassificatorItem item1 = createClassificatorItem("11", "111", "name", "testNotes");
+        ClassificatorItem item1 = createClassificatorItem("", "111", "name", "testNotes");
         this.mockMvc.perform(put("/update/OKPD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item1)));
 
@@ -96,10 +93,9 @@ public class ClassificatorUpdateControllerTest {
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator2)));
 
-        ClassificatorItem item2 = createClassificatorItem("22", "222", "name", "testNotes");
+        ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
         this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item2)));
-
 
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
         testLinks.setTargetClassificatorCode("TNVD");
@@ -112,6 +108,22 @@ public class ClassificatorUpdateControllerTest {
 
     @Test
     public void commit() throws Exception {
+        /*Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator1)));
+
+        ClassificatorItem item1 = createClassificatorItem("", "111", "name", "testNotes");
+        this.mockMvc.perform(put("/update/OKPD/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item1)));
+
+        Classificator classificator2 = createClassificator("TNVD", "ТНВД");
+        this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(classificator2)));
+
+        ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
+        this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
+                this.objectMapper.writeValueAsString(item2)));
+*/
         this.mockMvc.perform(post("/update/commit").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("update-classificators-commit", preprocessResponse(prettyPrint())));
@@ -124,9 +136,9 @@ public class ClassificatorUpdateControllerTest {
         return classificator1;
     }
 
-    private ClassificatorItem createClassificatorItem(String paerntCode, String code, String name, String notes) {
+    private ClassificatorItem createClassificatorItem(String parentCode, String code, String name, String notes) {
         val item = new ClassificatorItem(code, name, notes);
-        item.setParentCode(paerntCode);
+        item.setParentCode(parentCode);
         return item;
     }
 }

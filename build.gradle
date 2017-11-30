@@ -1,13 +1,12 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.1.RELEASE'
+        springBootVersion = '1.5.8.RELEASE'
     }
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath 'com.sourcemuse.gradle.plugin:gradle-mongo-plugin:0.14.0'
     }
 }
 
@@ -15,7 +14,7 @@ subprojects {
     plugins.withType(JavaPlugin).whenPluginAdded {
         configure(project) {
             apply plugin: 'idea'
-            apply plugin: 'spring-boot'
+            apply plugin: 'org.springframework.boot'
             apply plugin: 'io.spring.dependency-management'
             apply plugin: 'groovy'
             apply plugin: 'jacoco'
@@ -28,8 +27,8 @@ subprojects {
 
             dependencyManagement {
                 imports {
-                    mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.2.1.RELEASE'
-                    mavenBom 'org.springframework.cloud:spring-cloud-config:1.2.1.RELEASE'
+                    mavenBom 'org.springframework.cloud:spring-cloud-netflix:1.4.0.RELEASE'
+                    mavenBom 'org.springframework.cloud:spring-cloud-config:1.4.0.RELEASE'
                 }
             }
 
@@ -63,9 +62,6 @@ subprojects {
         //for the debug purposes. Run as: gradle debug bootRun
         task debug {
             doLast {
-                dependencies {
-                    compile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: "1.50.3"
-                }
                 bootRun {
                     jvmArgs '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
                 }
@@ -86,7 +82,6 @@ subprojects {
     }
 
 }
-
 
 
 /* task runDocker(type: Exec) {

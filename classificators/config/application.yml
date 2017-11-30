@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      database: okpd
+      port: 27017
+      username: user
+      password: 123
+  profiles:
+    active: debug
+server:
+  context-path: /classificators
+  port: 8080
+

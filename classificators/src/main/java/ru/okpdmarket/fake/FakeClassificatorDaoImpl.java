@@ -15,7 +15,7 @@ import java.util.Arrays;
 /**
  * Created by vladislav on 09/12/2016.
  */
-@Profile("debug")
+@Profile("fakeDao")
 @Repository
 @Primary
 public class FakeClassificatorDaoImpl implements ClassificatorDao {

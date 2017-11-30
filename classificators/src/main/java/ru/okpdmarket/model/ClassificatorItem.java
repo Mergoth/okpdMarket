@@ -58,7 +58,6 @@ public class ClassificatorItem implements Serializable {
 
     private Map<String, Object> properties = new HashMap<>();
 
-
     public ClassificatorItem(String code, String name) {
         this(code, name, "");
     }
