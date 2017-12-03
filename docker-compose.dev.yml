@@ -2,6 +2,11 @@ version: '3'
 services:
   classificators:
     build: classificators
+    environment:
+      - SPRING_PROFILES_ACTIVE=local,debug,native
+      - CONFIG_SERVICE_PASSWORD=123
+      - NOTIFICATION_SERVICE_PASSWORD=123
+      - MONGODB_PASSWORD=123
   config:
     build: config
     environment:

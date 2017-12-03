@@ -30,7 +30,7 @@ public class OkpdMarketApplication {
 	}
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public static WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
@@ -42,7 +42,7 @@ public class OkpdMarketApplication {
     }
 
     @Configuration
-    public class ApplicationContextEventTestsAppConfig extends AbstractMongoConfiguration {
+    public static class ApplicationContextEventTestsAppConfig extends AbstractMongoConfiguration {
         @Value("${spring.data.mongodb.host:localhost}")
         private String host;
         @Value("${spring.data.mongodb.port:0}")
