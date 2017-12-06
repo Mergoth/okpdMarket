@@ -4,9 +4,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import ru.okpdmarket.model.ClassificatorItem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by vladislav on 11/12/2016.
  */
@@ -18,12 +15,15 @@ public class ClassificatorItemDaoDto {
     private String name = "";
     private String notes = "";
 
-    private List<ClassificatorItemDaoDto> children = new ArrayList<>();
+    private String parentCode;
+    private String classificatorCode;
 
     public ClassificatorItemDaoDto(ClassificatorItem item) {
         code = item.getCode() != null ? item.getCode() : "";
         name = item.getName() != null ? item.getName() : "";
         notes = item.getNotes() != null ? item.getNotes() : "";
+        parentCode = item.getParentCode();
+        classificatorCode = item.getClassificator().getCode();
 
     }
 

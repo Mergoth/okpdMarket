@@ -7,7 +7,7 @@ import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 /**
  * Created by lalka on 10/26/2016.
  */
-@Repository
+@Repository(value = "classificators")
 public interface ClassificatorDao extends CrudRepository<ClassificatorDaoDto, String> {
 
 }
