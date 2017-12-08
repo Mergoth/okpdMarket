@@ -13,9 +13,7 @@ import ru.okpdmarket.service.exception.ClassificatorNotFoundException;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Created by vladislav on 06/01/2017.
- */
+
 @Service
 public class ClassificatorItemService {
 

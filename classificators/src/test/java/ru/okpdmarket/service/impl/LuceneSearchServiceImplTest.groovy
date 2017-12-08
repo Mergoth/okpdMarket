@@ -7,9 +7,6 @@ import ru.okpdmarket.repository.impl.ClassificatorContents
 import ru.okpdmarket.repository.impl.ClassificatorRepositoryImpl
 import spock.lang.Specification
 
-/**
- * Created by vladislav on 06/03/2017.
- */
 class LuceneSearchServiceImplTest extends Specification {
 
     Classificator classificator

@@ -2,9 +2,7 @@ package ru.okpdmarket.dao.dto;
 
 import lombok.Data;
 
-/**
- * Created by vladislav on 23/01/2017.
- */
+
 @Data
 public class ClassificatorLinkDaoDto {
     private String classificatorCode;

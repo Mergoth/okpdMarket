@@ -8,9 +8,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-/**
- * Created by vlad on 10/9/2016.
- */
 @Service
 public class ClassificatorRepositoryImpl implements ClassificatorRepository {
 

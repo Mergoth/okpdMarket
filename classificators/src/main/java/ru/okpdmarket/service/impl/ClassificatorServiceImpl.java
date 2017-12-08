@@ -19,9 +19,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Vladislav on 04.09.2016.
- */
 @Component
 public class ClassificatorServiceImpl implements ClassificatorService {
     private final ClassificatorRepository repository;
@@ -60,8 +57,6 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
         List<Classificator> classificators = loader.deserializeList(classificatorDaoAll);
         classificators.forEach(this::loadClassificator);
-
-        //classificatorDaoAll.forEach(d -> loader.loadLinks(d.getLinks()));
     }
 
     private void loadClassificator(Classificator classificator) {
@@ -120,7 +115,6 @@ public class ClassificatorServiceImpl implements ClassificatorService {
             classificator.setName(dto.getName());
             classificator.setDescription(dto.getDescription() != null ? dto.getDescription() : "");
             put(classificator);
-            //loadChildren(null, dto.getTree(), classificator);
             return classificator;
         }
 

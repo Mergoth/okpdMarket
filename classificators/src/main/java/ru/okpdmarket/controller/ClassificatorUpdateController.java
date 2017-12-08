@@ -20,9 +20,7 @@ import ru.okpdmarket.service.impl.ClassificatorItemService;
 
 import java.util.List;
 
-/**
- * Created by Vladislav on 02.11.2016.
- */
+
 @RestController
 @RequestMapping("/update")
 public class ClassificatorUpdateController {

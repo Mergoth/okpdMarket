@@ -3,9 +3,7 @@ package ru.okpdmarket.dao.dto;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-/**
- * Created by vladislav on 11/12/2016.
- */
+
 @Data
 public class ClassificatorDaoDto {
 

@@ -41,16 +41,9 @@ public class ClassificatorDaoTest extends IntegrationTest {
         iDD111.setName("testItemName111");
         iDD111.setCode("111");
 
-        iDD11.getChildren().add(iDD111);
-        iDD1.getChildren().add(iDD11);
-
         ClassificatorItemDaoDto iDD12 = new ClassificatorItemDaoDto();
         iDD12.setName("testItemName12");
         iDD12.setCode("12");
-        iDD1.getChildren().add(iDD12);
-
-        classificator.getTree().add(iDD1);
-        classificator.getTree().add(iDD2);
 
         classificatorDao.save(classificator);
         assertTrue(true);

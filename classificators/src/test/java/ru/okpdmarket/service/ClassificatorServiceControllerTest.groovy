@@ -1,7 +1,5 @@
 package ru.okpdmarket.service
-/**
- * Created by Vladislav on 31.08.2016.
- */
+
 class ClassificatorTest extends GroovyTestCase {
    // private Classificator okpd1;
     @Override

@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by vladislav on 09/01/2017.
- */
+
 @Service
 public class DaoSerializer {
 
@@ -23,9 +21,6 @@ public class DaoSerializer {
         dto.setCode(item.getCode());
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
-        // List<ClassificatorItemDaoDto> daoDtoChilderList = serializeList(item.getContents().getFirstLevel());
-        // dto.setTree(daoDtoChilderList);
-        //dto.setLinks(serializeLinks(item));
         return dto;
     }
 
@@ -34,7 +29,6 @@ public class DaoSerializer {
     }
 
     public List<ClassificatorItemDaoDto> serializeItems(Classificator classificator) {
-        // Serialize children
         List<ClassificatorItem> childrenItems = Lists.newLinkedList(classificator.getContents().getElements().values());
         return childrenItems.stream().map(this::serialize).collect(Collectors.toList());
     }
