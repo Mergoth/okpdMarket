@@ -1,9 +1,9 @@
 FROM mongo:3
 MAINTAINER Vladislav Vorobev <nowspamhere@gmail.com>
 
-ENV INIT_DUMP classificators-dump.js
+ENV INIT_DUMP_DIR /dump
 ADD init.sh /init.sh
-ADD ./dump /
+ADD ./dump /dump
 
 RUN \
  chmod +x /init.sh && \
