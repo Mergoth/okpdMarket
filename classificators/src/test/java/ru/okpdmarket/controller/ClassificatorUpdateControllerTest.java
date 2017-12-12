@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.val;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,8 +104,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
     }
 
     @Test
-    @Ignore("Cannot be run in concurrent with other test classes. Docker mongo should probably be run once for all tests Fix in #1581")
-    public void commit() throws Exception {
+    public void zcommit() throws Exception {
         /*Classificator classificator1 = createClassificator("OKPD", "ОКПД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
