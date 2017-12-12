@@ -104,7 +104,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
     }
 
     @Test
-    public void zcommit() throws Exception {
+    public void commit() throws Exception {
         /*Classificator classificator1 = createClassificator("OKPD", "ОКПД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
