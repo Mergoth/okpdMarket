@@ -6,6 +6,6 @@ image:https://codecov.io/gh/Mergoth/okpdMarket/branch/master/graph/badge.svg["Co
 Endpoints:
 
 * http://okpd-market-webapp-s3.s3-website-us-east-1.amazonaws.com/[S3 Bucket serving static content]
-* http://okpdstack-external-10gw2qxvk00h6-371887841.us-east-1.elb.amazonaws.com/[Services ELB address]
-* http://okpdstack-external-10gw2qxvk00h6-371887841.us-east-1.elb.amazonaws.com/classificators[Classificators backend here]
+* http://okpdstack-External-MO8GVWK07MLK-1957184390.us-east-1.elb.amazonaws.com/[Services ELB address]
+* http://okpdstack-External-MO8GVWK07MLK-1957184390.us-east-1.elb.amazonaws.com/classificators[Classificators backend here]
 

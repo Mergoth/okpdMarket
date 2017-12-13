@@ -20,7 +20,7 @@ killall -9 mongod
 (
 if test -n "$INIT_DUMP_DIR"; then
     echo "restore dump from"
-	until mongorestore $auth  --authenticationDatabase okpd -d okpd $INIT_DUMP_DIR; do sleep 5; done
+	  mongorestore $auth  --authenticationDatabase okpd -d okpd $INIT_DUMP_DIR
 fi
 ) &
 

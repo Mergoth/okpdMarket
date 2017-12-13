@@ -4,32 +4,30 @@ services:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb:dev
     ports:
       - 27017:27017
-    environment:
-      - MONGODB_PASSWORD=123
     volumes:
       - db-data:/var/lib/mongodb
   classificators:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators:dev
     ports:
       - 8080:8080
-    environment:
-      - CONFIG_SERVICE_PASSWORD=123
-      - NOTIFICATION_SERVICE_PASSWORD=123
-      - MONGODB_PASSWORD=123
     depends_on:
       - classificators-mongodb
       - config
       - registry
     deploy:
       restart_policy:
-        condition: none
+        condition: on-failure
+        delay: 10s
+        window: 120s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/classificators/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
   config:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/config:dev
     ports:
       - 8888:8888
-    environment:
-      CONFIG_SERVICE_PASSWORD: 123
-      MONGODB_PASSWORD: 123
     deploy:
       replicas: 1
       update_config:
@@ -48,8 +46,6 @@ services:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/registry:dev
     ports:
       - 8761:8761
-    environment:
-      CONFIG_SERVICE_PASSWORD: 123
     depends_on:
       - config
     deploy:
@@ -67,8 +63,6 @@ services:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/gateway:dev
     ports:
       - 80:4000
-    environment:
-      CONFIG_SERVICE_PASSWORD: 123
     depends_on:
       - config
       - registry
