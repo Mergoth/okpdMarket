@@ -9,6 +9,10 @@ before_script:
   - chmod +x gradlew
 script:
   - ./gradlew build codeCoverageReport
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.gradle
 env:
   global:
   - secure: aIAyRaSfgbkyccfjD/Q5ivCXdrXwv4mdKuDQY8I9x/dBC72/aUI2jqDAPtKX+1EiiAa705XVDKYQHsicVfm+J0f67ZXYBGC6EhQHkikx0o4F6v7hwWTTmHnY/fc9S7r1xEMwaGtDnn2//kNrX/2grUedoY0G1CX9qPWZdEN/MrmD5PtorTAPt6yxaVhsi1Edx09ZqDDl8Zk2o+tWdauioP6NPXLTy5bt4flE5B7VxixmOE6Y36+NBv5s3h1pvttaKhWZlHZv/egn6xaVJohomGvpUKVikoRsST7kF9zf3dUDxzKKwtbZB7GuTV8mxeuRZfFvmJ/Y+GYlziTOiYQnySBOnEr+S9wLNdRpN4aB2HsTkM3qr7RHETLP7oWxmvv0BtY0+4Sw1dffnzjAOyAgjhqf2GucFnjGddJbCYgJm5nElahjGig4jxT0DGN1fyCm9WnxS5Fm4DObUL8TF8oNfoVrkGUKG4TqWjZJKWEACiqu8NWEEayUojucP+k6QBhHciCG/E++l9n+NyBSNYCeF0kgPcR/hv6LVEC3geZkG8l7yUX5Jz/fRi/0e5rHktttFl6YqPmuQC20X6XlAbFecWXnQCU6rvvLsShgurqBdo5oaeZTOpeyULpa657NMY8oTdP+VVtAysf75ZcJSXM5PpEZJJocUZToAzuY4aA4BuM=
@@ -25,7 +29,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
   - export TAG=`if [ "$TRAVIS_BRANCH" == "travis_test" ]; then echo "0.0.2"; else echo
     $TRAVIS_BRANCH ; fi`
-  - bash <(aws ecr get-login --region us-east-1)
+  - bash <(aws ecr get-login --no-include-email --region us-east-1)
 
   - export CLASSIFICATORS_SERVICE=classificators
   - docker build -t $CLASSIFICATORS_SERVICE:$COMMIT ./classificators
