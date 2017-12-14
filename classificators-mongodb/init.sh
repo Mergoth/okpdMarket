@@ -20,7 +20,7 @@ killall -9 mongod
 (
 if test -n "$INIT_DUMP_DIR"; then
     echo "restore dump from"
-	  mongorestore $auth  --authenticationDatabase okpd -d okpd $INIT_DUMP_DIR
+    until mongorestore $auth  --authenticationDatabase okpd -d okpd $INIT_DUMP_DIR; do sleep 5; done
 fi
 ) &
 
@@ -30,4 +30,4 @@ gosu mongodb mongod "$@"
 
 echo "restarting with auth on"
 sleep 5
-exec gosu mongodb mongod --auth "$@"
+exec gosu mongodb mongod --bind_ip_all --auth "$@"
