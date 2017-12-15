@@ -9,9 +9,6 @@ import ru.okpdmarket.model.ClassificatorItem;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by vladislav on 12/01/2017.
- */
 public class ClassificatorItemDtoTest {
 
     @Test

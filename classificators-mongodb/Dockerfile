@@ -1,9 +1,11 @@
 FROM mongo:3
 MAINTAINER Vladislav Vorobev <nowspamhere@gmail.com>
 
-ENV INIT_DUMP classificators-dump.js
-ADD init.sh /init.sh
-ADD ./dump /
+#ARG MONGODB_PASSWORD
+ENV MONGODB_PASSWORD 123
+ENV INIT_DUMP_DIR /dump
+COPY init.sh /init.sh
+COPY ./dump /dump
 
 RUN \
  chmod +x /init.sh && \
@@ -12,4 +14,4 @@ RUN \
  apt-get autoremove -y && apt-get clean && \
  rm -rf /var/cache/* && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["/init.sh"]
+ENTRYPOINT ["/bin/sh"]

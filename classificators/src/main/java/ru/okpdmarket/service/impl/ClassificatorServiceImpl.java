@@ -3,6 +3,8 @@ package ru.okpdmarket.service.impl;
 import lombok.val;
 import org.springframework.stereotype.Component;
 import ru.okpdmarket.dao.ClassificatorDao;
+import ru.okpdmarket.dao.ClassificatorItemsDao;
+import ru.okpdmarket.dao.ClassificatorLinksDao;
 import ru.okpdmarket.dao.DaoSerializer;
 import ru.okpdmarket.dao.dto.ClassificatorDaoDto;
 import ru.okpdmarket.dao.dto.ClassificatorItemDaoDto;
@@ -17,9 +19,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Vladislav on 04.09.2016.
- */
 @Component
 public class ClassificatorServiceImpl implements ClassificatorService {
     private final ClassificatorRepository repository;
@@ -31,27 +30,40 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     private final SearchService searchService;
 
     private final ClassificatorItemService itemService;
+    private final ClassificatorItemsDao classificatorItemsDao;
+    private final Loader loader;
+    private final ClassificatorLinksDao classificatorLinksDao;
 
     public ClassificatorServiceImpl(ClassificatorRepository repository,
                                     ClassificatorDao classificatorDao,
+                                    ClassificatorItemsDao classificatorItemsDao,
                                     DaoSerializer daoSerializer,
                                     SearchService searchService,
-                                    ClassificatorItemService itemService) {
+                                    ClassificatorItemService itemService,
+                                    ClassificatorLinksDao classificatorLinksDao) {
         this.repository = repository;
         this.classificatorDao = classificatorDao;
+        this.classificatorItemsDao = classificatorItemsDao;
         this.daoSerializer = daoSerializer;
         this.searchService = searchService;
         this.itemService = itemService;
+        this.classificatorLinksDao = classificatorLinksDao;
+        this.loader = new Loader();
     }
 
     @PostConstruct
     private void init() {
         List<ClassificatorDaoDto> classificatorDaoAll = (List<ClassificatorDaoDto>) classificatorDao.findAll();
-        Loader loader = new Loader();
+
         List<Classificator> classificators = loader.deserializeList(classificatorDaoAll);
-        classificators.forEach(repository::putClassificator);
-        classificators.forEach(searchService::indexClassificator);
-        classificatorDaoAll.forEach(d -> loader.loadLinks(d.getLinks()));
+        classificators.forEach(this::loadClassificator);
+    }
+
+    private void loadClassificator(Classificator classificator) {
+        repository.putClassificator(classificator);
+        loader.loadItems(classificatorItemsDao.findByClassificatorCode(classificator.getCode()));
+        searchService.indexClassificator(classificator);
+        loader.loadLinks(classificatorLinksDao.findByClassificatorCode(classificator.getCode()));
     }
 
     @Override
@@ -67,10 +79,18 @@ public class ClassificatorServiceImpl implements ClassificatorService {
     @Override
     public void commitClassificators() {
         List<Classificator> classificators = repository.getClassificators();
-
-        List<ClassificatorDaoDto> daoDtos = daoSerializer.serializeList(classificators);
-        classificatorDao.delete(daoDtos);
-        classificatorDao.save(daoDtos);
+        classificatorDao.deleteAll();
+        classificatorItemsDao.deleteAll();
+        classificatorLinksDao.deleteAll();
+        classificators.forEach(c -> {
+                    ClassificatorDaoDto classificatorDaoDto = daoSerializer.serialize(c);
+                    classificatorDao.save(classificatorDaoDto);
+                    List<ClassificatorItemDaoDto> itemDaoDtos = daoSerializer.serializeItems(c);
+                    classificatorItemsDao.save(itemDaoDtos);
+                    List<ClassificatorLinkDaoDto> linkDaoDtos = daoSerializer.serializeLinks(c);
+                    classificatorLinksDao.save(linkDaoDtos);
+                }
+        );
     }
 
     @Override
@@ -95,20 +115,14 @@ public class ClassificatorServiceImpl implements ClassificatorService {
             classificator.setName(dto.getName());
             classificator.setDescription(dto.getDescription() != null ? dto.getDescription() : "");
             put(classificator);
-            loadChildren(null, dto.getTree(), classificator);
             return classificator;
         }
 
-        private void loadChildren(String parentCode, List<ClassificatorItemDaoDto> fromDtoList, Classificator targetClassificator) {
-            for (ClassificatorItemDaoDto childDto : fromDtoList) {
-                val item = new ClassificatorItem(childDto.getCode(), childDto.getName(), childDto.getNotes());
-                item.setParentCode(parentCode);
-                itemService.addItem(targetClassificator.getCode(), item);
+        private void loadItem(ClassificatorItemDaoDto daoDto) {
 
-                if (!childDto.getChildren().isEmpty()) {
-                    loadChildren(childDto.getCode(), childDto.getChildren(), targetClassificator);
-                }
-            }
+            val item = new ClassificatorItem(daoDto.getCode(), daoDto.getName(), daoDto.getNotes());
+            item.setParentCode(daoDto.getParentCode());
+            itemService.addItem(daoDto.getClassificatorCode(), item);
         }
 
         public void loadLinks(List<ClassificatorLinkDaoDto> links) {
@@ -117,9 +131,13 @@ public class ClassificatorServiceImpl implements ClassificatorService {
         }
 
         private void loadLink(ClassificatorLinkDaoDto link) {
-            val sourceItem = getItem(link.getSrcClsCode(), link.getSrcItemCode());
-            val targetItem = getItem(link.getDstClsCode(), link.getDstItemCode());
+            val sourceItem = getItem(link.getClassificatorCode(), link.getItemCode());
+            val targetItem = getItem(link.getDestinationClassificatorCode(), link.getDestinationItemCode());
             itemService.linkItem(sourceItem, targetItem);
+        }
+
+        public void loadItems(List<ClassificatorItemDaoDto> itemDaoDtos) {
+            itemDaoDtos.forEach(this::loadItem);
         }
     }
 }

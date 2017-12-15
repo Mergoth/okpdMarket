@@ -14,9 +14,6 @@ import ru.okpdmarket.service.SearchService;
 
 import java.util.List;
 
-/**
- * Created by Vladislav on 31.08.2016.
- */
 @RestController
 public class ClassificatorController {
 

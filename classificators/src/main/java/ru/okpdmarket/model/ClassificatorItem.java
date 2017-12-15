@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by Vladislav on 29.08.2016.
  * Links: {
  * source : {
  * classificatorId  : 1,

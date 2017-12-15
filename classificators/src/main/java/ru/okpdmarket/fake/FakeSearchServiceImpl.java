@@ -9,9 +9,6 @@ import ru.okpdmarket.service.SearchService;
 import javax.inject.Inject;
 import java.util.List;
 
-/**
- * Created by Vladislav on 26.10.2016.
- */
 /*
 @Component
 @Profile("debug")

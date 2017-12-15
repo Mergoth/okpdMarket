@@ -25,9 +25,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by vladislav on 31/12/2016.
- */
 public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
     @Rule

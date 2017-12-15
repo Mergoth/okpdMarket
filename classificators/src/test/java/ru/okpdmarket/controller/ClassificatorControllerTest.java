@@ -27,10 +27,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by Vladislav on 25.10.2016.
- */
-
 public class ClassificatorControllerTest extends IntegrationTest {
     @Rule
     public JUnitRestDocumentation restDocumentation =

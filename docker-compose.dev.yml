@@ -11,11 +11,21 @@ services:
     build: config
     environment:
       - SPRING_PROFILES_ACTIVE=local,debug,native
+      - CONFIG_SERVICE_PASSWORD=123
+      - MONGODB_PASSWORD=123
   registry:
     build: registry
+    environment:
+      - CONFIG_SERVICE_PASSWORD=123
   monitoring:
     build: monitoring
+    environment:
+      - CONFIG_SERVICE_PASSWORD=123
   gateway:
     build: gateway
+    environment:
+      - CONFIG_SERVICE_PASSWORD=123
   classificators-mongodb:
     build: classificators-mongodb
+    environment:
+      - MONGODB_PASSWORD=123

@@ -3,7 +3,6 @@ package ru.okpdmarket;
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
-import org.junit.ClassRule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.testcontainers.containers.FixedHostPortGenericContainer;
 import org.testcontainers.containers.GenericContainer;
 
 import static java.util.Collections.singletonList;
@@ -23,10 +21,13 @@ import static java.util.Collections.singletonList;
 public abstract class IntegrationTest {
 
     // Set up a redis container
-    @ClassRule
-    public static GenericContainer mongo =
-            new FixedHostPortGenericContainer("mongo:3")
+    private static GenericContainer mongo =
+            new GenericContainer("mongo:3")
                     .withExposedPorts(27017);
+
+    static {
+        mongo.start();
+    }
 
     @Configuration
     public static class ApplicationContextEventTestsAppConfig extends AbstractMongoConfiguration {
