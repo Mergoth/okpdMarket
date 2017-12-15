@@ -21,7 +21,7 @@ import static java.util.Collections.singletonList;
 public abstract class IntegrationTest {
 
     // Set up a redis container
-    static GenericContainer mongo =
+    private static GenericContainer mongo =
             new GenericContainer("mongo:3")
                     .withExposedPorts(27017);
 

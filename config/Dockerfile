@@ -8,7 +8,7 @@ ENV CONFIG_GIT_USERNAME $CONFIG_GIT_USERNAME
 ENV CONFIG_GIT_PASSWORD $CONFIG_GIT_PASSWORD
 ENV CONFIG_SERVICE_PASSWORD 123
 
-ADD ./build/config.jar /app/
+COPY ./build/config.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/config.jar"]
 
 EXPOSE 8888

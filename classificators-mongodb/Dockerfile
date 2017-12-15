@@ -4,8 +4,8 @@ MAINTAINER Vladislav Vorobev <nowspamhere@gmail.com>
 #ARG MONGODB_PASSWORD
 ENV MONGODB_PASSWORD 123
 ENV INIT_DUMP_DIR /dump
-ADD init.sh /init.sh
-ADD ./dump /dump
+COPY init.sh /init.sh
+COPY ./dump /dump
 
 RUN \
  chmod +x /init.sh && \
