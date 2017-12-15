@@ -4,18 +4,18 @@ services:
     image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators-mongodb:0.0.1
     ports:
       - 27017:27017
+    environment:
+      - MONGODB_PASSWORD=123
     volumes:
       - db-data:/var/lib/mongodb
-    environment:
-      MONGODB_PASSWORD: 123
   classificators:
-    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators:0.0.2
+    image: 115056349306.dkr.ecr.us-east-1.amazonaws.com/classificators:local
     ports:
       - 8080:8080
     environment:
-      CONFIG_SERVICE_PASSWORD: 123
-      NOTIFICATION_SERVICE_PASSWORD: 123
-      MONGODB_PASSWORD: 123
+      - CONFIG_SERVICE_PASSWORD=123
+      - NOTIFICATION_SERVICE_PASSWORD=123
+      - MONGODB_PASSWORD=123
     depends_on:
       - classificators-mongodb
       - config
