@@ -9,9 +9,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by User on 25.11.2016.
- */
 public class ClassificatorDaoTest extends IntegrationTest {
 
     @Autowired

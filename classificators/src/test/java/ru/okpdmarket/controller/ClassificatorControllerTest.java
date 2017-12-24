@@ -56,10 +56,10 @@ public class ClassificatorControllerTest extends IntegrationTest {
         classificator1.setName("ОКПД");
         classificatorService.put(classificator1);
         val item11 = add("OKPD", "1", "Test", "");
-        add("OKPD", "11", "TestLevel11", "1");
-        add("OKPD", "12", "TestLevel12", "1");
-        add("OKPD", "13", "TestLevel13", "1");
-        add("OKPD", "121", "TestLevel121", "12");
+        add("OKPD", "1.1", "TestLevel11", "1");
+        add("OKPD", "1.2", "TestLevel12", "1");
+        add("OKPD", "1,3", "TestLevel13", "1");
+        add("OKPD", "1.2.1", "TestLevel121", "1.2");
         val item12 = add("OKPD", "2", "Test2", "");
 
         Classificator classificator2 = new Classificator();
@@ -99,7 +99,7 @@ public class ClassificatorControllerTest extends IntegrationTest {
 
     @Test
     public void getItem() throws Exception {
-        this.mockMvc.perform(get("/OKPD/12").accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/OKPD/1.2").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("classificator-item", preprocessResponse(prettyPrint())));
     }
