@@ -2,14 +2,12 @@ package ru.okpdmarket.service;
 
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorItem;
-
-import java.util.List;
+import ru.okpdmarket.model.dto.SearchResult;
 
 
 @Service
 public interface SearchService {
-    List<ClassificatorItem> searchByClassificator(String classificatorId, String query);
+    SearchResult searchByClassificator(String classificatorId, String query, Integer take, Integer offset);
 
     void indexClassificator(Classificator classificator);
 
