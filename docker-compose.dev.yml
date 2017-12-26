@@ -17,10 +17,6 @@ services:
     build: registry
     environment:
       - CONFIG_SERVICE_PASSWORD=123
-  monitoring:
-    build: monitoring
-    environment:
-      - CONFIG_SERVICE_PASSWORD=123
   gateway:
     build: gateway
     environment:
