@@ -3,6 +3,10 @@ image:https://codecov.io/gh/Mergoth/okpdMarket/branch/master/graph/badge.svg["Co
 
 = AWS stand
 
+API doc:
+
+* https://mergoth.github.io/okpdMarket/classificators-api.html
+
 Endpoints:
 
 * http://okpd-market-webapp-s3.s3-website-us-east-1.amazonaws.com/[S3 Bucket serving static content]

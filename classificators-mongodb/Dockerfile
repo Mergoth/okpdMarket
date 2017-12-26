@@ -1,4 +1,4 @@
-FROM mongo:3
+FROM mongo:3.6.0-jessie
 MAINTAINER Vladislav Vorobev <nowspamhere@gmail.com>
 
 #ARG MONGODB_PASSWORD
