@@ -43,6 +43,7 @@ public class LuceneSearchServiceImpl implements SearchService {
     private static final String CLS_ID = "classificator_code";
     private static final String ITEM_ID = "item_code";
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
+    private static final Integer NUMBER_OF_HITS = 9999;
 
     private final ClassificatorRepository repository;
 
@@ -99,7 +100,7 @@ public class LuceneSearchServiceImpl implements SearchService {
             finalQuery.add(query, BooleanClause.Occur.MUST);
             finalQuery.add(clsFilter, BooleanClause.Occur.MUST);
 
-            TopScoreDocCollector collector = TopScoreDocCollector.create(9999);
+            TopScoreDocCollector collector = TopScoreDocCollector.create(NUMBER_OF_HITS);
 
             // Search for the query
             indexSearcher.search(finalQuery, collector);
