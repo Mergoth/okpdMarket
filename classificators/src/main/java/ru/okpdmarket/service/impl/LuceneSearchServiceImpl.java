@@ -22,6 +22,9 @@ import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
@@ -43,11 +46,16 @@ public class LuceneSearchServiceImpl implements SearchService {
     private static final String CLS_ID = "classificator_code";
     private static final String ITEM_ID = "item_code";
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
-    private static final Integer NUMBER_OF_HITS = 9999;
+
+    @Value("${application.search.hits.max}")
+    private Integer numberOfHits;
 
     private final ClassificatorRepository repository;
 
     RAMDirectory idx = new RAMDirectory();
+
+    @Autowired
+    private Environment environment;
 
     public LuceneSearchServiceImpl(ClassificatorRepository repository) {
         this.repository = repository;
@@ -100,7 +108,7 @@ public class LuceneSearchServiceImpl implements SearchService {
             finalQuery.add(query, BooleanClause.Occur.MUST);
             finalQuery.add(clsFilter, BooleanClause.Occur.MUST);
 
-            TopScoreDocCollector collector = TopScoreDocCollector.create(NUMBER_OF_HITS);
+            TopScoreDocCollector collector = TopScoreDocCollector.create(numberOfHits);
 
             // Search for the query
             indexSearcher.search(finalQuery, collector);

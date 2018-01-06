@@ -28,4 +28,6 @@ eureka:
 application:
   search:
     defaultTake: 100
+    hits:
+      max: 9999
 
