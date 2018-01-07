@@ -54,9 +54,6 @@ public class LuceneSearchServiceImpl implements SearchService {
 
     RAMDirectory idx = new RAMDirectory();
 
-    @Autowired
-    private Environment environment;
-
     public LuceneSearchServiceImpl(ClassificatorRepository repository) {
         this.repository = repository;
     }
