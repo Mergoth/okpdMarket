@@ -9,3 +9,6 @@ spring:
 server:
   context-path: /classificators
   port: 6000
+application:
+  search:
+    defaultTake: 100

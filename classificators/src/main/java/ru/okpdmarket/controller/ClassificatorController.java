@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.model.dto.SearchResult;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 
@@ -40,7 +41,7 @@ public class ClassificatorController {
 
     /**
      * @param classificatorCode - id of the classificator
-     * @param itemCode - code of the ClassificatorItem to get
+     * @param itemCode          - code of the ClassificatorItem to get
      * @return ClassificatorItem -
      */
     @RequestMapping(value = "/{classificatorCode}/{itemCode}", method = RequestMethod.GET)
@@ -50,7 +51,10 @@ public class ClassificatorController {
     }
 
     @RequestMapping(value = "/{code}/search", method = RequestMethod.GET)
-    public List<ClassificatorItem> search(@PathVariable(value = "code") String classificatorCode, @RequestParam String query) {
-        return searchService.searchByClassificator(classificatorCode, query);
+    public SearchResult search(@PathVariable(value = "code") String classificatorCode,
+                               @RequestParam(value = "query") String query,
+                               @RequestParam(value = "take", defaultValue = "${application.search.defaultTake}") Integer take,
+                               @RequestParam(value = "offset", defaultValue = "0") Integer offset) {
+        return searchService.searchByClassificator(classificatorCode, query, take, offset);
     }
 }

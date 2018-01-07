@@ -40,7 +40,6 @@ after_success:
   - docker build -t $REPO/$CLASSIFICATORS_MONGODB_SERVICE:$TAG ./classificators-mongodb
   - docker push $REPO/$CLASSIFICATORS_MONGODB_SERVICE:$TAG
 
-  - echo "CONFIG_GIT_URI = $CONFIG_GIT_URI"
   - export CONFIG_SERVICE=config
   - docker build -t $REPO/$CONFIG_SERVICE:$TAG --build-arg SPRING_PROFILES_ACTIVE=aws --build-arg CONFIG_GIT_URI=$CONFIG_GIT_URI --build-arg CONFIG_GIT_USERNAME=$CONFIG_GIT_USERNAME --build-arg CONFIG_GIT_PASSWORD=$CONFIG_GIT_PASSWORD ./config
   - docker push $REPO/$CONFIG_SERVICE:$TAG
