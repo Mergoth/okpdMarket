@@ -29,5 +29,5 @@ application:
   search:
     defaultTake: 100
     hits:
-      max: 9999
+      limit: 9999
 
