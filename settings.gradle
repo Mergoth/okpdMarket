@@ -1,1 +1,2 @@
-include 'classificators', 'classificators-mongodb', 'registry', 'config', 'gateway', 'monitoring'
+include 'classificators', 'classificators-mongodb', 'registry', 'config', 'gateway', 'monitoring', 'auth'
+
