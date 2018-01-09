@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by Vladislav on 29.08.2016.
  * Links: {
  * source : {
  * classificatorId  : 1,
@@ -57,7 +56,6 @@ public class ClassificatorItem implements Serializable {
     private ClassificatorItemRelations relations = new ClassificatorItemRelations(this);
 
     private Map<String, Object> properties = new HashMap<>();
-
 
     public ClassificatorItem(String code, String name) {
         this(code, name, "");

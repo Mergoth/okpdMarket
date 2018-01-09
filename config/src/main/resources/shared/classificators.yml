@@ -1,12 +1,14 @@
 spring:
   data:
     mongodb:
-      host: mongodb
-      username: user
-      password: ${MONGODB_PASSWORD}
+      host: classificators-mongodb
       database: okpd
       port: 27017
-
+      username: user
+      password: ${MONGODB_PASSWORD}
 server:
   context-path: /classificators
   port: 6000
+application:
+  search:
+    defaultTake: 100

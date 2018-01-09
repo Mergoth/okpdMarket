@@ -17,4 +17,3 @@ From project root folder
 `cd` into folder of needed microservice and run:
 
 `gradle debug bootRun`
-

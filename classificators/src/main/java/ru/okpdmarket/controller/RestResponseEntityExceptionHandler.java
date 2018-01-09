@@ -9,9 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.okpdmarket.service.exception.SearchServiceException;
 
-/**
- * Created by vladislav on 21/03/2017.
- */
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 

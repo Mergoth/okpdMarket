@@ -85,5 +85,5 @@ typings/
 
 *.iml
 
-!/mongodb/dump/*-dump.js
+!/classificators-mongodb/dump/*-dump.js
 /gateway/src/main/resources/static/

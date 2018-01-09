@@ -5,20 +5,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.okpdmarket.IntegrationTest;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 import ru.okpdmarket.service.impl.ClassificatorItemService;
+import ru.okpdmarket.service.impl.LuceneSearchServiceImpl;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -29,13 +28,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Created by Vladislav on 25.10.2016.
- */
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-public class ClassificatorControllerTest {
+public class ClassificatorControllerTest extends IntegrationTest {
     @Rule
     public JUnitRestDocumentation restDocumentation =
             new JUnitRestDocumentation("build/generated-snippets");
@@ -45,6 +38,8 @@ public class ClassificatorControllerTest {
     private SearchService searchService;
     @Autowired
     private ClassificatorItemService itemService;
+    @Autowired
+    private LuceneSearchServiceImpl searchService;
 
     private MockMvc mockMvc;
     @Autowired
@@ -78,6 +73,7 @@ public class ClassificatorControllerTest {
         val item21 = add("tnvd", "1", "TestTnvd", "");
         itemService.linkItem(item11, item21);
         itemService.linkItem(item21, item12);
+
         searchService.indexClassificator(classificator1);
         searchService.indexClassificator(classificator2);
     }
@@ -95,7 +91,6 @@ public class ClassificatorControllerTest {
                         fieldWithPath("[].name").description("Localized name of Classificator type"),
                         fieldWithPath("[].description").description("Description"))));
     }
-
 
     @Test
     public void getTopItems() throws Exception {
@@ -133,7 +128,6 @@ public class ClassificatorControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("classificator-search", preprocessResponse(prettyPrint())));
     }
-
 
     private ClassificatorItem add(String clsId, String code, String name, String parentCode) {
         val item = new ClassificatorItem(code, name);

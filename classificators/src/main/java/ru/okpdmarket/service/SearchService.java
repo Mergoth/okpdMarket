@@ -2,18 +2,13 @@ package ru.okpdmarket.service;
 
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
-import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.model.dto.SearchResult;
 
-import java.util.List;
 
-/**
- * Created by Vladislav on 26.10.2016.
- */
 @Service
 public interface SearchService {
-    List<ClassificatorItem> searchByClassificator(String classificatorId, String query);
+    SearchResult searchByClassificator(String classificatorId, String query, Integer take, Integer offset);
 
     void indexClassificator(Classificator classificator);
-
 
 }

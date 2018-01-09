@@ -18,12 +18,15 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.okpdmarket.model.Classificator;
 import ru.okpdmarket.model.ClassificatorItem;
+import ru.okpdmarket.model.dto.SearchResult;
 import ru.okpdmarket.repository.ClassificatorRepository;
 import ru.okpdmarket.service.SearchService;
 import ru.okpdmarket.service.exception.SearchServiceException;
@@ -41,6 +44,9 @@ public class LuceneSearchServiceImpl implements SearchService {
     private static final String CLS_ID = "classificator_code";
     private static final String ITEM_ID = "item_code";
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
+
+    @Value("${application.search.hits.limit}")
+    private Integer searchHitsLimit;
 
     private final ClassificatorRepository repository;
 
@@ -79,7 +85,7 @@ public class LuceneSearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<ClassificatorItem> searchByClassificator(String classificatorId, String queryString) {
+    public SearchResult searchByClassificator(String classificatorId, String queryString, Integer take, Integer offset) {
         List<ClassificatorItem> results = new ArrayList<>();
         try {
             IndexReader indexReader = DirectoryReader.open(idx);
@@ -97,32 +103,36 @@ public class LuceneSearchServiceImpl implements SearchService {
             finalQuery.add(query, BooleanClause.Occur.MUST);
             finalQuery.add(clsFilter, BooleanClause.Occur.MUST);
 
+            TopScoreDocCollector collector = TopScoreDocCollector.create(searchHitsLimit);
+
             // Search for the query
-            TopDocs topDocs = indexSearcher.search(finalQuery, 100);
+            indexSearcher.search(finalQuery, collector);
+            TopDocs topDocs = collector.topDocs(offset, take);
+
+
             // Examine the Hits object to see if there were any matches
-            int hitCount = topDocs.totalHits;
-            if (hitCount > 0) {
-                log.debug("Hits for \"" + queryString
-                        + "\" were found in quotes by:");
+            int totalHitCount = topDocs.totalHits;
+            int resultSize = topDocs.scoreDocs.length;
+            if (totalHitCount > 0) {
+                log.debug("Hits for \"" + queryString + "\" were found in quotes by:");
                 // Iterate over the Documents in the Hits object
-                for (int i = 0; i < hitCount; i++) {
+                for (int i = 0; i < resultSize; i++) {
                     ScoreDoc scoreDoc = topDocs.scoreDocs[i];
                     Document doc = indexSearcher.doc(scoreDoc.doc);
                     results.add(getClassificatorItem(doc));
                 }
             }
+            return new SearchResult(results, totalHitCount);
+
         } catch (IOException | ParseException ie) {
             throw new SearchServiceException(ie);
         }
-        return results;
     }
 
     private ClassificatorItem getClassificatorItem(Document doc) {
         return repository.getClassificatorByCode(doc.get(CLS_ID)).getContents().getItemByCode(doc.get(ITEM_ID));
     }
 
-
 }
-
 
 

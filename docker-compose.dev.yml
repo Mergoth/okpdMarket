@@ -1,29 +1,27 @@
-version: '2'
+version: '3'
 services:
-  rabbitmq:
-    ports:
-      - 5672:5672
-
-  config:
-    build: config
-    ports:
-      - 8888:8888
-
-  registry:
-    build: registry
-
-  gateway:
-    build: gateway
-
-  mongodb:
-    build: mongodb
-    ports:
-      - 27017:27017
-
   classificators:
     build: classificators
-    ports:
-      - 8086:6000
-
-  monitoring:
-      build: monitoring
+    environment:
+      - SPRING_PROFILES_ACTIVE=local,debug,native
+      - CONFIG_SERVICE_PASSWORD=123
+      - NOTIFICATION_SERVICE_PASSWORD=123
+      - MONGODB_PASSWORD=123
+  config:
+    build: config
+    environment:
+      - SPRING_PROFILES_ACTIVE=local,debug,native
+      - CONFIG_SERVICE_PASSWORD=123
+      - MONGODB_PASSWORD=123
+  registry:
+    build: registry
+    environment:
+      - CONFIG_SERVICE_PASSWORD=123
+  gateway:
+    build: gateway
+    environment:
+      - CONFIG_SERVICE_PASSWORD=123
+  classificators-mongodb:
+    build: classificators-mongodb
+    environment:
+      - MONGODB_PASSWORD=123

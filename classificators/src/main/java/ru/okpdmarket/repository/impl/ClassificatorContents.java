@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-/**
- * Created by vladislav on 03/01/2017.
- */
 @Getter
 @RequiredArgsConstructor
 public class ClassificatorContents {
@@ -23,7 +20,6 @@ public class ClassificatorContents {
     private final Classificator classificator;
 
     private LinkedHashMap<String, ClassificatorItem> elements = new LinkedHashMap<>();
-
 
     public ClassificatorItem putItem(ClassificatorItem newItem) {
         positionItem(newItem);
