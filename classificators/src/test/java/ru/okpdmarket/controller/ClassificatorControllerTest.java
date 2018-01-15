@@ -17,7 +17,6 @@ import ru.okpdmarket.model.ClassificatorItem;
 import ru.okpdmarket.service.ClassificatorService;
 import ru.okpdmarket.service.SearchService;
 import ru.okpdmarket.service.impl.ClassificatorItemService;
-import ru.okpdmarket.service.impl.LuceneSearchServiceImpl;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -38,8 +37,6 @@ public class ClassificatorControllerTest extends IntegrationTest {
     private SearchService searchService;
     @Autowired
     private ClassificatorItemService itemService;
-    @Autowired
-    private LuceneSearchServiceImpl searchService;
 
     private MockMvc mockMvc;
     @Autowired
@@ -96,10 +93,7 @@ public class ClassificatorControllerTest extends IntegrationTest {
     public void getTopItems() throws Exception {
         this.mockMvc.perform(get("/okpd").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(document("classificator-top-items", preprocessResponse(prettyPrint()), responseFields(
-                        fieldWithPath("[].code").description("Classificator code to identify and use in URL"),
-                        fieldWithPath("[].name").description("Localized name of Classificator item"),
-                        fieldWithPath("[].parentCode").description("Code of parent"))));
+                .andDo(document("classificator-top-items", preprocessResponse(prettyPrint())));
     }
 
     /*
