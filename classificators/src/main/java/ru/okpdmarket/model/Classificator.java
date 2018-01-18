@@ -17,4 +17,8 @@ public class Classificator {
 
     @JsonIgnore
     private ClassificatorContents contents;
+
+    public String getCode() {
+        return code.toLowerCase();
+    }
 }

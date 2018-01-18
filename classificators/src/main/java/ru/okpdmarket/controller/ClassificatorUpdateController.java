@@ -36,15 +36,15 @@ public class ClassificatorUpdateController {
     }
 
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<List<Classificator>> putClassificator(@RequestBody final Classificator model) {
-        return new ResponseEntity<>(classificatorService.put(model), HttpStatus.OK);
+    public ResponseEntity<List<Classificator>> putClassificator(@RequestBody final Classificator classificator) {
+        return new ResponseEntity<>(classificatorService.put(classificator), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{code}/items", method = RequestMethod.PUT)
     public ResponseEntity<List<ClassificatorItem>> putClassificatorItem(@RequestBody final ClassificatorItem item,
                                                                         @PathVariable(value = "code") String classificatorCode) {
         try {
-            return new ResponseEntity<>(classificatorItemService.addItem(classificatorCode, item), HttpStatus.OK);
+            return new ResponseEntity<>(classificatorItemService.addItem(classificatorCode.toLowerCase(), item), HttpStatus.OK);
         } catch (ClassificatorNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -54,8 +54,8 @@ public class ClassificatorUpdateController {
     public ResponseEntity<ClassificatorItem> putClassificatorLink(@RequestBody final ClassificatorLinkDto linkDto,
                                                                   @PathVariable(value = "code") String classificatorCode,
                                                                   @PathVariable(value = "itemId") String itemId) {
-        val sourceItem = classificatorService.getItem(classificatorCode, itemId);
-        val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorCode(), linkDto.getTargetItemCode());
+        val sourceItem = classificatorService.getItem(classificatorCode.toLowerCase(), itemId);
+        val targetItem = classificatorService.getItem(linkDto.getTargetClassificatorCode().toLowerCase(), linkDto.getTargetItemCode());
         return new ResponseEntity<>(classificatorItemService.linkItem(sourceItem, targetItem), HttpStatus.OK);
     }
 
