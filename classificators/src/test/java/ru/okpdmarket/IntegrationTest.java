@@ -22,7 +22,7 @@ public abstract class IntegrationTest {
 
     // Set up a redis container
     private static GenericContainer mongo =
-            new GenericContainer("mongo:3")
+            new GenericContainer("mongo:3.6.0-jessie")
                     .withExposedPorts(27017);
 
     static {

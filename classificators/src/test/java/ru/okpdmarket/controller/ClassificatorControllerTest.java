@@ -1,7 +1,6 @@
 package ru.okpdmarket.controller;
 
 import lombok.val;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -75,10 +74,6 @@ public class ClassificatorControllerTest extends IntegrationTest {
         searchService.indexClassificator(classificator2);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void getClassificatorTypes() throws Exception {
         this.mockMvc.perform(get("").accept(MediaType.APPLICATION_JSON))
@@ -96,19 +91,6 @@ public class ClassificatorControllerTest extends IntegrationTest {
                 .andDo(document("classificator-top-items", preprocessResponse(prettyPrint())));
     }
 
-    /*
-     "code" : "2",
-      "name" : "Test2",
-      "parentCode" : "-",
-      "path" : [ {
-        "name" : "Test2",
-        "code" : "2"
-      } ],
-      "level" : 1,
-      "children" : [ ],
-      "hasChildren" : false,
-      "links"
-     */
     @Test
     public void getItem() throws Exception {
         this.mockMvc.perform(get("/okpd/12").accept(MediaType.APPLICATION_JSON))

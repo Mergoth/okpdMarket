@@ -105,7 +105,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
     @Test
     public void commit() throws Exception {
-        /*Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        Classificator classificator1 = createClassificator("OKPD", "ОКПД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
@@ -120,7 +120,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
         this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item2)));
-*/
+
         this.mockMvc.perform(post("/update/commit").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("update-classificators-commit", preprocessResponse(prettyPrint())));
