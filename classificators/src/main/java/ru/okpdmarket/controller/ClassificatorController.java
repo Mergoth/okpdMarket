@@ -36,7 +36,7 @@ public class ClassificatorController {
 
     @RequestMapping(value = "/{classificatorCode}", method = RequestMethod.GET)
     public List<ClassificatorItem> getTopItems(@PathVariable(value = "classificatorCode") String classificatorCode) {
-        return classificatorService.getClassificatorFirstLevel(classificatorCode);
+        return classificatorService.getClassificatorFirstLevel(classificatorCode.toLowerCase());
     }
 
     /**
@@ -47,7 +47,7 @@ public class ClassificatorController {
     @RequestMapping(value = "/{classificatorCode}/{itemCode}", method = RequestMethod.GET)
     public ClassificatorItem getItem(@PathVariable(value = "classificatorCode") String classificatorCode,
                                      @PathVariable(value = "itemCode") String itemCode) {
-        return classificatorService.getItem(classificatorCode, itemCode);
+        return classificatorService.getItem(classificatorCode.toLowerCase(), itemCode.toLowerCase());
     }
 
     @RequestMapping(value = "/{code}/search", method = RequestMethod.GET)
@@ -55,6 +55,6 @@ public class ClassificatorController {
                                @RequestParam(value = "query") String query,
                                @RequestParam(value = "take", defaultValue = "${application.search.defaultTake}") Integer take,
                                @RequestParam(value = "offset", defaultValue = "0") Integer offset) {
-        return searchService.searchByClassificator(classificatorCode, query, take, offset);
+        return searchService.searchByClassificator(classificatorCode.toLowerCase(), query, take, offset);
     }
 }
