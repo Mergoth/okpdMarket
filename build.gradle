@@ -1,3 +1,5 @@
+version = '0.0.1-SNAPSHOT'
+
 buildscript {
     ext {
         springBootVersion = '1.5.8.RELEASE'
@@ -19,7 +21,7 @@ subprojects {
             apply plugin: 'groovy'
             apply plugin: 'jacoco'
 
-            version = '0.0.1-SNAPSHOT'
+            project.version = rootProject.version
 
             def langLevel = 1.8
             sourceCompatibility = langLevel
@@ -74,7 +76,7 @@ subprojects {
 
             reports {
                 xml.enabled true
-                xml.destination "${buildDir}/reports/jacoco/report.xml"
+                xml.destination file("${buildDir}/reports/jacoco/report.xml")
                 html.enabled false
                 csv.enabled false
             }
@@ -83,6 +85,9 @@ subprojects {
 
 }
 
+task printVersion {
+    println project.version
+}
 
 /* task runDocker(type: Exec) {
    *//* workingDir './'

@@ -1,5 +1,6 @@
 package ru.okpdmarket.service.impl
 
+import org.junit.Test
 import ru.okpdmarket.model.Classificator
 import ru.okpdmarket.model.ClassificatorItem
 import ru.okpdmarket.repository.ClassificatorRepository
@@ -28,6 +29,7 @@ class LuceneSearchServiceImplTest extends Specification {
         repository.putClassificator(classificator)
     }
 
+    @Test
     def "Index Classificator"() {
 
         expect:
@@ -37,13 +39,15 @@ class LuceneSearchServiceImplTest extends Specification {
 
     }
 
+    @Test
     def "Search By Classificator"() {
         service.indexClassificator(classificator)
 
         when:
-        def res = service.searchByClassificator("OKPD", "кошки")
+        def res = service.searchByClassificator("OKPD", "кошки", 10, 0)
         then:
-        1.equals(res.size())
-        "2".equals(res.get(0).getCode())
+        1.equals(res.getResultItems().size())
+        1.equals(res.getHitCount())
+        "2".equals(res.getResultItems().get(0).getCode())
     }
 }

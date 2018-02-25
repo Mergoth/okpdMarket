@@ -54,7 +54,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
     @Test
     public void putClassificator() throws Exception {
-        Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        Classificator classificator1 = createClassificator("okpd", "ОКПД");
 
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)))
@@ -65,12 +65,12 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
     @Test
     public void putClassificatorItem() throws Exception {
 
-        Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        Classificator classificator1 = createClassificator("okpd", "ОКПД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
         ClassificatorItem item = createClassificatorItem("11", "code", "name", "testNotes");
-        this.mockMvc.perform(put("/update/OKPD/items").contentType(MediaType.APPLICATION_JSON).content(
+        this.mockMvc.perform(put("/update/okpd/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item)))
                 .andExpect(status().isOk())
                 .andDo(document("put-classificator-item", preprocessResponse(prettyPrint())));
@@ -78,7 +78,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
     @Test
     public void putClassificatorItemLink() throws Exception {
-        Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        Classificator classificator1 = createClassificator("okpd", "ОКПД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
@@ -86,7 +86,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         this.mockMvc.perform(put("/update/OKPD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item1)));
 
-        Classificator classificator2 = createClassificator("TNVD", "ТНВД");
+        Classificator classificator2 = createClassificator("tnvd", "ТНВД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator2)));
 
@@ -95,9 +95,9 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
                 this.objectMapper.writeValueAsString(item2)));
 
         ClassificatorLinkDto testLinks = new ClassificatorLinkDto();
-        testLinks.setTargetClassificatorCode("TNVD");
+        testLinks.setTargetClassificatorCode("tnvd");
         testLinks.setTargetItemCode("222");
-        this.mockMvc.perform(put("/update/OKPD/111/links").contentType(MediaType.APPLICATION_JSON).content(
+        this.mockMvc.perform(put("/update/okpd/111/links").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(testLinks)))
                 .andExpect(status().isOk())
                 .andDo(document("put-classificator-item-links", preprocessResponse(prettyPrint())));
@@ -105,7 +105,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
 
     @Test
     public void commit() throws Exception {
-        /*Classificator classificator1 = createClassificator("OKPD", "ОКПД");
+        Classificator classificator1 = createClassificator("OKPD", "ОКПД");
         this.mockMvc.perform(put("/update").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(classificator1)));
 
@@ -120,7 +120,7 @@ public class ClassificatorUpdateControllerTest extends IntegrationTest {
         ClassificatorItem item2 = createClassificatorItem("", "222", "name", "testNotes");
         this.mockMvc.perform(put("/update/TNVD/items").contentType(MediaType.APPLICATION_JSON).content(
                 this.objectMapper.writeValueAsString(item2)));
-*/
+
         this.mockMvc.perform(post("/update/commit").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("update-classificators-commit", preprocessResponse(prettyPrint())));
