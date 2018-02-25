@@ -16,7 +16,7 @@ class LuceneSearchServiceImplTest extends Specification {
 
     def setup() {
         repository = new ClassificatorRepositoryImpl()
-        service = new LuceneSearchServiceImpl(repository)
+        service = new LuceneSearchServiceImpl(repository, 100)
         classificator = new Classificator()
         classificator.setCode("OKPD")
         classificator.setName("ОКПД")

@@ -12,13 +12,7 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,15 +39,15 @@ public class LuceneSearchServiceImpl implements SearchService {
     private static final String ITEM_ID = "item_code";
     private static final Logger log = LoggerFactory.getLogger(SearchService.class);
 
-    @Value("${application.search.hits.limit}")
     private Integer searchHitsLimit;
 
     private final ClassificatorRepository repository;
 
     RAMDirectory idx = new RAMDirectory();
 
-    public LuceneSearchServiceImpl(ClassificatorRepository repository) {
+    public LuceneSearchServiceImpl(ClassificatorRepository repository, @Value("${application.search.hits.limit}") Integer searchHitsLimit) {
         this.repository = repository;
+        this.searchHitsLimit = searchHitsLimit;
     }
 
     private Document createDocument(ClassificatorItem item) {

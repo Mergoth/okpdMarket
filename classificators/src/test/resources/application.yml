@@ -6,3 +6,7 @@ spring:
       port: 27010
   profiles:
       active: debug
+application:
+  search:
+    hits:
+      limit: 100

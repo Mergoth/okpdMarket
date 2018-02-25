@@ -14,4 +14,4 @@ RUN \
  apt-get autoremove -y && apt-get clean && \
  rm -rf /var/cache/* && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT ["/init.sh"]
